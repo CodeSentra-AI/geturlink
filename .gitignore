@@ -1,0 +1,32 @@
+# Dependency directories
+node_modules/
+/client/node_modules/
+/server/node_modules/
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+/server/.env
+
+# Production builds
+dist/
+/client/dist/
+
+# SQLite databases
+*.db
+*.db-journal
+/server/geturlink.db
+/server/geturlink.db-journal
+
+# Private product uploads
+/private_uploads/
+/server/private_uploads/
+
+# Agent/IDE directories
+.gemini/
+.claude/
+.system_generated/
+scratch/
