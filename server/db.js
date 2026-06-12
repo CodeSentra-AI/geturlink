@@ -4,7 +4,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dbPath = path.join(__dirname, 'geturlink.db');
+// Store the DB on the persistent volume when DATA_DIR is set (e.g. Railway); else alongside the code (local dev)
+const dataDir = process.env.DATA_DIR || __dirname;
+const dbPath = path.join(dataDir, 'geturlink.db');
 
 let db;
 

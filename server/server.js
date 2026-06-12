@@ -15,14 +15,17 @@ dotenv.config();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
 
-// Ensure uploads folder exists
-const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+// Base dir for persistent data: the mounted volume on Railway (DATA_DIR), else the working dir locally
+const DATA_DIR = process.env.DATA_DIR || process.cwd();
+
+// Ensure public avatar uploads folder exists (served at /uploads)
+const uploadsDir = path.join(DATA_DIR, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
 // Ensure private uploads folder exists (outside web root)
-const privateUploadsDir = path.join(process.cwd(), 'private_uploads');
+const privateUploadsDir = path.join(DATA_DIR, 'private_uploads');
 if (!fs.existsSync(privateUploadsDir)) {
   fs.mkdirSync(privateUploadsDir, { recursive: true });
 }
@@ -1295,10 +1298,10 @@ app.get('/api/products/download', async (req, res) => {
     await db.run('UPDATE transactions SET download_count = download_count + 1 WHERE id = ?', [transactionId]);
 
     const filename = path.basename(transaction.file_url);
-    // Resolve secure private upload path (falling back to public/uploads in development for backward-compatibility)
-    let filePath = path.join(process.cwd(), 'private_uploads', filename);
+    // Resolve secure private upload path (falling back to the avatars dir for backward-compatibility)
+    let filePath = path.join(privateUploadsDir, filename);
     if (!fs.existsSync(filePath)) {
-      filePath = path.join(process.cwd(), 'public', 'uploads', filename);
+      filePath = path.join(uploadsDir, filename);
     }
 
     if (!fs.existsSync(filePath)) {
@@ -2354,7 +2357,10 @@ app.get('/p/:username', async (req, res) => {
   }
 });
 
-// Setup public files upload endpoint wrapper
+// Serve uploaded public avatars from the data dir (persists on the Railway volume)
+app.use('/uploads', express.static(uploadsDir));
+
+// Setup public files static wrapper
 app.use(express.static('public'));
 
 // Server init

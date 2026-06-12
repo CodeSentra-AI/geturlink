@@ -28,6 +28,8 @@ dist/
 # User-uploaded public avatars
 /server/public/uploads/
 public/uploads/
+/server/uploads/
+uploads/
 
 # Logs
 *.log
