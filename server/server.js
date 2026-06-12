@@ -38,9 +38,23 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ 
+// Only allow real image files for avatars — prevents uploading an .html file that would be
+// served from our own origin as text/html (stored XSS).
+const imageFileFilter = (req, file, cb) => {
+  const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+  const allowedExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (allowedMimes.includes(file.mimetype) && allowedExts.includes(ext)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files (jpg, png, gif, webp) are allowed'));
+  }
+};
+
+const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: imageFileFilter
 });
 
 // Multer Storage Configuration (Private Products)
@@ -61,7 +75,18 @@ const uploadPrivate = multer({
 
 const app = express();
 const PORT = process.env.PORT || 5050;
-const JWT_SECRET = process.env.JWT_SECRET || 'geturlink-ultra-secret-key-999';
+
+// Require a real JWT secret — never fall back to a hardcoded value (that would let anyone forge tokens)
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set. Refusing to start.');
+  process.exit(1);
+}
+
+// Dev-only bypasses (mock checkout, unsigned webhooks, DB seeding) require EXPLICIT opt-in.
+// Anything other than NODE_ENV=development is treated as production behaviour (fail-closed),
+// so a forgotten/misspelled env var on the live server can never silently disable payment checks.
+const IS_DEV = process.env.NODE_ENV === 'development';
 
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -158,7 +183,7 @@ app.post('/api/webhook/stripe', express.raw({ type: 'application/json' }), async
       event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
     } catch (err) {
       console.error('Webhook signature verification failed:', err.message);
-      if (process.env.NODE_ENV === 'production') {
+      if (!IS_DEV) {
         return res.status(400).send(`Webhook Error: ${err.message}`);
       }
       // In development mode, fallback to unverified event if verification fails
@@ -170,7 +195,7 @@ app.post('/api/webhook/stripe', express.raw({ type: 'application/json' }), async
       }
     }
   } else {
-    if (process.env.NODE_ENV === 'production') {
+    if (!IS_DEV) {
       return res.status(400).send('Webhook configuration missing: STRIPE_WEBHOOK_SECRET is required');
     }
     console.log('Development mode: Webhook secret not configured. Parsing payload directly.');
@@ -476,12 +501,15 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
 // FILE UPLOAD ENDPOINTS
 // ----------------------------------------------------
 
-app.post('/api/upload/avatar', authenticateToken, upload.single('avatar'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ error: 'No file uploaded' });
-  }
-  const fileUrl = `/uploads/${req.file.filename}`;
-  res.json({ success: true, url: fileUrl });
+app.post('/api/upload/avatar', authenticateToken, (req, res) => {
+  // Use the callback form so multer rejections (wrong type / too large) return a clean 400 instead of a 500
+  upload.single('avatar')(req, res, (err) => {
+    if (err) return res.status(400).json({ error: err.message });
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+    res.json({ success: true, url: `/uploads/${req.file.filename}` });
+  });
 });
 
 app.post('/api/upload/product', authenticateToken, uploadPrivate.single('productFile'), (req, res) => {
@@ -503,7 +531,7 @@ app.get('/api/stripe/connect', authenticateToken, async (req, res) => {
   
   if (!clientId || clientId === 'ca_placeholder') {
     // Development sandbox Connect simulation
-    if (process.env.NODE_ENV === 'production') {
+    if (!IS_DEV) {
       return res.status(400).json({ error: 'Stripe Connect Client ID is not configured' });
     }
     
@@ -581,7 +609,7 @@ app.post('/api/stripe/create-subscription', authenticateToken, async (req, res) 
 
     if (!priceId || priceId === 'price_placeholder') {
       // Direct mock upgrade in development mode
-      if (process.env.NODE_ENV === 'production') {
+      if (!IS_DEV) {
         return res.status(400).json({ error: 'Stripe Premium Price ID is not configured' });
       }
       
@@ -749,13 +777,20 @@ app.get('/api/products', authenticateToken, async (req, res) => {
 
 app.post('/api/products', authenticateToken, async (req, res) => {
   const { title, description, price, fileUrl } = req.body;
+  if (!title || String(title).trim() === '') {
+    return res.status(400).json({ error: 'Product title is required' });
+  }
+  const numericPrice = Number(price);
+  if (!Number.isFinite(numericPrice) || numericPrice < 0) {
+    return res.status(400).json({ error: 'Price must be a valid non-negative number' });
+  }
   try {
     const db = getDB();
     const result = await db.run(
       'INSERT INTO products (user_id, title, description, price, file_url) VALUES (?, ?, ?, ?, ?)',
-      [req.user.id, title, description, price, fileUrl || 'digital_product.zip']
+      [req.user.id, title, description, numericPrice, fileUrl || 'digital_product.zip']
     );
-    res.json({ id: result.lastID, title, description, price, file_url: fileUrl || 'digital_product.zip', sales_count: 0 });
+    res.json({ id: result.lastID, title, description, price: numericPrice, file_url: fileUrl || 'digital_product.zip', sales_count: 0 });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -763,11 +798,15 @@ app.post('/api/products', authenticateToken, async (req, res) => {
 
 app.put('/api/products/:id', authenticateToken, async (req, res) => {
   const { title, description, price, fileUrl } = req.body;
+  const numericPrice = Number(price);
+  if (!Number.isFinite(numericPrice) || numericPrice < 0) {
+    return res.status(400).json({ error: 'Price must be a valid non-negative number' });
+  }
   try {
     const db = getDB();
     await db.run(
       'UPDATE products SET title = ?, description = ?, price = ?, file_url = ? WHERE id = ? AND user_id = ?',
-      [title, description, price, fileUrl, req.params.id, req.user.id]
+      [title, description, numericPrice, fileUrl, req.params.id, req.user.id]
     );
     res.json({ success: true });
   } catch (error) {
@@ -971,7 +1010,7 @@ app.post('/api/checkout', async (req, res) => {
 
     // Fallback for development mode if keys are not configured
     const isPlaceholderKey = !process.env.STRIPE_SECRET_KEY || process.env.STRIPE_SECRET_KEY.includes('placeholder');
-    if (isPlaceholderKey && process.env.NODE_ENV !== 'production') {
+    if (isPlaceholderKey && IS_DEV) {
       console.log('Development mode: Generating mock checkout session.');
       const mockSessionId = 'cs_mock_' + Math.random().toString(36).substring(2, 11);
       const mockSuccessUrl = `${apiBaseUrl}/checkout-success?session_id=${mockSessionId}&dev_fallback=true&productId=${product.id}&sellerId=${product.user_id}&customerEmail=${encodeURIComponent(email)}&amount=${product.price}`;
@@ -989,7 +1028,7 @@ app.post('/api/checkout', async (req, res) => {
         checkoutUrl: session.url
       });
     } catch (stripeErr) {
-      if (process.env.NODE_ENV !== 'production') {
+      if (IS_DEV) {
         console.warn('Stripe checkout error, falling back to mock checkout:', stripeErr.message);
         const mockSessionId = 'cs_mock_' + Math.random().toString(36).substring(2, 11);
         const mockSuccessUrl = `${apiBaseUrl}/checkout-success?session_id=${mockSessionId}&dev_fallback=true&productId=${product.id}&sellerId=${product.user_id}&customerEmail=${encodeURIComponent(email)}&amount=${product.price}`;
@@ -1032,7 +1071,7 @@ app.get('/checkout-success', async (req, res) => {
 
     // Retrieve checkout session from stripe to verify payment
     let session;
-    if (req.query.dev_fallback === 'true' && process.env.NODE_ENV !== 'production') {
+    if (req.query.dev_fallback === 'true' && IS_DEV) {
       console.log('Development mode: Reconstructing mock session details from URL parameters.');
       session = {
         payment_status: 'paid',
@@ -1048,7 +1087,7 @@ app.get('/checkout-success', async (req, res) => {
         session = await stripe.checkout.sessions.retrieve(session_id);
       } catch (stripeErr) {
         console.warn('Stripe session retrieve failed:', stripeErr.message);
-        if (process.env.NODE_ENV === 'production') {
+        if (!IS_DEV) {
           return res.status(400).send('Error verifying payment with Stripe: ' + stripeErr.message);
         }
         
@@ -1929,14 +1968,16 @@ async function serveProfile(req, res, userProfile) {
     ${products.length > 0 ? `
       <div class="section-title">Digital Shop</div>
       <div class="links-grid">
-        ${products.map(p => `
-          <div class="bento-card" onclick="openCheckout(${p.id}, '${escapeHTML(p.title).replace(/'/g, "\\'")}', ${p.price})">
-            <span class="price-badge">$${p.price}</span>
+        ${products.map(p => {
+          const safePrice = Number(p.price) || 0;
+          return `
+          <div class="bento-card product-card" data-product-id="${p.id}" data-product-title="${escapeHTML(p.title)}" data-product-price="${safePrice}">
+            <span class="price-badge">$${safePrice.toFixed(2)}</span>
             <div class="card-title" style="margin-top: 0.5rem;">${escapeHTML(p.title)}</div>
             <div class="card-desc">${escapeHTML(p.description || '')}</div>
             <div class="card-icon" style="margin-top: auto; align-self: flex-end;">🛍️</div>
           </div>
-        `).join('')}
+        `;}).join('')}
       </div>
     ` : ''}
  
@@ -2035,18 +2076,26 @@ async function serveProfile(req, res, userProfile) {
  
         appendMessage(data.answer, 'bot');
  
-        // If assistant matched a specific product, present buy action
+        // If assistant matched a specific product, present buy action (built via DOM + textContent to avoid XSS)
         if (data.product) {
           const buyCard = document.createElement('div');
           buyCard.className = 'chat-msg msg-bot';
           buyCard.style.border = '1px solid var(--accent)';
-          buyCard.innerHTML = \`
-            <div style="font-weight:600;margin-bottom:0.25rem;">\${data.product.title}</div>
-            <button onclick="openCheckout(\${data.product.id}, '\${data.product.title}', \${data.product.price})" 
-                    style="background:var(--accent);color:#white;border:none;padding:0.4rem 0.8rem;border-radius:6px;font-weight:600;font-size:0.8rem;cursor:pointer;">
-              Buy Now for $\${data.product.price}
-            </button>
-          \`;
+
+          const titleDiv = document.createElement('div');
+          titleDiv.style.cssText = 'font-weight:600;margin-bottom:0.25rem;';
+          titleDiv.textContent = data.product.title;
+
+          const safePrice = Number(data.product.price) || 0;
+          const buyBtn = document.createElement('button');
+          buyBtn.style.cssText = 'background:var(--accent);color:#fff;border:none;padding:0.4rem 0.8rem;border-radius:6px;font-weight:600;font-size:0.8rem;cursor:pointer;';
+          buyBtn.textContent = 'Buy Now for $' + safePrice.toFixed(2);
+          buyBtn.addEventListener('click', function() {
+            openCheckout(data.product.id, data.product.title, safePrice);
+          });
+
+          buyCard.appendChild(titleDiv);
+          buyCard.appendChild(buyBtn);
           chatBox.appendChild(buyCard);
           chatBox.scrollTop = chatBox.scrollHeight;
         }
@@ -2068,6 +2117,13 @@ async function serveProfile(req, res, userProfile) {
       chatBox.scrollTop = chatBox.scrollHeight;
     }
  
+    // Wire up product cards via dataset (no inline handlers — avoids HTML/JS-context XSS)
+    document.querySelectorAll('.product-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        openCheckout(card.dataset.productId, card.dataset.productTitle, card.dataset.productPrice);
+      });
+    });
+
     // Support Enter Key for Chat
     document.getElementById('chatInput').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') sendMessage();
@@ -2164,7 +2220,7 @@ app.use(express.static('public'));
 // Server init
 initDB()
   .then(async (db) => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (IS_DEV) {
       await seedDefaultData(db);
     }
     app.listen(PORT, () => {

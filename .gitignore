@@ -25,6 +25,13 @@ dist/
 /private_uploads/
 /server/private_uploads/
 
+# User-uploaded public avatars
+/server/public/uploads/
+public/uploads/
+
+# Logs
+*.log
+
 # Agent/IDE directories
 .gemini/
 .claude/
