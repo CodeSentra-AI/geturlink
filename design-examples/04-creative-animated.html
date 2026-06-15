@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Creative & Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#07060d; --ink:#f4f2ff; --muted:#9d9ab5; --line:#211f33; --panel:#110f1c; --v:#8b5cff; --pink:#ff49c7; --cyan:#34e7e4; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden;
+    --mx:50vw;--my:0px;}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(380px circle at var(--mx) var(--my), rgba(139,92,255,.18), transparent 70%);transition:background .08s linear}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:2}
+
+  /* animated background blobs */
+  .blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.55;z-index:0;pointer-events:none}
+  .b1{width:440px;height:440px;background:radial-gradient(circle,#8b5cff,transparent 65%);top:-120px;left:-80px;animation:drift1 18s ease-in-out infinite}
+  .b2{width:380px;height:380px;background:radial-gradient(circle,#ff49c7,transparent 65%);top:120px;right:-100px;animation:drift2 22s ease-in-out infinite}
+  .b3{width:320px;height:320px;background:radial-gradient(circle,#34e7e4,transparent 65%);bottom:-120px;left:30%;animation:drift1 26s ease-in-out infinite reverse}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,40px) scale(1.15)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-50px,60px) scale(.9)}}
+
+  /* custom cursor */
+  .cur-dot,.cur-ring{position:fixed;top:0;left:0;border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen}
+  .cur-dot{width:7px;height:7px;background:#fff;transform:translate(-50%,-50%)}
+  .cur-ring{width:38px;height:38px;border:1.5px solid var(--v);transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s,border-color .2s}
+  .cur-ring.big{width:64px;height:64px;background:rgba(139,92,255,.12);border-color:var(--pink)}
+  @media(hover:none){.cur-dot,.cur-ring{display:none}}
+
+  nav{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:rgba(7,6,13,.7);backdrop-filter:blur(6px)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .logo{font-weight:700;font-size:1.35rem;letter-spacing:-.02em}
+  .logo span{color:var(--v)}
+  .nlinks{display:flex;gap:1.8rem;align-items:center}
+  .nlinks a.l{color:var(--muted);font-size:.92rem;font-weight:500}
+  .nlinks a.l:hover{color:var(--ink)}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;font-size:.97rem;border-radius:12px;padding:.75rem 1.4rem;border:1px solid transparent;transition:.18s;will-change:transform}
+  .btn-p{background:linear-gradient(110deg,var(--v),var(--pink));color:#fff;box-shadow:0 8px 30px rgba(139,92,255,.4)}
+  .btn-g{border-color:var(--line);background:var(--panel);color:var(--ink)}
+  .btn-g:hover{border-color:var(--v)}
+
+  .hero{position:relative;padding:5rem 0 4rem;display:grid;grid-template-columns:1.08fr .92fr;gap:3rem;align-items:center;min-height:78vh}
+  .eyes{position:absolute;top:10px;right:17%;display:flex;gap:.55rem;z-index:6;animation:float 5s ease-in-out infinite}
+  .eye{width:48px;height:48px;border-radius:50%;background:#15121f;border:2px solid var(--v);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(139,92,255,.45)}
+  .eye i{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--pink));display:block;transition:transform .05s linear}
+  .tag{display:inline-flex;align-items:center;gap:.5rem;font-size:.82rem;font-weight:600;color:var(--cyan);border:1px solid var(--line);background:var(--panel);padding:.4rem .9rem;border-radius:999px;margin-bottom:1.5rem}
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 0 rgba(52,231,228,.6);animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,231,228,.55)}70%{box-shadow:0 0 0 12px rgba(52,231,228,0)}100%{box-shadow:0 0 0 0 rgba(52,231,228,0)}}
+  h1{font-size:clamp(2.6rem,5vw,4.1rem);font-weight:700;line-height:1.02;letter-spacing:-.035em;margin-bottom:1.2rem}
+  .shimmer{background:linear-gradient(110deg,#a78bff,#ff49c7,#34e7e4,#a78bff);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 6s linear infinite}
+  @keyframes shimmer{to{background-position:300% 0}}
+  .uline{display:block;width:230px;height:14px;margin-top:2px}
+  .uline path{stroke:var(--pink);stroke-width:5;fill:none;stroke-linecap:round;stroke-dasharray:300;stroke-dashoffset:300;animation:draw 1.4s .5s ease forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .sub{color:var(--muted);font-size:1.15rem;max-width:30rem;margin:1.4rem 0 1.9rem}
+  .acts{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+  .micro{color:var(--muted);font-size:.84rem;margin-top:1.1rem}
+
+  .stage{position:relative;display:flex;align-items:center;justify-content:center;will-change:transform}
+  .ring{position:absolute;width:330px;height:330px}
+  .ring circle{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:6 10}
+  .ring.spin{animation:spin 40s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .phone{position:relative;width:215px;border-radius:30px;padding:11px;background:#0d0b16;border:1px solid var(--line);box-shadow:0 30px 70px rgba(0,0,0,.6)}
+  .scr{background:#15121f;border-radius:21px;padding:17px 14px}
+  .av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--v),var(--pink));margin:2px auto 7px}
+  .mn{text-align:center;font-weight:700;font-size:.92rem}
+  .mb{text-align:center;color:var(--muted);font-size:.7rem;margin-bottom:11px}
+  .lk{background:#1d1830;border:1px solid var(--line);border-radius:11px;padding:.55rem .8rem;font-size:.72rem;margin-bottom:.5rem;display:flex;justify-content:space-between;color:#cfc9ee}
+  .pr{background:linear-gradient(120deg,rgba(139,92,255,.2),rgba(255,73,199,.14));border:1px solid var(--v);border-radius:12px;padding:.7rem}
+  .ptag{display:inline-block;font-size:.62rem;font-weight:700;color:#fff;background:linear-gradient(120deg,var(--v),var(--pink));padding:2px 8px;border-radius:999px;margin-bottom:5px}
+  .spark{position:absolute;font-size:1.4rem;animation:float 4s ease-in-out infinite}
+  .s1{top:-6px;right:30px;animation-delay:.2s}.s2{bottom:20px;left:-10px;animation-delay:1.2s}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(12deg)}}
+
+  .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:1.1rem 0;overflow:hidden;white-space:nowrap;position:relative;z-index:2;margin-top:1rem}
+  .track{display:inline-block;animation:scroll 22s linear infinite;font-weight:600;color:var(--muted)}
+  .track span{margin:0 1.5rem;font-size:1.05rem}
+  .track b{color:var(--v)}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  section{padding:5rem 0;position:relative;z-index:2}
+  .ey{color:var(--pink);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
+  .h2{font-size:clamp(1.9rem,3.4vw,2.7rem);font-weight:700;letter-spacing:-.025em;margin:.5rem 0 .6rem}
+  .lead{color:var(--muted);max-width:34rem}
+  .center{text-align:center}.center .lead{margin:0 auto}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:2.6rem}
+  .feat{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:1.7rem;transition:.3s;text-align:left}
+  .feat:hover{transform:translateY(-6px);border-color:var(--v)}
+  .ic{width:48px;height:48px;margin-bottom:1rem;color:var(--v)}
+  .ic path,.ic rect,.ic circle{stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:120;stroke-dashoffset:120}
+  .feat.in .ic path,.feat.in .ic rect,.feat.in .ic circle{animation:draw2 1s ease forwards}
+  @keyframes draw2{to{stroke-dashoffset:0}}
+  .feat h3{font-size:1.12rem;font-weight:700;margin-bottom:.35rem}
+  .feat p{color:var(--muted);font-size:.94rem}
+  .reveal{opacity:0;transform:translateY(24px);transition:.7s}
+  .reveal.in{opacity:1;transform:none}
+
+  .ctaband{margin:1rem 0 5rem;text-align:center;border:1px solid var(--v);border-radius:26px;padding:3.6rem 2rem;background:radial-gradient(circle at 50% 0%,rgba(139,92,255,.18),var(--panel))}
+  .ctaband h2{font-size:clamp(2rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em}
+  .ctaband p{color:var(--muted);margin:.7rem auto 1.7rem;max-width:30rem}
+  footer{border-top:1px solid var(--line);padding:2rem 0;color:var(--muted);font-size:.88rem;display:flex;justify-content:space-between;position:relative;z-index:2}
+  @media(max-width:860px){.hero{grid-template-columns:1fr;min-height:auto}.grid3{grid-template-columns:1fr}.nlinks a.l{display:none}.eyes{display:none}}
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+<div class="cur-dot"></div><div class="cur-ring"></div>
+
+<nav><div class="wrap nav">
+  <div class="logo">Get<span>Ur</span>Link</div>
+  <div class="nlinks"><a class="l" href="#">How it works</a><a class="l" href="#">Pricing</a><a class="btn btn-g" data-hover href="#">Log in</a><a class="btn btn-p" data-hover data-magnetic href="#">Get started</a></div>
+</div></nav>
+
+<header class="wrap hero">
+  <div class="eyes"><div class="eye"><i data-eye></i></div><div class="eye"><i data-eye></i></div></div>
+  <div>
+    <span class="tag"><span class="pulse"></span> Free until your first sale</span>
+    <h1>Your link in bio<br>that <span class="shimmer">actually sells.</span>
+      <svg class="uline" viewBox="0 0 230 14" preserveAspectRatio="none"><path d="M3 9 C 50 2, 90 13, 130 6 S 200 2, 227 8"/></svg>
+    </h1>
+    <p class="sub">Share your links and sell digital products with fast, 1-click checkout — on a page that looks like nothing else out there.</p>
+    <div class="acts"><a class="btn btn-p" data-hover data-magnetic href="#">Create your page — free</a><a class="btn btn-g" data-hover href="#">See how it works</a></div>
+    <div class="micro">No credit card required · Keep 100% on Premium</div>
+  </div>
+
+  <div class="stage" id="stage">
+    <svg class="ring spin" viewBox="0 0 330 330"><circle cx="165" cy="165" r="160"/></svg>
+    <span class="spark s1">✦</span><span class="spark s2">✦</span>
+    <div class="phone" data-hover>
+      <div class="scr">
+        <div class="av"></div><div class="mn">Vamshi</div><div class="mb">Designer & preset creator</div>
+        <div class="lk"><span>Follow on Instagram</span><span>↗</span></div>
+        <div class="lk"><span>My portfolio</span><span>↗</span></div>
+        <div class="pr"><span class="ptag">$9.99</span><div style="font-size:.74rem;font-weight:600">Neon Glow Wallpaper Pack</div></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marquee"><div class="track" id="mq">
+  <span>Sell presets</span><span><b>·</b></span><span>Templates</span><span><b>·</b></span><span>E-books</span><span><b>·</b></span><span>Coaching</span><span><b>·</b></span><span>Wallpapers</span><span><b>·</b></span><span>Lightroom filters</span><span><b>·</b></span>
+  <span>Sell presets</span><span><b>·</b></span><span>Templates</span><span><b>·</b></span><span>E-books</span><span><b>·</b></span><span>Coaching</span><span><b>·</b></span><span>Wallpapers</span><span><b>·</b></span><span>Lightroom filters</span><span><b>·</b></span>
+</div></div>
+
+<section><div class="wrap center">
+  <span class="ey reveal">Built to convert</span><h2 class="h2 reveal">Everything you need to sell</h2>
+  <div class="grid3">
+    <div class="feat reveal"><svg class="ic" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><h3>Sell digital products</h3><p>Get paid instantly with secure download delivery the moment someone buys.</p></div>
+    <div class="feat reveal"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><h3>Keep more money</h3><p>No paywall before you earn. Low fee to start, 0% on Premium.</p></div>
+    <div class="feat reveal"><svg class="ic" viewBox="0 0 24 24"><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M12 8V4H8"/><path d="M9 13v2M15 13v2"/></svg><h3>AI that sells for you</h3><p>An assistant answers buyers' questions and points them to checkout 24/7.</p></div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap"><div class="ctaband reveal">
+  <h2>Start selling in minutes.</h2><p>Turn your bio link into a storefront that actually moves — without the monthly wall.</p>
+  <a class="btn btn-p" data-hover data-magnetic href="#">Create your page — free</a>
+</div></div></section>
+
+<footer class="wrap"><div class="logo" style="font-size:1.1rem">Get<span>Ur</span>Link</div><div>© 2026 GetUrLink</div></footer>
+
+<script>
+  const fine = matchMedia('(hover:fine)').matches;
+  if(fine){
+    const dot=document.querySelector('.cur-dot'), ring=document.querySelector('.cur-ring');
+    let mx=innerWidth/2,my=innerHeight/2, rx=mx, ry=my;
+    addEventListener('mousemove',e=>{
+      mx=e.clientX;my=e.clientY;
+      dot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;
+      document.body.style.setProperty('--mx',mx+'px');
+      document.body.style.setProperty('--my',my+'px');
+    });
+    (function loop(){ rx+=(mx-rx)*.18; ry+=(my-ry)*.18;
+      ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
+    document.querySelectorAll('[data-hover]').forEach(el=>{
+      el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+      el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+    });
+    document.documentElement.style.cursor='none';
+    // magnetic buttons
+    document.querySelectorAll('[data-magnetic]').forEach(b=>{
+      b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();
+        b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.3}px,${(e.clientY-r.top-r.height/2)*.4}px)`;});
+      b.addEventListener('mouseleave',()=>b.style.transform='');
+    });
+    // parallax hero visual
+    const stage=document.getElementById('stage');
+    addEventListener('mousemove',e=>{const dx=(e.clientX/innerWidth-.5),dy=(e.clientY/innerHeight-.5);
+      stage.style.transform=`translate(${dx*26}px,${dy*22}px) rotateY(${dx*6}deg) rotateX(${-dy*6}deg)`;});
+  }
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.15});
+  document.querySelectorAll('.reveal,.feat').forEach(el=>io.observe(el));
+  const eyeP=[...document.querySelectorAll('.eye i')];
+  addEventListener('mousemove',e=>{eyeP.forEach(p=>{const r=p.parentElement.getBoundingClientRect(),a=Math.atan2(e.clientY-(r.top+r.height/2),e.clientX-(r.left+r.width/2));p.style.transform=`translate(${Math.cos(a)*8}px,${Math.sin(a)*8}px)`;});});
+</script>
+</body>
+</html>

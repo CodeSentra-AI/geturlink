@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Eyes That Track</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fef6e4;--ink:#26201a;--pink:#ff5d8f;--blue:#4cc9f0;--purple:#9b5de5;--ink2:#26201a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Fredoka',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow:hidden}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:960px;margin:0 auto;padding:0 1.5rem}
+  nav{display:flex;align-items:center;justify-content:space-between;height:76px;max-width:960px;margin:0 auto;padding:0 1.5rem}
+  .logo{font-weight:700;font-size:1.4rem}.logo span{background:var(--pink);color:#fff;padding:0 .2em;border-radius:8px}
+  .nl{display:flex;gap:.8rem;align-items:center}
+  .btn{font-weight:600;font-size:.95rem;padding:.7rem 1.3rem;border-radius:14px;border:3px solid var(--ink);background:#fff;box-shadow:3px 3px 0 var(--ink);display:inline-block}
+  .btn-p{background:var(--pink);color:#fff}
+  .hero{text-align:center;padding:6vh 0 0}
+  .eyes{display:flex;gap:1.4rem;justify-content:center;margin-bottom:1.8rem}
+  .eye{width:74px;height:74px;border-radius:50%;background:#fff;border:4px solid var(--ink);position:relative;box-shadow:4px 4px 0 var(--ink)}
+  .pupil{width:30px;height:30px;border-radius:50%;background:var(--ink);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+  .eye.b{background:var(--blue)}.eye.p{background:var(--purple)}
+  h1{font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:700;line-height:1.02;letter-spacing:-.01em;margin-bottom:1rem}
+  .sub{font-size:1.15rem;max-width:30rem;margin:1.2rem auto 1.8rem;color:#6b5d4d}
+  .acts{display:flex;gap:1rem;justify-content:center}
+  .blink{display:inline-block;animation:bl 4s infinite}
+  .arrows{display:flex;gap:2.5rem;justify-content:center;margin-top:3.5rem}
+  .arrow{font-size:2rem;will-change:transform}
+  .note{position:fixed;bottom:1.3rem;left:0;right:0;text-align:center;color:#9b8b76;font-size:.84rem}
+</style>
+</head>
+<body>
+<nav><div class="logo">Get<span>Ur</span>Link</div><div class="nl"><a class="btn" href="#">Log in</a><a class="btn btn-p" href="#">Get started</a></div></nav>
+<header class="wrap hero">
+  <div class="eyes">
+    <div class="eye"><div class="pupil" data-eye></div></div>
+    <div class="eye b"><div class="pupil" data-eye></div></div>
+    <div class="eye p"><div class="pupil" data-eye></div></div>
+  </div>
+  <h1>We see you,<br>future bestseller.</h1>
+  <p class="sub">A storefront for creators that keeps an eye on what matters — your sales. Links + products + 1-click checkout.</p>
+  <div class="acts"><a class="btn btn-p" href="#">Create your page — free</a><a class="btn" href="#">How it works</a></div>
+  <div class="arrows"><span class="arrow" data-arrow>👉</span><span class="arrow" data-arrow>✦</span><span class="arrow" data-arrow>👉</span></div>
+</header>
+<div class="note">✦ the eyes (and arrows) follow your cursor everywhere</div>
+<script>
+  const eyes=[...document.querySelectorAll('[data-eye]')],arrows=[...document.querySelectorAll('[data-arrow]')];
+  addEventListener('mousemove',e=>{
+    eyes.forEach(p=>{const eye=p.parentElement.getBoundingClientRect(),cx=eye.left+eye.width/2,cy=eye.top+eye.height/2,a=Math.atan2(e.clientY-cy,e.clientX-cx),r=16;
+      p.style.transform=`translate(calc(-50% + ${Math.cos(a)*r}px), calc(-50% + ${Math.sin(a)*r}px))`;});
+    arrows.forEach(s=>{const b=s.getBoundingClientRect(),a=Math.atan2(e.clientY-(b.top+b.height/2),e.clientX-(b.left+b.width/2));
+      s.style.transform=`rotate(${a}rad)`;});
+  });
+</script>
+</body>
+</html>
