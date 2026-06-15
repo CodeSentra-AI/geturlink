@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GetUrLink — Your link in bio that actually sells</title>
+  <meta name="description" content="A beautiful Bento-style link-in-bio storefront for creators. Sell digital products with 1-click checkout, an AI assistant that sells for you, and 0% fees on Premium. Free until your first sale.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #6366f1;
+      --accent-2: #d946ef;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --card: rgba(255,255,255,0.04);
+      --card-2: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.09);
+      --border-bright: rgba(255,255,255,0.16);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background:
+        radial-gradient(900px circle at 78% -10%, rgba(217,70,239,0.16), transparent 55%),
+        radial-gradient(1000px circle at 12% 0%, rgba(99,102,241,0.20), transparent 50%),
+        #060814;
+      color: var(--text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    .wrap { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+    .grad-text {
+      background: linear-gradient(115deg, #a5b4fc 10%, #e879f9 90%);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-weight: 600; font-size: 0.98rem; border-radius: 13px;
+      padding: 0.8rem 1.4rem; cursor: pointer; border: 1px solid transparent;
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease, border-color .22s ease;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(120deg, var(--accent), var(--accent-2));
+      box-shadow: 0 8px 30px rgba(99,102,241,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(168,85,247,0.5); }
+    .btn-ghost { color: var(--text); border-color: var(--border-bright); background: rgba(255,255,255,0.03); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(14px);
+      background: rgba(6,8,20,0.55);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+    .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; }
+    .logo b { font-weight: 800; }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a.lnk { color: var(--muted); font-size: 0.95rem; font-weight: 500; transition: color .2s; }
+    .nav-links a.lnk:hover { color: var(--text); }
+    .nav-cta { display: flex; align-items: center; gap: 0.75rem; }
+    @media (max-width: 760px){ .nav-links .lnk { display:none; } }
+
+    /* HERO BENTO */
+    .hero { padding: 4.5rem 0 3rem; }
+    .bento {
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      grid-auto-rows: minmax(0, auto);
+      gap: 1.1rem;
+    }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.6rem;
+      backdrop-filter: blur(16px); position: relative; overflow: hidden;
+      transition: transform .3s ease, border-color .3s ease;
+    }
+    .card.lift:hover { transform: translateY(-4px); border-color: var(--border-bright); }
+    .pill {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .82rem; font-weight: 600; color: #e9d5ff;
+      background: rgba(217,70,239,0.12); border: 1px solid rgba(217,70,239,0.3);
+      padding: .4rem .85rem; border-radius: 999px;
+    }
+    .dot { width:7px; height:7px; border-radius:50%; background: var(--accent-2); box-shadow:0 0 10px var(--accent-2); }
+
+    .hero-main { grid-row: span 2; display: flex; flex-direction: column; justify-content: center; gap: 1.3rem; padding: 2.2rem; }
+    .hero-main h1 { font-size: clamp(2.3rem, 4.6vw, 3.7rem); font-weight: 800; line-height: 1.03; letter-spacing: -0.03em; }
+    .hero-main p.sub { color: var(--muted); font-size: 1.12rem; max-width: 30rem; }
+    .hero-actions { display: flex; gap: .9rem; flex-wrap: wrap; align-items: center; }
+    .micro { color: var(--muted); font-size: .85rem; display:flex; align-items:center; gap:.4rem; }
+
+    /* PHONE */
+    .phone-card { grid-row: span 2; display: flex; align-items: center; justify-content: center; padding: 1.4rem; background: linear-gradient(160deg, rgba(99,102,241,0.10), rgba(217,70,239,0.06)); }
+    .phone {
+      width: 220px; border-radius: 30px; padding: 12px;
+      background: #0a0d1c; border: 1px solid var(--border-bright);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-12px) } }
+    .screen { background: radial-gradient(circle at 50% 0%, #1b2240, #0b0f1e); border-radius: 20px; padding: 18px 14px; }
+    .pavatar { width: 54px; height: 54px; border-radius: 50%; margin: 4px auto 8px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: 2px solid rgba(255,255,255,0.25); }
+    .pname { text-align: center; font-weight: 700; font-size: .95rem; }
+    .pbio { text-align: center; color: var(--muted); font-size: .68rem; margin-bottom: 12px; }
+    .plink { background: rgba(255,255,255,0.05); border:1px solid var(--border); border-radius: 11px; padding: 9px 11px; font-size: .72rem; margin-bottom: 8px; display:flex; align-items:center; justify-content:space-between; }
+    .pprod { background: rgba(99,102,241,0.10); border:1px solid rgba(99,102,241,0.4); border-radius: 13px; padding: 11px; margin-top: 4px; }
+    .pprod .ptitle { font-size: .74rem; font-weight: 600; }
+    .ptag { display:inline-block; font-size:.62rem; font-weight:700; color:#fff; background: linear-gradient(120deg,var(--accent),var(--accent-2)); padding: 2px 8px; border-radius: 999px; margin-bottom:6px; }
+    .pchat { margin-top: 10px; background: rgba(255,255,255,0.04); border:1px solid var(--border); border-radius: 11px; padding: 8px 10px; font-size:.66rem; color: var(--muted); display:flex; align-items:center; gap:6px; }
+
+    /* small stat cards */
+    .stat-num { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; }
+    .stat-label { color: var(--muted); font-size: .85rem; }
+    .spark { display: flex; align-items: flex-end; gap: 5px; height: 42px; margin-top: 12px; }
+    .spark span { flex:1; background: linear-gradient(180deg, var(--accent-2), var(--accent)); border-radius: 4px; opacity:.85; }
+    .vs-row { display:flex; align-items:baseline; gap:.6rem; margin-top:.4rem; }
+    .vs-old { color: var(--muted); text-decoration: line-through; font-size: 1rem; }
+    .vs-new { font-size: 1.7rem; font-weight: 800; }
+
+    /* chat card */
+    .bub { border-radius: 13px; padding: .55rem .8rem; font-size: .85rem; max-width: 90%; margin-bottom: .5rem; }
+    .bub-q { background: rgba(255,255,255,0.06); border:1px solid var(--border); }
+    .bub-a { background: linear-gradient(120deg, rgba(99,102,241,0.22), rgba(217,70,239,0.18)); border:1px solid rgba(168,85,247,0.4); margin-left:auto; }
+
+    /* SECTIONS */
+    section.block { padding: 4.5rem 0; }
+    .eyebrow { color: var(--accent-2); font-weight: 600; font-size: .9rem; letter-spacing: .04em; text-transform: uppercase; }
+    .h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; margin: .6rem 0 .8rem; }
+    .lead { color: var(--muted); font-size: 1.08rem; max-width: 36rem; }
+    .center { text-align: center; } .center .lead { margin: 0 auto; }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 2.5rem; }
+    .step .n { width: 40px; height: 40px; border-radius: 12px; display:flex; align-items:center; justify-content:center; font-weight:800; background: linear-gradient(120deg,var(--accent),var(--accent-2)); margin-bottom: 1rem; }
+    .step h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .4rem; }
+    .step p { color: var(--muted); font-size: .96rem; }
+
+    .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 2.5rem; }
+    .feat .ic { width: 46px; height: 46px; border-radius: 13px; display:flex; align-items:center; justify-content:center; background: rgba(99,102,241,0.14); border:1px solid rgba(99,102,241,0.3); color:#c7d2fe; margin-bottom: 1rem; }
+    .feat .ic svg { width: 22px; height: 22px; }
+    .feat h3 { font-size: 1.12rem; font-weight: 700; margin-bottom: .4rem; }
+    .feat p { color: var(--muted); font-size: .95rem; }
+
+    .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.3rem; margin-top: 2.5rem; max-width: 780px; margin-left:auto; margin-right:auto; }
+    .price { padding: 2rem; }
+    .price.pro { border-color: rgba(168,85,247,0.5); background: linear-gradient(165deg, rgba(99,102,241,0.12), rgba(217,70,239,0.07)); }
+    .price .tier { font-weight: 700; font-size: 1.15rem; }
+    .price .amt { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.02em; margin: .4rem 0; }
+    .price .amt small { font-size: 1rem; color: var(--muted); font-weight: 500; }
+    .price ul { list-style: none; margin: 1.2rem 0 1.6rem; display: flex; flex-direction: column; gap: .7rem; }
+    .price li { display:flex; align-items:center; gap:.6rem; font-size: .96rem; color: #e2e8f0; }
+    .price li svg { width:18px; height:18px; color: var(--accent-2); flex-shrink:0; }
+    .badge-pop { position:absolute; top:1.2rem; right:1.2rem; font-size:.72rem; font-weight:700; color:#fff; background: linear-gradient(120deg,var(--accent),var(--accent-2)); padding:3px 10px; border-radius:999px; }
+
+    .faq { max-width: 760px; margin: 2.5rem auto 0; }
+    details { border:1px solid var(--border); border-radius: 15px; padding: 1.1rem 1.3rem; margin-bottom: .9rem; background: var(--card); }
+    details[open] { border-color: var(--border-bright); }
+    summary { font-weight: 600; cursor: pointer; list-style: none; display:flex; justify-content:space-between; align-items:center; font-size: 1.02rem; }
+    summary::-webkit-details-marker { display: none; }
+    summary .chev { transition: transform .25s; color: var(--muted); }
+    details[open] summary .chev { transform: rotate(180deg); }
+    details p { color: var(--muted); margin-top: .8rem; font-size: .98rem; }
+
+    .cta-band { margin: 1rem 0 4rem; padding: 3.4rem 2rem; text-align: center; border-radius: 28px;
+      background: linear-gradient(125deg, rgba(99,102,241,0.18), rgba(217,70,239,0.14));
+      border: 1px solid rgba(168,85,247,0.35); }
+    .cta-band h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); font-weight: 800; letter-spacing:-0.02em; }
+    .cta-band p { color: #cbd5e1; margin: .7rem auto 1.6rem; max-width: 32rem; }
+
+    footer { border-top: 1px solid var(--border); padding: 2.2rem 0; }
+    .foot { display:flex; justify-content: space-between; align-items:center; flex-wrap: wrap; gap: 1rem; color: var(--muted); font-size: .9rem; }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (max-width: 860px){
+      .bento { grid-template-columns: 1fr; }
+      .hero-main, .phone-card { grid-row: auto; }
+      .steps, .feat-grid, .price-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap nav-inner">
+      <div class="logo">Get<span class="grad-text">Ur</span>Link</div>
+      <div class="nav-links">
+        <a class="lnk" href="#how">How it works</a>
+        <a class="lnk" href="#pricing">Pricing</a>
+        <a class="lnk" href="#faq">FAQ</a>
+        <div class="nav-cta">
+          <a class="btn btn-ghost" href="https://geturlink-production-447c.up.railway.app">Log in</a>
+          <a class="btn btn-primary" href="https://geturlink-production-447c.up.railway.app">Get started</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="bento">
+
+        <div class="card hero-main">
+          <span class="pill"><span class="dot"></span> Free until your first sale</span>
+          <h1>Your link in bio that <span class="grad-text">actually sells.</span></h1>
+          <p class="sub">A beautiful Bento storefront for creators — share your links and sell your digital products with fast, 1-click checkout. Set up in minutes.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://geturlink-production-447c.up.railway.app">Create your page — free</a>
+            <a class="btn btn-ghost" href="#how">See how it works</a>
+          </div>
+          <span class="micro">No credit card required · Keep 100% on Premium</span>
+        </div>
+
+        <div class="card phone-card lift">
+          <div class="phone">
+            <div class="screen">
+              <div class="pavatar"></div>
+              <div class="pname">Vamshi</div>
+              <div class="pbio">Designer & preset creator</div>
+              <div class="plink"><span>Follow on Instagram</span><span>↗</span></div>
+              <div class="plink"><span>My portfolio</span><span>↗</span></div>
+              <div class="pprod">
+                <span class="ptag">$9.99</span>
+                <div class="ptitle">Neon Glow Wallpaper Pack</div>
+              </div>
+              <div class="pchat">✦ Ask my assistant anything…</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card lift">
+          <div class="stat-label">Costs nothing to start</div>
+          <div class="vs-row">
+            <span class="vs-old">Stan $29/mo</span>
+            <span class="vs-new grad-text">$0</span>
+          </div>
+          <div class="stat-label" style="margin-top:.5rem">Pay only a small fee when you sell — or 0% on Premium.</div>
+        </div>
+
+        <div class="card lift">
+          <div class="stat-label">Earned this month</div>
+          <div class="stat-num grad-text">$2,847</div>
+          <div class="spark">
+            <span style="height:40%"></span><span style="height:55%"></span><span style="height:35%"></span>
+            <span style="height:70%"></span><span style="height:50%"></span><span style="height:85%"></span>
+            <span style="height:65%"></span><span style="height:100%"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <section class="block" id="how">
+    <div class="wrap center">
+      <span class="eyebrow reveal">Dead simple</span>
+      <h2 class="h2 reveal">Live in three steps</h2>
+      <p class="lead reveal">No code, no design skills, no monthly fee to find out if it works.</p>
+      <div class="steps">
+        <div class="card step reveal lift"><div class="n">1</div><h3>Create your page</h3><p>Sign up free and pick a theme. Your page looks premium by default — every time.</p></div>
+        <div class="card step reveal lift"><div class="n">2</div><h3>Add links & products</h3><p>Drop in your socials and list digital products with a price. Upload the file, set it, done.</p></div>
+        <div class="card step reveal lift"><div class="n">3</div><h3>Share your link</h3><p>Put it in your bio. Buyers check out in one click and get their download instantly.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="features">
+    <div class="wrap center">
+      <span class="eyebrow reveal">Built to convert</span>
+      <h2 class="h2 reveal">Everything you need to sell</h2>
+      <div class="feat-grid">
+        <div class="card feat reveal lift">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+          <h3>Sell digital products</h3><p>Presets, templates, e-books — paid, with secure instant delivery the moment someone buys.</p>
+        </div>
+        <div class="card feat reveal lift">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <h3>Keep more money</h3><p>No paywall before you earn. Start free with a low fee, then 0% fees on Premium.</p>
+        </div>
+        <div class="card feat reveal lift">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></div>
+          <h3>An AI that sells for you</h3><p>A built-in assistant answers buyer questions and points them to the right product — 24/7.</p>
+        </div>
+        <div class="card feat reveal lift">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/></svg></div>
+          <h3>Your own domain</h3><p>Connect a custom domain on Premium so your store lives on your brand, not ours.</p>
+        </div>
+        <div class="card feat reveal lift">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></div>
+          <h3>Real analytics</h3><p>See views, clicks, sales, and where your traffic comes from — not vanity numbers.</p>
+        </div>
+        <div class="card feat reveal lift">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></div>
+          <h3>Beautiful themes</h3><p>Modern glassmorphism that looks great on every phone. Your brand, ready instantly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="pricing">
+    <div class="wrap center">
+      <span class="eyebrow reveal">Honest pricing</span>
+      <h2 class="h2 reveal">Start free. Upgrade when it pays off.</h2>
+      <p class="lead reveal">No $29 wall before your first dollar. Ever.</p>
+      <div class="price-grid">
+        <div class="card price reveal">
+          <div class="tier">Free</div>
+          <div class="amt">$0<small> /forever</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Unlimited links & products</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> 1-click checkout & instant delivery</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> AI shop assistant</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Small fee per sale</li>
+          </ul>
+          <a class="btn btn-ghost" style="width:100%; justify-content:center" href="https://geturlink-production-447c.up.railway.app">Start free</a>
+        </div>
+        <div class="card price pro reveal">
+          <span class="badge-pop">Most popular</span>
+          <div class="tier">Premium</div>
+          <div class="amt grad-text">$9<small style="-webkit-text-fill-color:var(--muted)"> /month</small></div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Everything in Free</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> <b style="font-weight:700">0% platform fees</b></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Custom domain</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Custom CSS & advanced themes</li>
+          </ul>
+          <a class="btn btn-primary" style="width:100%; justify-content:center" href="https://geturlink-production-447c.up.railway.app">Go Premium</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="faq">
+    <div class="wrap">
+      <div class="center"><span class="eyebrow reveal">Questions</span><h2 class="h2 reveal">Good to know</h2></div>
+      <div class="faq">
+        <details class="reveal"><summary>Is it really free? <span class="chev">⌄</span></summary><p>Yes. You can build your page, add links and products, and start selling without paying a cent. We take a small fee only when you make a sale — or nothing at all on Premium.</p></details>
+        <details class="reveal"><summary>How do buyers get their files? <span class="chev">⌄</span></summary><p>The moment a payment goes through, the buyer gets a secure, single-use download link. No manual sending, no waiting.</p></details>
+        <details class="reveal"><summary>What can I sell? <span class="chev">⌄</span></summary><p>Any digital product — presets, Lightroom filters, templates, e-books, guides, wallpapers. If it's a file, you can sell it.</p></details>
+        <details class="reveal"><summary>What's the AI assistant? <span class="chev">⌄</span></summary><p>A chat widget on your page that answers visitors' questions about your products and guides them to checkout — like having a salesperson on your bio link around the clock.</p></details>
+        <details class="reveal"><summary>Can I use my own domain? <span class="chev">⌄</span></summary><p>On Premium, yes — point your custom domain at your store so it lives on your brand.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <h2>Start selling in minutes.</h2>
+        <p>Join the creators turning their bio link into a real storefront — without the monthly wall.</p>
+        <a class="btn btn-primary" href="https://geturlink-production-447c.up.railway.app">Create your page — free</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <div class="logo" style="font-size:1.1rem">Get<span class="grad-text">Ur</span>Link</div>
+      <div>© <span id="yr"></span> GetUrLink · Your link, your store.</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    const io = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(el); });
+  </script>
+</body>
+</html>
