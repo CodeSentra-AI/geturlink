@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vamshi — Monochrome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#fff;--ink:#0a0a0a;--mut:#7a7a7a;--line:#e3e3e3}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.55}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 2rem}
+  /* top bar */
+  .top{display:flex;align-items:center;justify-content:space-between;padding:1.6rem 0;border-bottom:1px solid var(--ink)}
+  .top .id{font-family:'Archivo',sans-serif;font-weight:800;letter-spacing:-.02em;font-size:1.05rem}
+  .top .meta{font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:var(--mut)}
+  .dot{display:inline-block;width:7px;height:7px;background:var(--ink);border-radius:50%;margin-right:.4rem;vertical-align:middle;animation:bl 1.6s infinite}
+  @keyframes bl{50%{opacity:.25}}
+  /* hero */
+  .hero{padding:4.5rem 0 2rem}
+  .kick{font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;color:var(--mut);margin-bottom:1.6rem}
+  h1{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(3.2rem,12vw,8.5rem);line-height:.92;letter-spacing:-.04em;text-transform:uppercase}
+  .hero .sub{display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-end;justify-content:space-between;margin-top:2rem;border-top:1px solid var(--line);padding-top:1.4rem}
+  .hero .bio{max-width:34rem;font-size:1.05rem;color:#2a2a2a}
+  .hero .socials{display:flex;gap:1.3rem;font-size:.8rem;text-transform:uppercase;letter-spacing:.12em}
+  .hero .socials a{position:relative;padding-bottom:3px}
+  .hero .socials a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--ink);transition:width .3s}
+  .hero .socials a:hover::after{width:100%}
+  /* marquee */
+  .marq{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);overflow:hidden;white-space:nowrap;padding:.8rem 0;margin-top:1rem}
+  .marq span{font-family:'Archivo',sans-serif;font-weight:800;text-transform:uppercase;font-size:1.4rem;letter-spacing:-.01em;display:inline-block;animation:slide 22s linear infinite}
+  .marq span i{font-style:normal;color:var(--mut);margin:0 1rem}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  /* section head */
+  .sh{display:flex;align-items:baseline;justify-content:space-between;margin:4rem 0 1.5rem}
+  .sh h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:1.5rem;text-transform:uppercase;letter-spacing:-.01em}
+  .sh .n{font-size:.74rem;color:var(--mut);text-transform:uppercase;letter-spacing:.14em}
+  /* work grid */
+  .work{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+  .w{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:4/3;background:#111}
+  .w.tall{aspect-ratio:auto;grid-row:span 2}
+  .w .img{position:absolute;inset:0;filter:grayscale(1) contrast(1.05);transition:filter .5s,transform .7s cubic-bezier(.2,.8,.2,1)}
+  .w:hover .img{filter:grayscale(0) contrast(1);transform:scale(1.04)}
+  .w .lab{position:absolute;left:0;bottom:0;right:0;padding:1rem 1.1rem;color:#fff;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);display:flex;justify-content:space-between;align-items:flex-end}
+  .w .lab .t{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.15rem}
+  .w .lab .c{font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;opacity:.85}
+  .w .idx{position:absolute;top:.8rem;left:1rem;color:#fff;font-family:'Archivo',sans-serif;font-weight:800;font-size:.9rem;mix-blend-mode:difference}
+  /* shop */
+  .shop{border-top:1px solid var(--ink)}
+  .row{display:grid;grid-template-columns:48px 1fr auto auto;gap:1.4rem;align-items:center;padding:1.5rem 0;border-bottom:1px solid var(--line);transition:padding-left .3s}
+  .row:hover{padding-left:.8rem}
+  .row .ri{width:48px;height:48px;border-radius:2px}
+  .row .rt{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.15rem}
+  .row .rd{font-size:.85rem;color:var(--mut)}
+  .row .pr{font-family:'Archivo',sans-serif;font-weight:800;font-size:1.2rem}
+  .row .buy{border:1px solid var(--ink);padding:.5rem 1.3rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.12em;font-weight:600;transition:.2s}
+  .row .buy:hover{background:var(--ink);color:#fff}
+  /* ai */
+  .ai{margin:4rem 0;border:1px solid var(--ink);padding:2rem}
+  .ai .h{font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--mut);margin-bottom:1.2rem}
+  .ai .q{font-family:'Archivo',sans-serif;font-weight:600;font-size:1.4rem;letter-spacing:-.01em;max-width:36rem}
+  .ai .a{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line);font-size:1rem;color:#2a2a2a;display:flex;gap:.6rem}
+  .ai .a b{font-weight:600}
+  .ai .ask{margin-top:1.4rem;display:inline-flex;align-items:center;gap:.6rem;background:var(--ink);color:#fff;padding:.7rem 1.3rem;font-size:.76rem;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+  /* footer */
+  footer{border-top:1px solid var(--ink);padding:2.4rem 0 3rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mut)}
+  @media(max-width:680px){.wrap{padding:0 1.2rem}.work{grid-template-columns:1fr}.w.tall{grid-row:auto}.row{grid-template-columns:40px 1fr;row-gap:.5rem}.row .pr,.row .buy{grid-column:2}.row .buy{justify-self:start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="id">VAMSHI®</div><div class="meta"><span class="dot"></span>Available · Tokyo · 2026</div></div>
+
+  <section class="hero">
+    <div class="kick">Designer / Preset Artist / Wallpaper Sets</div>
+    <h1>Light,<br>color &amp;<br>quiet detail</h1>
+    <div class="sub">
+      <p class="bio">I make film-grade presets and 8K wallpaper sets for people who care how the small things feel. Ten years. A few hundred thousand downloads.</p>
+      <div class="socials"><a href="#">Instagram</a><a href="#">Dribbble</a><a href="#">Behance</a></div>
+    </div>
+  </section>
+</div>
+
+<div class="marq"><span>SELECTED WORK <i>—</i> PRESETS <i>—</i> WALLPAPERS <i>—</i> MOBILE THEMES <i>—</i> EDITORIAL <i>—</i> SELECTED WORK <i>—</i> PRESETS <i>—</i> WALLPAPERS <i>—</i> MOBILE THEMES <i>—</i> EDITORIAL <i>—</i> </span></div>
+
+<div class="wrap">
+  <div class="sh"><h2>Selected Work</h2><div class="n">06 — Projects</div></div>
+  <section class="work">
+    <div class="w tall"><div class="img" style="background:linear-gradient(160deg,#3a3a3a,#0a0a0a)"></div><div class="idx">01</div><div class="lab"><span class="t">Neon Tokyo</span><span class="c">8K Wallpaper</span></div></div>
+    <div class="w"><div class="img" style="background:linear-gradient(160deg,#5a5a5a,#1a1a1a)"></div><div class="idx">02</div><div class="lab"><span class="t">Golden Street</span><span class="c">Lightroom</span></div></div>
+    <div class="w"><div class="img" style="background:linear-gradient(160deg,#444,#111)"></div><div class="idx">03</div><div class="lab"><span class="t">Forest Film</span><span class="c">Preset Pack</span></div></div>
+    <div class="w"><div class="img" style="background:linear-gradient(160deg,#6a6a6a,#222)"></div><div class="idx">04</div><div class="lab"><span class="t">Aurora UI</span><span class="c">Mobile Theme</span></div></div>
+    <div class="w"><div class="img" style="background:linear-gradient(160deg,#2a2a2a,#000)"></div><div class="idx">05</div><div class="lab"><span class="t">Mono Noir</span><span class="c">Editorial</span></div></div>
+  </section>
+
+  <div class="ai">
+    <div class="h">✦ Ask the studio assistant</div>
+    <div class="q">“Which preset works best for night street photography?”</div>
+    <div class="a"><b>→</b><span>The <b>Lightroom Classics</b> pack is built for exactly that — 15 night-street film looks. Tap below to grab it.</span></div>
+    <a class="ask" href="#">Ask anything →</a>
+  </div>
+
+  <div class="sh"><h2>Shop</h2><div class="n">Instant download</div></div>
+  <section class="shop">
+    <a class="row"><div class="ri" style="background:linear-gradient(135deg,#555,#111)"></div><div><div class="rt">Neon Glow Wallpaper Pack</div><div class="rd">10 cyberpunk 8K wallpapers</div></div><div class="pr">$9.99</div><div class="buy">Buy</div></a>
+    <a class="row"><div class="ri" style="background:linear-gradient(135deg,#777,#222)"></div><div><div class="rt">Lightroom Classic Presets</div><div class="rd">15 night-street film presets</div></div><div class="pr">$24.99</div><div class="buy">Buy</div></a>
+    <a class="row"><div class="ri" style="background:linear-gradient(135deg,#999,#333)"></div><div><div class="rt">Mobile Theme — Aurora</div><div class="rd">Full icon pack + widgets</div></div><div class="pr">$14.99</div><div class="buy">Buy</div></a>
+  </section>
+
+  <footer><div>© 2026 Vamshi</div><div>Powered by GetUrLink</div></footer>
+</div>
+</body>
+</html>

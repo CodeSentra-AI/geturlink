@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vamshi — Swiss Minimalist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f4f1;--ink:#111;--mut:#8a8a85;--line:#d6d6d0;--red:#e5341f}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 2.2rem}
+  .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;color:var(--mut);font-weight:500}
+  /* header grid */
+  header{border-bottom:1px solid var(--ink);padding:1.4rem 0;display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;align-items:center}
+  header .nm{grid-column:span 4;font-weight:700;font-size:1rem}
+  header .role{grid-column:span 5}
+  header .stat{grid-column:span 3;text-align:right}
+  header .stat b{color:var(--red)}
+  /* hero */
+  .hero{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;padding:4rem 0 3rem;border-bottom:1px solid var(--line)}
+  .hero .l{grid-column:1 / 8}
+  .hero .r{grid-column:9 / 13;display:flex;flex-direction:column;gap:1.2rem;justify-content:flex-end}
+  .hero h1{font-size:clamp(2.6rem,5.5vw,4.2rem);font-weight:600;line-height:1.02;letter-spacing:-.03em;margin:1.4rem 0}
+  .hero h1 .red{color:var(--red)}
+  .hero .stmt{max-width:30rem;color:#33332e;font-size:1.02rem}
+  .hero .r .row{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:.5rem;font-size:.9rem}
+  .hero .r a:hover{color:var(--red)}
+  /* index */
+  .sec{padding:3.5rem 0;border-bottom:1px solid var(--line)}
+  .secgrid{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem}
+  .secgrid .head{grid-column:1 / 4}
+  .secgrid .head h2{font-size:1.1rem;font-weight:600;margin-top:.4rem}
+  .secgrid .body{grid-column:4 / 13}
+  .ix{display:grid;grid-template-columns:42px 1fr 1.2fr auto;gap:1rem;align-items:center;padding:1.05rem 0;border-top:1px solid var(--line);transition:.25s}
+  .ix:first-child{border-top:none}
+  .ix:hover{color:var(--red)}
+  .ix:hover .th{transform:translateY(-2px)}
+  .ix .no{font-size:.78rem;color:var(--mut);font-variant-numeric:tabular-nums}
+  .ix:hover .no{color:var(--red)}
+  .ix .ti{font-weight:600;font-size:1.15rem;letter-spacing:-.02em}
+  .ix .ca{font-size:.86rem;color:var(--mut)}
+  .ix:hover .ca{color:var(--red)}
+  .ix .th{width:60px;height:42px;border-radius:2px;justify-self:end;transition:transform .25s}
+  /* shop */
+  .pr{display:grid;grid-template-columns:42px 1fr auto auto;gap:1rem;align-items:center;padding:1.1rem 0;border-top:1px solid var(--line)}
+  .pr:first-child{border-top:none}
+  .pr .no{font-size:.78rem;color:var(--mut);font-variant-numeric:tabular-nums}
+  .pr .ti{font-weight:600;font-size:1.1rem}
+  .pr .de{font-size:.84rem;color:var(--mut)}
+  .pr .price{font-weight:600;font-variant-numeric:tabular-nums}
+  .pr .buy{border:1px solid var(--ink);padding:.4rem 1.1rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:500;transition:.2s}
+  .pr .buy:hover{background:var(--red);border-color:var(--red);color:#fff}
+  /* ai */
+  .ai .body{background:#fff;border:1px solid var(--line);padding:1.8rem;border-radius:3px}
+  .ai .q{font-weight:500;color:var(--mut);font-size:.92rem}
+  .ai .a{font-size:1.25rem;font-weight:600;letter-spacing:-.02em;margin:.6rem 0 1.2rem;max-width:34rem}
+  .ai .a .red{color:var(--red)}
+  .ai .ask{display:inline-flex;align-items:center;gap:.5rem;background:var(--ink);color:#fff;padding:.6rem 1.2rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;border-radius:2px}
+  footer{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;padding:2.2rem 0 3rem;font-size:.78rem;color:var(--mut)}
+  footer .a{grid-column:1 / 5}footer .b{grid-column:5 / 9}footer .c{grid-column:9 / 13;text-align:right}
+  @media(max-width:760px){.wrap{padding:0 1.3rem}header,.hero,.secgrid,footer{grid-template-columns:repeat(6,1fr)}.hero .l,.hero .r,.secgrid .head,.secgrid .body,header .nm,header .role,header .stat,footer .a,footer .b,footer .c{grid-column:1/-1;text-align:left}.hero .r{margin-top:1.4rem}.ix{grid-template-columns:32px 1fr auto}.ix .ca{display:none}.pr{grid-template-columns:1fr auto}.pr .no,.pr .de{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="nm">Vamshi Reddy</div>
+    <div class="role lbl">Designer — Preset &amp; Wallpaper Studio</div>
+    <div class="stat lbl"><b>240K</b> Downloads</div>
+  </header>
+
+  <section class="hero">
+    <div class="l">
+      <div class="lbl">Portfolio / Index 2026</div>
+      <h1>Crafting light, color &amp; <span class="red">quiet detail.</span></h1>
+      <p class="stmt">Film-grade Lightroom presets and 8K wallpaper sets, made with a Swiss obsession for grid, rhythm and restraint.</p>
+    </div>
+    <div class="r">
+      <div class="lbl">Contact / Social</div>
+      <div class="row"><span>Instagram</span><a href="#">@vamshicreates →</a></div>
+      <div class="row"><span>Dribbble</span><a href="#">/vamshi →</a></div>
+      <div class="row"><span>Email</span><a href="#">hi@vamshi.co →</a></div>
+    </div>
+  </section>
+
+  <section class="sec ai">
+    <div class="secgrid">
+      <div class="head"><div class="lbl">⌗ Assistant</div><h2>Ask before<br>you buy</h2></div>
+      <div class="body">
+        <div class="q">“Which preset is best for night street photography?”</div>
+        <div class="a">The <span class="red">Lightroom Classics</span> pack — 15 night-street film looks. It's the closest match for what you described.</div>
+        <a class="ask" href="#">Ask the assistant →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="secgrid">
+      <div class="head"><div class="lbl">001 — 005</div><h2>Selected<br>work</h2></div>
+      <div class="body">
+        <a class="ix"><span class="no">01</span><span class="ti">Neon Tokyo</span><span class="ca">8K Wallpaper Set</span><span class="th" style="background:linear-gradient(135deg,#2b3a67,#1a1f3a)"></span></a>
+        <a class="ix"><span class="no">02</span><span class="ti">Golden Street</span><span class="ca">Lightroom Preset</span><span class="th" style="background:linear-gradient(135deg,#e0794a,#7c3a2c)"></span></a>
+        <a class="ix"><span class="no">03</span><span class="ti">Forest Film</span><span class="ca">Preset Pack</span><span class="th" style="background:linear-gradient(135deg,#3fae6a,#13503a)"></span></a>
+        <a class="ix"><span class="no">04</span><span class="ti">Aurora UI</span><span class="ca">Mobile Theme</span><span class="th" style="background:linear-gradient(135deg,#b06ab3,#4568dc)"></span></a>
+        <a class="ix"><span class="no">05</span><span class="ti">Mono Noir</span><span class="ca">Editorial Series</span><span class="th" style="background:linear-gradient(135deg,#444,#111)"></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="secgrid">
+      <div class="head"><div class="lbl">Shop</div><h2>Available<br>to buy</h2></div>
+      <div class="body">
+        <a class="pr"><span class="no">01</span><div><div class="ti">Neon Glow Wallpaper Pack</div><div class="de">10 cyberpunk 8K wallpapers · instant download</div></div><span class="price">$9.99</span><span class="buy">Buy</span></a>
+        <a class="pr"><span class="no">02</span><div><div class="ti">Lightroom Classic Presets</div><div class="de">15 night-street film presets</div></div><span class="price">$24.99</span><span class="buy">Buy</span></a>
+        <a class="pr"><span class="no">03</span><div><div class="ti">Aurora Mobile Theme</div><div class="de">Full icon pack + home-screen widgets</div></div><span class="price">$14.99</span><span class="buy">Buy</span></a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="a">© 2026 Vamshi Reddy<br>Tokyo, JP</div>
+    <div class="b">Designed on a 12-column grid.<br>Powered by GetUrLink.</div>
+    <div class="c">↑ Back to top</div>
+  </footer>
+</div>
+</body>
+</html>
