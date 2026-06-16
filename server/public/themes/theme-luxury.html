@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vamshi — Luxury</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0e0c0a;--panel:#16130f;--ink:#efe9dd;--mut:#9c9286;--gold:#c8a96a;--line:#2a251d}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Jost',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.7;font-weight:300}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 2.2rem}
+  .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.32em;color:var(--gold);font-weight:400}
+  .serif{font-family:'Cormorant Garamond',serif}
+  /* top */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:2rem 0;border-bottom:1px solid var(--line)}
+  nav .id{font-family:'Cormorant Garamond',serif;font-size:1.5rem;letter-spacing:.04em;font-weight:500}
+  nav .id span{color:var(--gold)}
+  nav .av{display:inline-flex;align-items:center;gap:.6rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;color:var(--mut)}
+  nav .av .d{width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(200,169,106,.12)}
+  /* hero */
+  .hero{text-align:center;padding:6rem 0 4rem;position:relative}
+  .hero .lbl{margin-bottom:2rem}
+  .hero h1{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(3rem,8vw,6.4rem);line-height:1.04;letter-spacing:.01em}
+  .hero h1 em{font-style:italic;color:var(--gold)}
+  .hero .rule{width:1px;height:60px;background:linear-gradient(var(--gold),transparent);margin:2.4rem auto 0}
+  .hero .stmt{max-width:32rem;margin:2.4rem auto 0;color:var(--mut);font-size:1.05rem}
+  .hero .socials{display:flex;gap:2.4rem;justify-content:center;margin-top:2.4rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.18em;color:var(--mut)}
+  .hero .socials a{position:relative;padding-bottom:5px}
+  .hero .socials a::after{content:"";position:absolute;left:50%;bottom:0;width:0;height:1px;background:var(--gold);transition:.4s;transform:translateX(-50%)}
+  .hero .socials a:hover{color:var(--ink)}.hero .socials a:hover::after{width:100%}
+  /* section title */
+  .st{text-align:center;margin:5rem 0 2.6rem}
+  .st .lbl{margin-bottom:.9rem}
+  .st h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:2.6rem;font-style:italic}
+  /* work */
+  .work{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem}
+  .w{position:relative;overflow:hidden;cursor:pointer;aspect-ratio:4/5;border:1px solid var(--line)}
+  .w .img{position:absolute;inset:0;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+  .w:hover .img{transform:scale(1.05)}
+  .w::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(10,8,6,.85),transparent 55%)}
+  .w .m{position:absolute;left:0;right:0;bottom:0;padding:1.6rem;z-index:2;text-align:center;transform:translateY(8px);transition:.5s;opacity:.92}
+  .w:hover .m{transform:translateY(0);opacity:1}
+  .w .m .c{font-size:.66rem;text-transform:uppercase;letter-spacing:.24em;color:var(--gold)}
+  .w .m .t{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-style:italic;margin-top:.3rem}
+  .w .line{position:absolute;left:50%;bottom:1.1rem;width:0;height:1px;background:var(--gold);transition:.6s;transform:translateX(-50%);z-index:2}
+  .w:hover .line{width:44px}
+  /* ai */
+  .ai{margin:5rem 0;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel),transparent);padding:3rem;text-align:center;position:relative}
+  .ai::before,.ai::after{content:"";position:absolute;width:18px;height:18px;border:1px solid var(--gold)}
+  .ai::before{top:14px;left:14px;border-right:none;border-bottom:none}
+  .ai::after{bottom:14px;right:14px;border-left:none;border-top:none}
+  .ai .lbl{margin-bottom:1.4rem}
+  .ai .q{color:var(--mut);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.3rem}
+  .ai .a{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:400;margin:1rem auto 1.8rem;max-width:34rem;line-height:1.3}
+  .ai .a em{color:var(--gold);font-style:italic}
+  .ai .ask{display:inline-flex;align-items:center;gap:.7rem;border:1px solid var(--gold);color:var(--gold);padding:.75rem 1.8rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;transition:.3s}
+  .ai .ask:hover{background:var(--gold);color:#14110b}
+  /* shop */
+  .shop{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem}
+  .p{border:1px solid var(--line);background:var(--panel);overflow:hidden;transition:.4s}
+  .p:hover{border-color:var(--gold);transform:translateY(-4px)}
+  .p .pi{aspect-ratio:16/10;position:relative}
+  .p .pi .tag{position:absolute;top:1rem;right:1rem;font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--gold);background:rgba(14,12,10,.7);padding:.1rem .8rem;border:1px solid var(--gold);backdrop-filter:blur(4px)}
+  .p .pb{padding:1.5rem 1.6rem 1.8rem}
+  .p .pt{font-family:'Cormorant Garamond',serif;font-size:1.6rem}
+  .p .pd{color:var(--mut);font-size:.9rem;margin:.2rem 0 1.3rem}
+  .p .buy{display:inline-flex;align-items:center;gap:.6rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;color:var(--gold);border-bottom:1px solid transparent;padding-bottom:3px;transition:.3s}
+  .p:hover .buy{border-color:var(--gold)}
+  footer{text-align:center;border-top:1px solid var(--line);margin-top:5rem;padding:3rem 0;color:var(--mut)}
+  footer .mark{font-family:'Cormorant Garamond',serif;font-size:1.6rem;letter-spacing:.04em;color:var(--ink);margin-bottom:.6rem}
+  footer .mark span{color:var(--gold)}
+  footer .fl{font-size:.72rem;text-transform:uppercase;letter-spacing:.2em}
+  @media(max-width:680px){.wrap{padding:0 1.3rem}.work,.shop{grid-template-columns:1fr}.ai{padding:2rem 1.4rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav><div class="id">Vamshi<span>.</span></div><div class="av"><span class="d"></span>Available for commissions</div></nav>
+
+  <section class="hero">
+    <div class="lbl">Designer · Preset Artist · Est. 2016</div>
+    <h1>Crafting <em>light</em>,<br>color &amp; quiet detail</h1>
+    <div class="rule"></div>
+    <p class="stmt">Film-grade presets and 8K wallpaper sets, composed with the patience of an atelier — for those who notice how the small things feel.</p>
+    <div class="socials"><a href="#">Instagram</a><a href="#">Dribbble</a><a href="#">Behance</a></div>
+  </section>
+
+  <div class="st"><div class="lbl">Portfolio</div><h2>Selected work</h2></div>
+  <section class="work">
+    <div class="w"><div class="img" style="background:linear-gradient(160deg,#2b3a67,#0c1024)"></div><div class="m"><div class="c">8K Wallpaper</div><div class="t">Neon Tokyo</div></div><div class="line"></div></div>
+    <div class="w"><div class="img" style="background:linear-gradient(160deg,#caa15e,#5c3a1e)"></div><div class="m"><div class="c">Lightroom</div><div class="t">Golden Street</div></div><div class="line"></div></div>
+    <div class="w"><div class="img" style="background:linear-gradient(160deg,#3fae6a,#12331f)"></div><div class="m"><div class="c">Preset Pack</div><div class="t">Forest Film</div></div><div class="line"></div></div>
+    <div class="w"><div class="img" style="background:linear-gradient(160deg,#3a3a3a,#0b0b0b)"></div><div class="m"><div class="c">Editorial</div><div class="t">Mono Noir</div></div><div class="line"></div></div>
+  </section>
+
+  <div class="ai">
+    <div class="lbl">✦ Private Concierge</div>
+    <div class="q">“Which preset suits night street photography?”</div>
+    <div class="a">May I suggest the <em>Lightroom Classics</em> — fifteen film looks composed for the night.</div>
+    <a class="ask" href="#">Ask the concierge</a>
+  </div>
+
+  <div class="st"><div class="lbl">Boutique</div><h2>Available to acquire</h2></div>
+  <section class="shop">
+    <div class="p"><div class="pi" style="background:linear-gradient(135deg,#3a2d5c,#7c5cff,#2b1a3a)"><span class="tag">$9.99</span></div><div class="pb"><div class="pt">Neon Glow Pack</div><div class="pd">Ten cyberpunk 8K wallpapers, instantly delivered.</div><a class="buy" href="#">Acquire →</a></div></div>
+    <div class="p"><div class="pi" style="background:linear-gradient(135deg,#caa15e,#7a4a1e,#2a1a0e)"><span class="tag">$24.99</span></div><div class="pb"><div class="pt">Lightroom Classics</div><div class="pd">Fifteen night-street film presets.</div><a class="buy" href="#">Acquire →</a></div></div>
+  </section>
+
+  <footer>
+    <div class="mark">Vamshi<span>.</span></div>
+    <div class="fl">© 2026 · Tokyo · Powered by GetUrLink</div>
+  </footer>
+</div>
+</body>
+</html>
