@@ -8,6 +8,7 @@
   :root{--bg:#06060e;--ink:#f3f2ff;--muted:#8d8aa8;--line:#211f33;--v:#8b5cff;--pink:#ff49c7}
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow:hidden;cursor:none}
+  @media (prefers-reduced-motion: reduce){body{cursor:auto}}
   a{text-decoration:none;color:inherit}
   canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
   .wrap{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 1.5rem}
@@ -37,14 +38,15 @@
 <div class="note">✦ a comet of light follows your cursor — move it around</div>
 <script>
   const cv=document.getElementById('c'),x=cv.getContext('2d');
+  const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function s(){cv.width=innerWidth;cv.height=innerHeight}s();addEventListener('resize',s);
   let mx=innerWidth/2,my=innerHeight/2,parts=[];const cols=['#8b5cff','#ff49c7','#34e7e4','#a78bff'];
-  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;for(let i=0;i<3;i++)parts.push({x:mx,y:my,vx:(Math.random()-.5)*1.4,vy:(Math.random()-.5)*1.4,r:Math.random()*5+2,life:1,c:cols[Math.floor(Math.random()*4)]});});
+  if(!reduceMotion)addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;for(let i=0;i<3;i++)parts.push({x:mx,y:my,vx:(Math.random()-.5)*1.4,vy:(Math.random()-.5)*1.4,r:Math.random()*5+2,life:1,c:cols[Math.floor(Math.random()*4)]});});
   function loop(){x.clearRect(0,0,cv.width,cv.height);x.globalCompositeOperation='lighter';
     parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life-=.022;x.globalAlpha=Math.max(p.life,0);x.fillStyle=p.c;x.beginPath();x.arc(p.x,p.y,p.r*p.life,0,7);x.fill();});
     parts=parts.filter(p=>p.life>0);
     x.globalAlpha=1;x.fillStyle='#fff';x.beginPath();x.arc(mx,my,3,0,7);x.fill();
-    requestAnimationFrame(loop);}loop();
+    requestAnimationFrame(loop);}if(!reduceMotion)loop();
 </script>
 </body>
 </html>

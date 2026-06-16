@@ -40,11 +40,12 @@
 <div class="note">✦ a gooey blob chases your cursor with a soft lag — move slowly, then fast</div>
 <script>
   const balls=[...document.querySelectorAll('.ball')];
+  const radii=balls.map(b=>b.offsetWidth/2);
   let mx=innerWidth/2,my=innerHeight/2;const pos=balls.map(()=>({x:mx,y:my}));
   addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
   function loop(){let tx=mx,ty=my;
     balls.forEach((b,i)=>{const sp=.28-i*.05;pos[i].x+=(tx-pos[i].x)*sp;pos[i].y+=(ty-pos[i].y)*sp;
-      const r=b.offsetWidth/2;b.style.transform=`translate(${pos[i].x-r}px,${pos[i].y-r}px)`;tx=pos[i].x;ty=pos[i].y;});
+      const r=radii[i];b.style.transform=`translate(${pos[i].x-r}px,${pos[i].y-r}px)`;tx=pos[i].x;ty=pos[i].y;});
     requestAnimationFrame(loop);}loop();
 </script>
 </body>
