@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GetUrLink — Your link in bio that actually sells</title>
+<meta name="description" content="GetUrLink is the link-in-bio storefront for creators. Share your links, sell digital products — presets, templates, e-books — with 1-click checkout and instant delivery, and get paid. Free to start, keep 95%, 0% fees on Premium.">
+<link rel="canonical" href="https://getur.link/">
+<meta name="theme-color" content="#160a2e">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GetUrLink">
+<meta property="og:title" content="GetUrLink — Your link in bio that actually sells">
+<meta property="og:description" content="Share your links, sell digital products with 1-click checkout & instant delivery, and get paid. Free to start, keep 95%, 0% fees on Premium.">
+<meta property="og:url" content="https://getur.link/">
+<meta property="og:image" content="https://getur.link/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GetUrLink — Your link in bio that actually sells">
+<meta name="twitter:description" content="Sell digital products straight from your bio link. Free to start, keep 95%, 0% fees on Premium.">
+<meta name="twitter:image" content="https://getur.link/og-image.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -98,6 +113,7 @@
   @keyframes wob{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-12px) rotate(calc(var(--r) * -1))}}
   .sa{top:12%;left:4%;background:var(--cyan);color:#053a3a;--r:-8deg;z-index:2}
   .sb{bottom:22%;left:0;background:var(--yellow);color:#2a1a00;--r:7deg;animation-delay:.7s;z-index:2}
+  .sc{bottom:13%;right:-2%;background:var(--lime);color:#1f2c00;--r:-6deg;animation-delay:1.2s;z-index:2}
   /* feature dashboard */
   section{padding:1rem 0 4.5rem;position:relative;z-index:2}
   .sec-h{text-align:center;font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:700;margin-bottom:2rem}
@@ -184,7 +200,7 @@
   .cta-final h2{font-size:clamp(1.9rem,3.6vw,2.8rem);font-weight:700}
   .cta-final p{margin:.7rem auto 1.6rem;max-width:30rem;font-weight:500}
   .foot{border-top:3px solid #120724;background:#160a2e;text-align:left;padding:0;margin-top:1rem}
-  .foot-in{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:1.5rem;padding:2.6rem 0 1.6rem}
+  .foot-in{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:1.5rem;padding:2.6rem 1.5rem 1.6rem}
   .foot-in .logo{font-size:1.25rem}.foot-in p{color:var(--muted);font-size:.9rem;margin-top:.4rem}
   .fcol h4{font-size:.95rem;margin-bottom:.7rem;font-weight:700}
   .fcol a{display:block;color:var(--muted);font-size:.9rem;margin-bottom:.45rem}.fcol a:hover{color:var(--ink)}
@@ -194,12 +210,12 @@
   @media(max-width:840px){.steps,.tgrid{grid-template-columns:1fr}.prices{grid-template-columns:1fr}.foot-in{grid-template-columns:1fr 1fr}}
   footer{text-align:center;padding:2.5rem 0;color:var(--muted);font-weight:500;position:relative;z-index:2}
   canvas#cf{position:fixed;inset:0;z-index:998;pointer-events:none}
-  @media(max-width:840px){.hero{grid-template-columns:1fr;text-align:center}.acts{justify-content:center}.sa,.sb{display:none}
+  @media(max-width:840px){.hero{grid-template-columns:1fr;text-align:center}.acts{justify-content:center}.sa,.sb,.sc{display:none}
     .dash{grid-template-columns:1fr}.c-sell,.c-ai,.c-fees,.c-dom,.c-an,.c-th{grid-column:span 1}.c-th{flex-direction:column}}
   /* floating mascot — follows the page on scroll + reacts to each section */
-  .floaty{position:fixed;right:16px;bottom:16px;width:92px;height:92px;z-index:60;opacity:0;transform:translateY(18px) scale(.88);transition:opacity .35s ease,transform .42s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+  .floaty{position:fixed;right:16px;bottom:16px;width:92px;height:92px;z-index:60;opacity:0;display:flex;align-items:center;justify-content:center;transform:translateY(18px) scale(.88);transition:opacity .35s ease,transform .42s cubic-bezier(.34,1.56,.64,1);pointer-events:none;will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden}
   .floaty.show{opacity:1;transform:none}
-  .floaty .miniwrap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.3);transform-origin:center;filter:drop-shadow(0 14px 22px rgba(168,123,255,.5))}
+  .floaty .miniwrap{zoom:.3;filter:drop-shadow(0 14px 22px rgba(168,123,255,.5))}
   /* phones */
   @media(max-width:560px){
     nav{height:62px;padding:0 1rem}
@@ -211,7 +227,7 @@
     .sub{font-size:1.02rem;margin:1rem auto 1.5rem}
     .hero{padding:1.3rem 0 2.2rem;gap:1.2rem;min-height:auto}
     .hero{padding-top:.6rem}
-    .stage{order:-1;width:340px;max-width:96vw;transform:scale(.7);transform-origin:center;margin:-1rem auto -2.6rem;animation:none}
+    .stage{order:-1;width:340px;max-width:96vw;transform:scale(.7);transform-origin:center;margin:-1rem auto -2.6rem;animation:none;opacity:1}
     .sa,.sb{display:block}
     .sa{top:6%;left:-2%}.sb{bottom:24%;left:-4%}
     .sec-h{font-size:1.5rem}
@@ -221,9 +237,10 @@
     .pamt{font-size:2.4rem}
     .cta-final{padding:2.4rem 1.2rem;border-radius:22px}
     .cta-final h2{font-size:1.7rem}
-    .foot-in{grid-template-columns:1fr 1fr;gap:1.1rem}
+    .foot-in{grid-template-columns:repeat(3,1fr);gap:1.5rem 1rem}
+    .foot-in>div:first-child{grid-column:1/-1;margin-bottom:.2rem}
     .floaty{right:12px;bottom:calc(14px + env(safe-area-inset-bottom));width:80px;height:80px}
-    .floaty .miniwrap{transform:translate(-50%,-50%) scale(.26)}
+    .floaty .miniwrap{zoom:.26}
   }
   @media(max-width:380px){
     h1{font-size:1.95rem}
@@ -248,7 +265,8 @@
   </div>
   <div class="stage pop d3">
     <span class="stk sa">$0 to start ✨</span>
-    <span class="stk sb">0% fees 🎉</span>
+    <span class="stk sb">AI sells 24/7 ✦</span>
+    <span class="stk sc">1-click checkout ✦</span>
     <div class="blob" id="blob">
       <div class="cheek ch1"></div><div class="cheek ch2"></div>
       <div class="face">
@@ -259,14 +277,12 @@
       <svg class="soda" viewBox="0 0 64 112"><rect x="29" y="4" width="7" height="64" rx="3.5" fill="#ff5db1" transform="rotate(-9 32 36)"/><path d="M15 58 L49 58 L44 108 L20 108 Z" fill="#fffbe6" stroke="#1a0b3d" stroke-width="2.5"/><path d="M19 74 L45 74 L42 106 L22 106 Z" fill="#ffe14d"/><circle class="bub" cx="27" cy="99" r="2" fill="#fff" style="animation-delay:0s"/><circle class="bub" cx="35" cy="101" r="1.6" fill="#fff" style="animation-delay:.6s"/><circle class="bub" cx="31" cy="97" r="1.4" fill="#fff" style="animation-delay:1.1s"/><circle class="bub" cx="38" cy="100" r="1.3" fill="#fff" style="animation-delay:1.6s"/><circle cx="47" cy="58" r="8" fill="#fff200" stroke="#1a0b3d" stroke-width="2"/></svg>
       <div class="shades"><svg viewBox="0 0 160 62"><rect x="3" y="3" width="68" height="56" rx="22" fill="#0c0717"/><rect x="89" y="3" width="68" height="56" rx="22" fill="#0c0717"/><rect x="65" y="22" width="30" height="8" rx="4" fill="#0c0717"/><rect x="12" y="12" width="22" height="9" rx="4" fill="rgba(255,255,255,.2)"/><rect x="98" y="12" width="22" height="9" rx="4" fill="rgba(255,255,255,.2)"/></svg></div>
     </div>
-    <div class="pricetag">Neon Pack · $9.99</div>
     <svg class="umbrella" viewBox="0 0 140 130"><rect x="67" y="52" width="6" height="76" rx="3" fill="#8a5a2b"/><polygon points="70,8 10,56 40,56" fill="#ffd23f"/><polygon points="70,8 40,56 70,56" fill="#fff"/><polygon points="70,8 70,56 100,56" fill="#ffd23f"/><polygon points="70,8 100,56 130,56" fill="#fff"/><circle cx="70" cy="7" r="5" fill="#ff5db1"/></svg>
   </div>
 </header>
 
 <section class="proof reveal"><div class="wrap proof-in">
-  <div class="avis"><span style="background:var(--pink)"></span><span style="background:var(--cyan)"></span><span style="background:var(--lime)"></span><span style="background:var(--yellow)"></span><span style="background:var(--pur)"></span></div>
-  <p><span class="stars">★★★★★</span> Loved by <b>2,000+ creators</b> turning their bio link into a real storefront.</p>
+  <p style="font-weight:500"><span class="stars">✦</span> No monthly wall to start — just your link, your store, and your money.</p>
 </div></section>
 
 <section class="wrap center reveal" id="how">
@@ -299,13 +315,13 @@
     <div class="pcard">
       <div class="ptier">Free</div>
       <div class="pamt">$0<small> /forever</small></div>
-      <ul><li>Unlimited links &amp; products</li><li>1-click checkout &amp; instant delivery</li><li>AI shop assistant</li><li>Small fee per sale</li></ul>
+      <ul><li>Unlimited links &amp; products</li><li>1-click checkout &amp; instant delivery</li><li>AI shop assistant</li><li>Just 5% per sale</li></ul>
       <a class="btn" style="display:block;text-align:center" href="https://geturlink-production-447c.up.railway.app">Start free</a>
     </div>
     <div class="pcard pro">
       <span class="ppop">Most popular</span>
       <div class="ptier">Premium</div>
-      <div class="pamt">$9<small> /month</small></div>
+      <div class="pamt">$15<small> /month</small></div>
       <ul><li>Everything in Free</li><li>0% platform fees</li><li>Custom domain</li><li>Advanced themes &amp; custom CSS</li></ul>
       <a class="btn btn-p" style="display:block;text-align:center" href="https://geturlink-production-447c.up.railway.app">Go Premium</a>
     </div>
@@ -313,12 +329,12 @@
 </section>
 
 <section class="wrap center reveal">
-  <span class="eyebrow">Creators love it</span>
-  <h2 class="h2b">Don't just take our word</h2>
+  <span class="eyebrow">Made for makers</span>
+  <h2 class="h2b">Perfect for selling…</h2>
   <div class="tgrid">
-    <div class="tcard"><p>"Switched from Stan Store and saved $29/mo. My presets sell on autopilot now."</p><div class="tperson"><div class="tav" style="background:var(--pink)"></div><div><div class="tname">Maya R.</div><div class="thandle">@mayamakes · 14k</div></div></div></div>
-    <div class="tcard"><p>"The AI assistant answers buyers while I sleep — my checkout rate went up."</p><div class="tperson"><div class="tav" style="background:var(--cyan)"></div><div><div class="tname">Devon L.</div><div class="thandle">@devonshoots · 8k</div></div></div></div>
-    <div class="tcard"><p>"Built my whole store in 10 minutes and it looks unreal. Buyers love it."</p><div class="tperson"><div class="tav" style="background:var(--lime)"></div><div><div class="tname">Priya S.</div><div class="thandle">@priyapresets · 22k</div></div></div></div>
+    <div class="tcard"><svg width="54" height="54" viewBox="0 0 56 56" fill="none" aria-hidden="true"><defs><linearGradient id="ucp1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5db1"/><stop offset="1" stop-color="#a87bff"/></linearGradient><linearGradient id="ucp2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#41e0e8"/><stop offset="1" stop-color="#c2f04b"/></linearGradient></defs><rect x="5" y="9" width="33" height="33" rx="8" fill="url(#ucp1)" stroke="#120724" stroke-width="3"/><rect x="18" y="18" width="33" height="33" rx="8" fill="url(#ucp2)" stroke="#120724" stroke-width="3"/><circle cx="42" cy="28" r="4.5" fill="#fff"/></svg><div style="font-weight:700;font-size:1.1rem;margin:.5rem 0 .3rem">Presets &amp; filters</div><p style="margin-bottom:0">Lightroom packs, video LUTs, mobile filters — delivered the second someone buys.</p></div>
+    <div class="tcard"><svg width="54" height="54" viewBox="0 0 56 56" fill="none" aria-hidden="true"><rect x="7" y="8" width="42" height="40" rx="9" fill="#fff" stroke="#120724" stroke-width="3"/><rect x="14" y="15" width="28" height="8" rx="3" fill="#ff5db1"/><rect x="14" y="28" width="16" height="13" rx="3" fill="#41e0e8"/><rect x="34" y="28" width="8" height="13" rx="3" fill="#ffd23f"/></svg><div style="font-weight:700;font-size:1.1rem;margin:.5rem 0 .3rem">Templates &amp; design</div><p style="margin-bottom:0">Notion templates, fonts, UI kits, printables, digital art — any file you make.</p></div>
+    <div class="tcard"><svg width="54" height="54" viewBox="0 0 56 56" fill="none" aria-hidden="true"><rect x="9" y="11" width="38" height="34" rx="6" fill="#fff3da" stroke="#120724" stroke-width="3"/><path d="M28 11 V45" stroke="#120724" stroke-width="3"/><path d="M15 21 H24 M15 29 H24 M15 37 H22" stroke="#a87bff" stroke-width="3" stroke-linecap="round"/><path d="M32 21 H41 M32 29 H41 M32 37 H39" stroke="#c2f04b" stroke-width="3" stroke-linecap="round"/></svg><div style="font-weight:700;font-size:1.1rem;margin:.5rem 0 .3rem">Guides &amp; courses</div><p style="margin-bottom:0">E-books, recipes, workout plans, mini-courses — your knowledge, packaged up.</p></div>
   </div>
 </section>
 
