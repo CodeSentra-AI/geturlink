@@ -20,7 +20,7 @@
 <meta name="twitter:description" content="Sell digital products straight from your bio link. Free to start, keep 95%, 0% fees on Premium.">
 <meta name="twitter:image" content="https://getur.link/og-image.png">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="apple-touch-icon" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{--ink:#fff;--muted:#cdbff0;--pink:#ff5db1;--lime:#c2f04b;--cyan:#41e0e8;--yellow:#ffd23f;--pur:#a87bff;--cream:#fff3da;--dk:#160a2e;--line:#3a2566}
@@ -259,6 +259,10 @@
   .tc p{color:var(--muted);font-size:.92rem;line-height:1.6}
   .tc p b{color:#cbbdf0;font-weight:600}
   @media(max-width:760px){.trust-grid{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+    .star,canvas#cf{display:none!important}
+  }
 </style>
 </head>
 <body>
@@ -306,7 +310,7 @@
   </div>
 </section>
 
-<section class="wrap">
+<section class="wrap" id="features">
   <div class="sec-h">Everything you need to sell ✦</div>
   <div class="dash">
     <div class="fc c-sell"><div class="w-preset"><span class="lbl">Neon Glow Pack</span><span class="tag">$9.99</span></div><h3>Sell your stuff</h3><p>Presets, templates, e-books — delivered the instant someone buys.</p></div>
@@ -390,18 +394,19 @@
 <footer class="foot">
   <div class="wrap foot-in">
     <div><div class="logo">Get<span>Ur</span>Link</div><p>Your link, your store.</p></div>
-    <div class="fcol"><h4>Product</h4><a href="#">Features</a><a href="#pricing">Pricing</a><a href="#">Themes</a></div>
-    <div class="fcol"><h4>Company</h4><a href="#">About</a><a href="#">Blog</a><a href="#">Contact</a></div>
-    <div class="fcol"><h4>Follow</h4><a href="#">Instagram</a><a href="#">TikTok</a><a href="#">Twitter / X</a></div>
+    <div class="fcol"><h4>Product</h4><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#features">Themes</a></div>
+    <div class="fcol"><h4>Company</h4><a href="#how">How it works</a><a href="#faq">FAQ</a><a href="mailto:hello@getur.link">Contact</a></div>
+    <div class="fcol"><h4>Follow</h4><a href="https://instagram.com/geturlink" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://tiktok.com/@geturlink" target="_blank" rel="noopener noreferrer">TikTok</a><a href="https://x.com/geturlink" target="_blank" rel="noopener noreferrer">Twitter / X</a></div>
   </div>
   <div class="fbottom">made with 💛 for creators · © 2026 GetUrLink</div>
 </footer>
 
 <script>
   const blob=document.getElementById('blob');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const star=document.getElementById('star');let mx=innerWidth/2,my=innerHeight/2,sx=mx,sy=my,t=0;
-  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;document.body.style.setProperty('--mx',mx+'px');document.body.style.setProperty('--my',my+'px');});
-  (function l(){sx+=(mx-sx)*.16;sy+=(my-sy)*.16;t+=.05;star.style.transform=`translate(${sx}px,${sy}px) translate(-50%,-50%) rotate(${t}rad)`;requestAnimationFrame(l);})();
+  if(!reduce)addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;document.body.style.setProperty('--mx',mx+'px');document.body.style.setProperty('--my',my+'px');});
+  if(!reduce)(function l(){sx+=(mx-sx)*.16;sy+=(my-sy)*.16;t+=.05;star.style.transform=`translate(${sx}px,${sy}px) translate(-50%,-50%) rotate(${t}rad)`;requestAnimationFrame(l);})();
   const eyes=[...document.querySelectorAll('[data-eye]')];
   const face=document.querySelector('.face');
   // floating mini-mascot: a clone of the hero mascot, built now so the same reactions drive it
@@ -416,6 +421,7 @@
   }
   function track(p,e){const r=p.parentElement.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,a=Math.atan2(e.clientY-cy,e.clientX-cx),d=Math.min(13,Math.hypot(e.clientX-cx,e.clientY-cy)/12);p.style.transform=`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px)`;}
   addEventListener('mousemove',e=>{
+    if(reduce)return;
     if(!blob.classList.contains('emo'))eyes.forEach(p=>track(p,e));
     if(mini&&!mini.classList.contains('emo'))miniEyes.forEach(p=>track(p,e));
   });
@@ -429,10 +435,10 @@
   const emoMap={'c-sell':'e-sell','c-ai':'e-ai','c-fees':'e-fees','c-dom':'e-dom','c-an':'e-an','c-th':'e-th'};
   Object.keys(emoMap).forEach(k=>{const el=document.querySelector('.'+k);if(el){el.addEventListener('mouseenter',()=>setEmo(emoMap[k]));el.addEventListener('mouseleave',clearEmo);}});
   document.querySelectorAll('[data-cta]').forEach(b=>{b.addEventListener('mouseenter',()=>setEmo('happy'));b.addEventListener('mouseleave',clearEmo);});
-  document.querySelectorAll('[data-mag]').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.3}px,${(e.clientY-r.top-r.height/2)*.45}px)`;});b.addEventListener('mouseleave',()=>b.style.transform='');});
+  if(!reduce)document.querySelectorAll('[data-mag]').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.3}px,${(e.clientY-r.top-r.height/2)*.45}px)`;});b.addEventListener('mouseleave',()=>b.style.transform='');});
   const cv=document.getElementById('cf'),cx=cv.getContext('2d');function sz(){cv.width=innerWidth;cv.height=innerHeight}sz();addEventListener('resize',sz);
   let ps=[],rafId=null;const cols=['#ff5db1','#c2f04b','#41e0e8','#ffd23f','#a87bff'];
-  function burst(x,y){for(let i=0;i<100;i++)ps.push({x,y,vx:(Math.random()-.5)*10,vy:Math.random()*-11-2,g:.32,c:cols[i%5],s:Math.random()*8+3,a:Math.random()*6,va:(Math.random()-.5)*.4,life:100});if(rafId===null)rafId=requestAnimationFrame(tk);}
+  function burst(x,y){if(reduce)return;for(let i=0;i<100;i++)ps.push({x,y,vx:(Math.random()-.5)*10,vy:Math.random()*-11-2,g:.32,c:cols[i%5],s:Math.random()*8+3,a:Math.random()*6,va:(Math.random()-.5)*.4,life:100});if(rafId===null)rafId=requestAnimationFrame(tk);}
   function tk(){cx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);cx.restore();});ps=ps.filter(p=>p.life>0&&p.y<cv.height);rafId=ps.length?requestAnimationFrame(tk):null;}
   document.getElementById('cta').addEventListener('click',e=>{e.preventDefault();const r=e.target.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2);});
   const cta2=document.getElementById('cta2');
