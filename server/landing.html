@@ -1,382 +1,451 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GetUrLink — Your link in bio that actually sells</title>
-  <meta name="description" content="A beautiful Bento-style link-in-bio storefront for creators. Sell digital products with 1-click checkout, an AI assistant that sells for you, and 0% fees on Premium. Free until your first sale.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --accent: #6366f1;
-      --accent-2: #d946ef;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --card: rgba(255,255,255,0.04);
-      --card-2: rgba(255,255,255,0.06);
-      --border: rgba(255,255,255,0.09);
-      --border-bright: rgba(255,255,255,0.16);
-      --radius: 22px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Outfit', system-ui, sans-serif;
-      background:
-        radial-gradient(900px circle at 78% -10%, rgba(217,70,239,0.16), transparent 55%),
-        radial-gradient(1000px circle at 12% 0%, rgba(99,102,241,0.20), transparent 50%),
-        #060814;
-      color: var(--text);
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-    a { text-decoration: none; color: inherit; }
-    .wrap { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
-    .grad-text {
-      background: linear-gradient(115deg, #a5b4fc 10%, #e879f9 90%);
-      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .btn {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-weight: 600; font-size: 0.98rem; border-radius: 13px;
-      padding: 0.8rem 1.4rem; cursor: pointer; border: 1px solid transparent;
-      transition: transform .22s ease, box-shadow .22s ease, background .22s ease, border-color .22s ease;
-      white-space: nowrap;
-    }
-    .btn-primary {
-      color: #fff;
-      background: linear-gradient(120deg, var(--accent), var(--accent-2));
-      box-shadow: 0 8px 30px rgba(99,102,241,0.35);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(168,85,247,0.5); }
-    .btn-ghost { color: var(--text); border-color: var(--border-bright); background: rgba(255,255,255,0.03); }
-    .btn-ghost:hover { background: rgba(255,255,255,0.08); transform: translateY(-2px); }
-
-    /* NAV */
-    nav {
-      position: sticky; top: 0; z-index: 50;
-      backdrop-filter: blur(14px);
-      background: rgba(6,8,20,0.55);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
-    .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; }
-    .logo b { font-weight: 800; }
-    .nav-links { display: flex; align-items: center; gap: 2rem; }
-    .nav-links a.lnk { color: var(--muted); font-size: 0.95rem; font-weight: 500; transition: color .2s; }
-    .nav-links a.lnk:hover { color: var(--text); }
-    .nav-cta { display: flex; align-items: center; gap: 0.75rem; }
-    @media (max-width: 760px){ .nav-links .lnk { display:none; } }
-
-    /* HERO BENTO */
-    .hero { padding: 4.5rem 0 3rem; }
-    .bento {
-      display: grid;
-      grid-template-columns: 1.55fr 1fr;
-      grid-auto-rows: minmax(0, auto);
-      gap: 1.1rem;
-    }
-    .card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.6rem;
-      backdrop-filter: blur(16px); position: relative; overflow: hidden;
-      transition: transform .3s ease, border-color .3s ease;
-    }
-    .card.lift:hover { transform: translateY(-4px); border-color: var(--border-bright); }
-    .pill {
-      display: inline-flex; align-items: center; gap: .5rem;
-      font-size: .82rem; font-weight: 600; color: #e9d5ff;
-      background: rgba(217,70,239,0.12); border: 1px solid rgba(217,70,239,0.3);
-      padding: .4rem .85rem; border-radius: 999px;
-    }
-    .dot { width:7px; height:7px; border-radius:50%; background: var(--accent-2); box-shadow:0 0 10px var(--accent-2); }
-
-    .hero-main { grid-row: span 2; display: flex; flex-direction: column; justify-content: center; gap: 1.3rem; padding: 2.2rem; }
-    .hero-main h1 { font-size: clamp(2.3rem, 4.6vw, 3.7rem); font-weight: 800; line-height: 1.03; letter-spacing: -0.03em; }
-    .hero-main p.sub { color: var(--muted); font-size: 1.12rem; max-width: 30rem; }
-    .hero-actions { display: flex; gap: .9rem; flex-wrap: wrap; align-items: center; }
-    .micro { color: var(--muted); font-size: .85rem; display:flex; align-items:center; gap:.4rem; }
-
-    /* PHONE */
-    .phone-card { grid-row: span 2; display: flex; align-items: center; justify-content: center; padding: 1.4rem; background: linear-gradient(160deg, rgba(99,102,241,0.10), rgba(217,70,239,0.06)); }
-    .phone {
-      width: 220px; border-radius: 30px; padding: 12px;
-      background: #0a0d1c; border: 1px solid var(--border-bright);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-      animation: float 6s ease-in-out infinite;
-    }
-    @keyframes float { 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-12px) } }
-    .screen { background: radial-gradient(circle at 50% 0%, #1b2240, #0b0f1e); border-radius: 20px; padding: 18px 14px; }
-    .pavatar { width: 54px; height: 54px; border-radius: 50%; margin: 4px auto 8px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: 2px solid rgba(255,255,255,0.25); }
-    .pname { text-align: center; font-weight: 700; font-size: .95rem; }
-    .pbio { text-align: center; color: var(--muted); font-size: .68rem; margin-bottom: 12px; }
-    .plink { background: rgba(255,255,255,0.05); border:1px solid var(--border); border-radius: 11px; padding: 9px 11px; font-size: .72rem; margin-bottom: 8px; display:flex; align-items:center; justify-content:space-between; }
-    .pprod { background: rgba(99,102,241,0.10); border:1px solid rgba(99,102,241,0.4); border-radius: 13px; padding: 11px; margin-top: 4px; }
-    .pprod .ptitle { font-size: .74rem; font-weight: 600; }
-    .ptag { display:inline-block; font-size:.62rem; font-weight:700; color:#fff; background: linear-gradient(120deg,var(--accent),var(--accent-2)); padding: 2px 8px; border-radius: 999px; margin-bottom:6px; }
-    .pchat { margin-top: 10px; background: rgba(255,255,255,0.04); border:1px solid var(--border); border-radius: 11px; padding: 8px 10px; font-size:.66rem; color: var(--muted); display:flex; align-items:center; gap:6px; }
-
-    /* small stat cards */
-    .stat-num { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.02em; }
-    .stat-label { color: var(--muted); font-size: .85rem; }
-    .spark { display: flex; align-items: flex-end; gap: 5px; height: 42px; margin-top: 12px; }
-    .spark span { flex:1; background: linear-gradient(180deg, var(--accent-2), var(--accent)); border-radius: 4px; opacity:.85; }
-    .vs-row { display:flex; align-items:baseline; gap:.6rem; margin-top:.4rem; }
-    .vs-old { color: var(--muted); text-decoration: line-through; font-size: 1rem; }
-    .vs-new { font-size: 1.7rem; font-weight: 800; }
-
-    /* chat card */
-    .bub { border-radius: 13px; padding: .55rem .8rem; font-size: .85rem; max-width: 90%; margin-bottom: .5rem; }
-    .bub-q { background: rgba(255,255,255,0.06); border:1px solid var(--border); }
-    .bub-a { background: linear-gradient(120deg, rgba(99,102,241,0.22), rgba(217,70,239,0.18)); border:1px solid rgba(168,85,247,0.4); margin-left:auto; }
-
-    /* SECTIONS */
-    section.block { padding: 4.5rem 0; }
-    .eyebrow { color: var(--accent-2); font-weight: 600; font-size: .9rem; letter-spacing: .04em; text-transform: uppercase; }
-    .h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; margin: .6rem 0 .8rem; }
-    .lead { color: var(--muted); font-size: 1.08rem; max-width: 36rem; }
-    .center { text-align: center; } .center .lead { margin: 0 auto; }
-
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 2.5rem; }
-    .step .n { width: 40px; height: 40px; border-radius: 12px; display:flex; align-items:center; justify-content:center; font-weight:800; background: linear-gradient(120deg,var(--accent),var(--accent-2)); margin-bottom: 1rem; }
-    .step h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: .4rem; }
-    .step p { color: var(--muted); font-size: .96rem; }
-
-    .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; margin-top: 2.5rem; }
-    .feat .ic { width: 46px; height: 46px; border-radius: 13px; display:flex; align-items:center; justify-content:center; background: rgba(99,102,241,0.14); border:1px solid rgba(99,102,241,0.3); color:#c7d2fe; margin-bottom: 1rem; }
-    .feat .ic svg { width: 22px; height: 22px; }
-    .feat h3 { font-size: 1.12rem; font-weight: 700; margin-bottom: .4rem; }
-    .feat p { color: var(--muted); font-size: .95rem; }
-
-    .price-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.3rem; margin-top: 2.5rem; max-width: 780px; margin-left:auto; margin-right:auto; }
-    .price { padding: 2rem; }
-    .price.pro { border-color: rgba(168,85,247,0.5); background: linear-gradient(165deg, rgba(99,102,241,0.12), rgba(217,70,239,0.07)); }
-    .price .tier { font-weight: 700; font-size: 1.15rem; }
-    .price .amt { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.02em; margin: .4rem 0; }
-    .price .amt small { font-size: 1rem; color: var(--muted); font-weight: 500; }
-    .price ul { list-style: none; margin: 1.2rem 0 1.6rem; display: flex; flex-direction: column; gap: .7rem; }
-    .price li { display:flex; align-items:center; gap:.6rem; font-size: .96rem; color: #e2e8f0; }
-    .price li svg { width:18px; height:18px; color: var(--accent-2); flex-shrink:0; }
-    .badge-pop { position:absolute; top:1.2rem; right:1.2rem; font-size:.72rem; font-weight:700; color:#fff; background: linear-gradient(120deg,var(--accent),var(--accent-2)); padding:3px 10px; border-radius:999px; }
-
-    .faq { max-width: 760px; margin: 2.5rem auto 0; }
-    details { border:1px solid var(--border); border-radius: 15px; padding: 1.1rem 1.3rem; margin-bottom: .9rem; background: var(--card); }
-    details[open] { border-color: var(--border-bright); }
-    summary { font-weight: 600; cursor: pointer; list-style: none; display:flex; justify-content:space-between; align-items:center; font-size: 1.02rem; }
-    summary::-webkit-details-marker { display: none; }
-    summary .chev { transition: transform .25s; color: var(--muted); }
-    details[open] summary .chev { transform: rotate(180deg); }
-    details p { color: var(--muted); margin-top: .8rem; font-size: .98rem; }
-
-    .cta-band { margin: 1rem 0 4rem; padding: 3.4rem 2rem; text-align: center; border-radius: 28px;
-      background: linear-gradient(125deg, rgba(99,102,241,0.18), rgba(217,70,239,0.14));
-      border: 1px solid rgba(168,85,247,0.35); }
-    .cta-band h2 { font-size: clamp(1.9rem, 3.6vw, 2.8rem); font-weight: 800; letter-spacing:-0.02em; }
-    .cta-band p { color: #cbd5e1; margin: .7rem auto 1.6rem; max-width: 32rem; }
-
-    footer { border-top: 1px solid var(--border); padding: 2.2rem 0; }
-    .foot { display:flex; justify-content: space-between; align-items:center; flex-wrap: wrap; gap: 1rem; color: var(--muted); font-size: .9rem; }
-
-    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
-    .reveal.in { opacity: 1; transform: none; }
-
-    @media (max-width: 860px){
-      .bento { grid-template-columns: 1fr; }
-      .hero-main, .phone-card { grid-row: auto; }
-      .steps, .feat-grid, .price-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Your link in bio that actually sells</title>
+<meta name="description" content="GetUrLink is the link-in-bio storefront for creators. Share your links, sell digital products — presets, templates, e-books — with 1-click checkout and instant delivery, and get paid. Free to start, keep 95%, 0% fees on Premium.">
+<meta name="keywords" content="link in bio, link in bio store, link in bio storefront, sell digital products, sell digital products on Instagram, creator storefront, free link in bio, 1-click checkout, instant digital delivery, Stan Store alternative, Linktree alternative, Beacons alternative, sell presets, sell templates, sell ebooks, AI shop assistant">
+<link rel="canonical" href="https://getur.link/">
+<meta name="theme-color" content="#160a2e">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GetUrLink">
+<meta property="og:title" content="GetUrLink — Your link in bio that actually sells">
+<meta property="og:description" content="Share your links, sell digital products with 1-click checkout & instant delivery, and get paid. Free to start, keep 95%, 0% fees on Premium.">
+<meta property="og:url" content="https://getur.link/">
+<meta property="og:image" content="https://getur.link/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GetUrLink — Your link in bio that actually sells">
+<meta name="twitter:description" content="Sell digital products straight from your bio link. Free to start, keep 95%, 0% fees on Premium.">
+<meta name="twitter:image" content="https://getur.link/og-image.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#fff;--muted:#cdbff0;--pink:#ff5db1;--lime:#c2f04b;--cyan:#41e0e8;--yellow:#ffd23f;--pur:#a87bff;--cream:#fff3da;--dk:#160a2e;--line:#3a2566}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Fredoka',system-ui,sans-serif;color:var(--ink);min-height:100vh;overflow-x:hidden;line-height:1.5;
+    background:radial-gradient(900px circle at 80% -10%,#3a1170,#1a0b3d 55%),#140827;--mx:50vw;--my:30vh}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(320px circle at var(--mx) var(--my),rgba(255,93,177,.16),transparent 70%);transition:background .08s}
+  a{text-decoration:none;color:inherit}
+  .star{position:fixed;top:0;left:0;z-index:999;pointer-events:none;font-size:1.3rem;filter:drop-shadow(0 0 6px var(--yellow))}
+  .wrap{max-width:1040px;margin:0 auto;padding-left:1.5rem;padding-right:1.5rem;position:relative;z-index:2}
+  nav{display:flex;align-items:center;justify-content:space-between;height:78px;max-width:1040px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:2}
+  .logo{display:inline-flex;align-items:center;gap:.5rem;font-weight:700;font-size:1.45rem}.logo .mark{width:30px;height:30px;flex-shrink:0}.logo span{background:var(--yellow);color:#2a1a00;padding:0 .2em;border-radius:9px;display:inline-block;transform:rotate(-3deg)}
+  .nl{display:flex;gap:.8rem;align-items:center}
+  .btn{display:inline-block;font-weight:600;font-size:.97rem;padding:.72rem 1.4rem;border-radius:16px;border:3px solid #120724;background:#fff;color:#1a0b3d;box-shadow:4px 4px 0 #120724;transition:transform .12s,box-shadow .12s;will-change:transform}
+  .btn:hover{transform:translate(-2px,-2px) rotate(-1deg);box-shadow:6px 6px 0 #120724}
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #120724}
+  .btn-p{background:var(--pink);color:#fff}
+  .hero{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:2.5rem;align-items:center;padding:2.5rem 0 2.5rem}
+  .badge{display:inline-block;background:var(--lime);color:#1f2c00;border:3px solid #120724;border-radius:999px;padding:.45rem 1rem;font-weight:600;font-size:.88rem;box-shadow:3px 3px 0 #120724;transform:rotate(-2deg);margin-bottom:1.4rem}
+  h1{font-size:clamp(2.5rem,5.2vw,4.1rem);font-weight:700;line-height:1.02;letter-spacing:-.01em;margin-bottom:1rem}
+  .hl{position:relative;white-space:nowrap;color:var(--yellow)}
+  .hl svg{position:absolute;left:0;bottom:-10px;width:100%;height:16px}
+  .hl svg path{fill:none;stroke:var(--pink);stroke-width:6;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;animation:draw 1.1s .5s forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .sub{color:var(--muted);font-size:1.15rem;max-width:28rem;margin:1.2rem 0 1.8rem}
+  .acts{display:flex;gap:1rem;flex-wrap:wrap}
+  .pop{opacity:0;transform:scale(.6) translateY(20px);animation:pop .6s cubic-bezier(.34,1.56,.64,1) forwards}
+  .pop.d1{animation-delay:.05s}.pop.d2{animation-delay:.15s}.pop.d3{animation-delay:.25s}.pop.d4{animation-delay:.35s}
+  @keyframes pop{to{opacity:1;transform:none}}
+  /* mascot */
+  .stage{position:relative;display:flex;align-items:center;justify-content:center;isolation:isolate}
+  .blob{width:300px;height:300px;position:relative;animation:bob 4s ease-in-out infinite}
+  .blob-img{width:100%;height:100%;display:block;object-fit:contain;filter:drop-shadow(0 24px 46px rgba(168,123,255,.45))}
+  @keyframes mpop{0%{transform:scale(1)}35%{transform:scale(1.1)}65%{transform:scale(.95)}100%{transform:scale(1)}}
+  .blob.happy{animation-duration:7s,1.4s}
+  @keyframes morph{0%,100%{border-radius:46% 54% 58% 42%/52% 44% 56% 48%}50%{border-radius:58% 42% 44% 56%/46% 58% 42% 54%}}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+  .face{position:absolute;top:33%;left:50%;transform:translateX(-50%);display:flex;gap:1.5rem}
+  .eye{position:relative;width:62px;height:62px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 -4px 8px rgba(0,0,0,.08);overflow:hidden}
+  .eye i{width:26px;height:26px;border-radius:50%;background:#1a0b3d;display:block;transition:opacity .16s,transform .22s cubic-bezier(.34,1.7,.5,1)}
+  .arch,.heart,.star{position:absolute;top:50%;left:50%;opacity:0;transition:opacity .16s,transform .28s cubic-bezier(.34,1.7,.5,1)}
+  .arch{width:40px;height:20px;transform:translate(-50%,-62%) scale(.3)}
+  .arch path{fill:none;stroke:#1a0b3d;stroke-width:5;stroke-linecap:round}
+  .heart{width:30px;height:30px;transform:translate(-50%,-50%) scale(.2)}
+  .heart path{fill:#ff3b6b}
+  .star{font-size:30px;line-height:1;color:#1a0b3d;transform:translate(-50%,-50%) scale(.2)}
+  .shades{position:absolute;top:33%;left:50%;width:160px;height:62px;opacity:0;transform:translate(-50%,-220%);transition:opacity .2s,transform .32s cubic-bezier(.34,1.7,.5,1);z-index:4}
+  .shades svg{width:100%;height:100%}
+  .mouth{position:absolute;top:60%;left:50%;transform:translateX(-50%);width:46px;height:22px;border-radius:0 0 40px 40px;background:#1a0b3d;transition:width .26s cubic-bezier(.34,1.7,.5,1),height .26s cubic-bezier(.34,1.7,.5,1),border-radius .26s,transform .26s cubic-bezier(.34,1.7,.5,1)}
+  .cheek{position:absolute;top:53%;width:26px;height:14px;border-radius:50%;background:rgba(255,93,177,.55);transition:transform .26s cubic-bezier(.34,1.7,.5,1),background .26s}.ch1{left:19%}.ch2{right:19%}
+  @keyframes react{0%,100%{transform:translateX(-50%) scale(1)}40%{transform:translateX(-50%) scale(1.2)}}
+  .blob.emo{animation-duration:7s,1.4s}
+  .blob.emo .cheek{transform:scale(1.4);background:rgba(255,93,177,.82)}
+  /* happy (CTA): squint + grin */
+  .blob.happy .eye i{opacity:0}
+  .blob.happy .arch{opacity:1;transform:translate(-50%,-62%) scale(1)}
+  .blob.happy .mouth{width:74px;height:46px;border-radius:14px 14px 46px 46px}
+  /* sell: starry excited */
+  .blob.e-sell .eye i{opacity:0}
+  .blob.e-sell .star{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .blob.e-sell .mouth{width:70px;height:44px;border-radius:14px 14px 46px 46px}
+  /* themes: heart eyes */
+  .blob.e-th .eye i{opacity:0}
+  .blob.e-th .heart{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .blob.e-th .mouth{width:66px;height:42px;border-radius:16px 16px 46px 46px}
+  /* analytics: wide-eyed wow */
+  .blob.e-an .eye i{transform:scale(1.45)}
+  .blob.e-an .mouth{width:30px;height:30px;border-radius:50%}
+  .blob.e-an .cheek{transform:scale(1.1);background:rgba(255,93,177,.6)}
+  /* ai: chilling on vacation — content squint + sipping; umbrella + soda appear */
+  .blob.e-ai .eye i{opacity:0}
+  .blob.e-ai .arch{opacity:1;transform:translate(-50%,-62%) scale(1)}
+  .blob.e-ai .mouth{width:20px;height:16px;border-radius:50%}
+  .umbrella{position:absolute;opacity:0;pointer-events:none;transform-origin:bottom center;top:-22%;left:50%;width:170px;z-index:-1;transform:translate(-50%,12px) scale(.4);transition:opacity .25s,transform .4s cubic-bezier(.34,1.7,.5,1)}
+  .blob.e-ai ~ .umbrella{opacity:1;transform:translate(-50%,0) scale(1) rotate(-5deg)}
+  .soda{position:absolute;top:59%;left:50%;width:58px;opacity:0;z-index:3;pointer-events:none;transform-origin:top center;transform:translate(-50%,0) scale(.5);transition:opacity .25s,transform .42s cubic-bezier(.34,1.7,.5,1)}
+  .blob.e-ai .soda{opacity:1;transform:translate(-50%,0) scale(1)}
+  .soda .bub{transform-box:fill-box;transform-origin:center;opacity:0}
+  .blob.e-ai .soda .bub{animation:rise 2.2s ease-in infinite}
+  @keyframes rise{0%{transform:translateY(2px);opacity:0}25%{opacity:.95}100%{transform:translateY(-24px);opacity:0}}
+  .blob.e-ai .cheek{animation:sip 1.5s ease-in-out infinite}
+  @keyframes sip{0%,100%{transform:scale(1.3)}55%{transform:scale(1.55)}}
+  .blob.e-ai ~ .pricetag{opacity:0}
+  /* fees: money wink + smirk */
+  .blob.e-fees .eye:last-child i{opacity:0}
+  .blob.e-fees .eye:last-child .arch{opacity:1;transform:translate(-50%,-62%) scale(1)}
+  .blob.e-fees .mouth{width:40px;height:17px;border-radius:0 0 34px 34px;transform:translateX(-68%) rotate(-9deg)}
+  /* domain: cool shades + smirk */
+  .blob.e-dom .shades{opacity:1;transform:translate(-50%,0)}
+  .blob.e-dom .mouth{width:38px;height:15px;border-radius:0 0 30px 30px;transform:translateX(-36%) rotate(-7deg)}
+  .pricetag{position:absolute;bottom:7%;right:0;background:#fff;color:#1a0b3d;border:3px solid #120724;border-radius:14px;padding:.5rem .8rem;font-weight:700;box-shadow:4px 4px 0 #120724;transform:rotate(6deg);animation:bob 3.4s ease-in-out infinite .5s}
+  .stk{position:absolute;z-index:1;font-weight:700;border:3px solid #120724;border-radius:14px;padding:.45rem .8rem;font-size:.85rem;box-shadow:4px 4px 0 #120724;animation:wob 4s ease-in-out infinite}
+  @keyframes wob{0%,100%{transform:translateY(0) rotate(var(--r))}50%{transform:translateY(-12px) rotate(calc(var(--r) * -1))}}
+  .sa{top:12%;left:4%;background:var(--cyan);color:#053a3a;--r:-8deg;z-index:2}
+  .sb{bottom:22%;left:0;background:var(--yellow);color:#2a1a00;--r:7deg;animation-delay:.7s;z-index:2}
+  .sc{bottom:13%;right:-2%;background:var(--lime);color:#1f2c00;--r:-6deg;animation-delay:1.2s;z-index:2}
+  /* feature dashboard */
+  section{padding:1rem 0 4.5rem;position:relative;z-index:2}
+  .sec-h{text-align:center;font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:700;margin-bottom:2rem}
+  .dash{display:grid;grid-template-columns:repeat(6,1fr);gap:1.2rem}
+  .fc{border:3px solid #120724;border-radius:22px;box-shadow:5px 5px 0 #120724;padding:1.3rem;transition:transform .18s;overflow:hidden;display:flex;flex-direction:column}
+  .fc:hover{transform:translateY(-6px) rotate(-1deg)}
+  .fc h3{font-weight:700;font-size:1.1rem;margin:auto 0 .2rem;color:#1a0b3d}
+  .fc p{font-size:.88rem;color:#5b4a78}
+  .c-sell{grid-column:span 3;background:var(--cream)}
+  .c-ai{grid-column:span 3;background:#eafcff}
+  .c-fees{grid-column:span 2;background:var(--lime)}
+  .c-dom{grid-column:span 2;background:#fff}
+  .c-an{grid-column:span 2;background:var(--yellow)}
+  .c-th{grid-column:span 6;background:#f3eaff;display:flex;flex-direction:row;align-items:center;gap:1.6rem}
+  /* widget: preset */
+  .w-preset{position:relative;height:96px;border-radius:14px;background:linear-gradient(135deg,#ff5db1,#a87bff,#41e0e8);border:3px solid #120724;display:flex;align-items:flex-end;justify-content:flex-start;padding:.6rem}
+  .w-preset .lbl{background:rgba(0,0,0,.45);color:#fff;font-size:.72rem;font-weight:600;padding:.15rem .5rem;border-radius:8px}
+  .w-preset .tag{position:absolute;top:-12px;right:-8px;background:var(--yellow);color:#2a1a00;border:3px solid #120724;border-radius:12px;padding:.25rem .6rem;font-weight:700;font-size:.85rem;box-shadow:3px 3px 0 #120724;transform:rotate(8deg);transition:transform .18s}
+  .c-sell:hover .tag{transform:rotate(-6deg) scale(1.08)}
+  /* widget: chat */
+  .w-chat{display:flex;flex-direction:column;gap:.4rem}
+  .bub{font-size:.78rem;font-weight:500;padding:.4rem .65rem;border-radius:12px;max-width:88%}
+  .bq{background:#fff;border:2px solid #cdeef2;color:#0c4a4f;align-self:flex-start}
+  .ba{background:linear-gradient(120deg,#41e0e8,#a87bff);color:#06262b;align-self:flex-end;font-weight:600}
+  .ba b{display:inline-block;background:#fff;color:#1a0b3d;border-radius:8px;padding:0 .35rem;margin-left:.2rem}
+  /* widget: browser */
+  .w-dom{display:flex;align-items:center;gap:.5rem;background:#f3f1f7;border:3px solid #120724;border-radius:12px;padding:.5rem .7rem}
+  .w-dom .dots{display:flex;gap:4px}.w-dom .dots i{width:9px;height:9px;border-radius:50%;background:#cdbfe0;display:block}
+  .w-dom .url{flex:1;background:#fff;border-radius:8px;padding:.25rem .5rem;font-size:.78rem;color:#1a0b3d;font-weight:600;display:flex;align-items:center;gap:.3rem}
+  /* widget: line chart */
+  .w-an{position:relative;height:72px}
+  .w-an svg{width:100%;height:100%;display:block}
+  .w-an .area{fill:rgba(42,26,0,.15)}
+  .w-an .line{fill:none;stroke:#2a1a00;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:340}
+  .c-an:hover .w-an .line{animation:drawline .7s ease}
+  @keyframes drawline{from{stroke-dashoffset:340}to{stroke-dashoffset:0}}
+  .w-an .trend{position:absolute;top:0;right:0;font-weight:700;font-size:.82rem;color:#2a1a00;background:rgba(255,255,255,.55);padding:.1rem .45rem;border-radius:8px}
+  /* widget: fees */
+  .w-fees{font-weight:700;font-size:3.1rem;color:#1f2c00;line-height:1;margin-bottom:.5rem}
+  .w-fees small{display:block;font-size:.82rem;font-weight:600;margin-top:.35rem;color:#3a5400;letter-spacing:.01em}
+  /* widget: themes fan */
+  .fan{display:flex;flex-shrink:0;width:200px;height:120px;position:relative}
+  .sheet{position:absolute;left:50%;bottom:0;width:78px;height:112px;border-radius:12px;border:3px solid #120724;transform-origin:bottom center;box-shadow:3px 3px 0 #120724;transition:transform .25s}
+  .sh1{background:linear-gradient(160deg,#ff5db1,#ffd23f);transform:translateX(-50%) rotate(-22deg)}
+  .sh2{background:linear-gradient(160deg,#41e0e8,#a87bff);transform:translateX(-50%) rotate(-2deg)}
+  .sh3{background:linear-gradient(160deg,#c2f04b,#41e0e8);transform:translateX(-50%) rotate(18deg)}
+  .c-th:hover .sh1{transform:translateX(-50%) rotate(-32deg) translateY(-6px)}
+  .c-th:hover .sh3{transform:translateX(-50%) rotate(28deg) translateY(-6px)}
+  .center{text-align:center}
+  .eyebrow{display:inline-block;color:var(--pink);font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.08em}
+  .h2b{font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:700;letter-spacing:-.02em;margin:.75rem 0 .6rem}
+  .lead2{color:var(--muted);font-size:1.1rem;max-width:34rem;margin:0 auto}
+  .proof{padding:.5rem 0 2.5rem}
+  .proof-in{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;text-align:center}
+  .avis{display:flex}.avis span{width:34px;height:34px;border-radius:50%;border:3px solid #120724;margin-left:-10px;display:block}.avis span:first-child{margin-left:0}
+  .proof p{color:var(--muted);font-weight:500}.proof b{color:var(--ink)}
+  .stars{color:var(--yellow);letter-spacing:2px}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:2.5rem;text-align:left}
+  .step{background:#221145;border:3px solid #120724;border-radius:20px;box-shadow:5px 5px 0 #120724;padding:1.6rem}
+  .snum{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.3rem;color:#fff;margin-bottom:1rem}
+  .step:nth-child(1) .snum{background:var(--pink)}.step:nth-child(2) .snum{background:var(--cyan);color:#06262b}.step:nth-child(3) .snum{background:var(--lime);color:#1f2c00}
+  .step h3{font-weight:700;font-size:1.15rem;margin-bottom:.3rem}.step p{color:var(--muted);font-size:.95rem}
+  .prices{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;max-width:720px;margin:2.5rem auto 0;text-align:left}
+  .pcard{background:#fff;color:#1a0b3d;border:3px solid #120724;border-radius:22px;box-shadow:6px 6px 0 #120724;padding:1.9rem;position:relative}
+  .pcard.pro{background:var(--pur);color:#fff}
+  .ptier{font-weight:700;font-size:1.2rem}
+  .pamt{font-size:2.8rem;font-weight:700;margin:.2rem 0;line-height:1}.pamt small{font-size:1rem;font-weight:500;opacity:.7}
+  .pcard ul{list-style:none;margin:1.1rem 0 1.5rem;display:flex;flex-direction:column;gap:.6rem;font-weight:500;font-size:.95rem}
+  .pcard li::before{content:"✓ ";font-weight:700}
+  .ppop{position:absolute;top:-14px;right:18px;background:var(--yellow);color:#2a1a00;border:3px solid #120724;border-radius:999px;padding:.2rem .8rem;font-size:.8rem;font-weight:700;box-shadow:3px 3px 0 #120724}
+  .tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:2.5rem;text-align:left}
+  .tcard{background:var(--cream);color:#2b2118;border:3px solid #120724;border-radius:20px;box-shadow:5px 5px 0 #120724;padding:1.5rem}
+  .tcard p{font-weight:500;margin-bottom:1rem}
+  .tperson{display:flex;align-items:center;gap:.6rem}.tav{width:40px;height:40px;border-radius:50%;border:2px solid #120724}
+  .tname{font-weight:700;font-size:.92rem}.thandle{color:#7a6b5c;font-size:.82rem}
+  .faqs{max-width:720px;margin:2.5rem auto 0}
+  .faqs details{background:#221145;border:3px solid #120724;border-radius:16px;box-shadow:4px 4px 0 #120724;padding:1.1rem 1.3rem;margin-bottom:1rem}
+  .faqs summary{font-weight:600;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+  .faqs summary::-webkit-details-marker{display:none}
+  .faqs .q{font-size:1.3rem;color:var(--pink);transition:transform .2s}
+  .faqs details[open] .q{transform:rotate(45deg)}
+  .faqs details p{color:var(--muted);margin-top:.7rem;font-size:.95rem}
+  .cta-final{text-align:center;background:var(--pink);color:#fff;border:3px solid #120724;border-radius:28px;box-shadow:8px 8px 0 #120724;padding:3.4rem 2rem;margin:1rem 0 3rem}
+  .cta-final h2{font-size:clamp(1.9rem,3.6vw,2.8rem);font-weight:700}
+  .cta-final p{margin:.7rem auto 1.6rem;max-width:30rem;font-weight:500}
+  .foot{border-top:3px solid #120724;background:#160a2e;text-align:left;padding:0;margin-top:1rem}
+  .foot-in{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:1.5rem;padding:2.6rem 1.5rem 1.6rem}
+  .foot-in .logo{font-size:1.25rem}.foot-in p{color:var(--muted);font-size:.9rem;margin-top:.4rem}
+  .fcol h4{font-size:.95rem;margin-bottom:.7rem;font-weight:700}
+  .fcol a{display:block;color:var(--muted);font-size:.9rem;margin-bottom:.45rem}.fcol a:hover{color:var(--ink)}
+  .fbottom{padding:1.2rem 0 2rem;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);text-align:center}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(max-width:840px){.steps,.tgrid{grid-template-columns:1fr}.prices{grid-template-columns:1fr}.foot-in{grid-template-columns:1fr 1fr}}
+  footer{text-align:center;padding:2.5rem 0;color:var(--muted);font-weight:500;position:relative;z-index:2}
+  canvas#cf{position:fixed;inset:0;z-index:998;pointer-events:none}
+  @media(max-width:840px){.hero{grid-template-columns:1fr;text-align:center}.acts{justify-content:center}.sa,.sb,.sc{display:none}
+    .dash{grid-template-columns:1fr}.c-sell,.c-ai,.c-fees,.c-dom,.c-an,.c-th{grid-column:span 1}.c-th{flex-direction:column}}
+  /* floating mascot — follows the page on scroll + reacts to each section */
+  .floaty{position:fixed;right:16px;bottom:16px;width:92px;height:92px;z-index:60;opacity:0;display:flex;align-items:center;justify-content:center;transform:translateY(18px) scale(.88);transition:opacity .35s ease,transform .42s cubic-bezier(.34,1.56,.64,1);pointer-events:none;will-change:transform;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .floaty.show{opacity:1;transform:none}
+  .floaty .miniwrap{zoom:.3;filter:drop-shadow(0 14px 22px rgba(168,123,255,.5))}
+  /* phones */
+  @media(max-width:560px){
+    nav{height:62px;padding:0 1rem}
+    .logo{font-size:1.16rem}.logo .mark{width:26px;height:26px}
+    .nl{gap:.45rem}
+    .btn{padding:.56rem 1rem;font-size:.88rem;border-width:2px;box-shadow:3px 3px 0 #120724}
+    .badge{font-size:.8rem;margin-bottom:1.1rem}
+    h1{font-size:2.2rem}
+    .sub{font-size:1.02rem;margin:1rem auto 1.5rem}
+    .hero{padding:1.3rem 0 2.2rem;gap:1.2rem;min-height:auto}
+    .hero{padding-top:.6rem}
+    .stage{order:-1;width:340px;max-width:96vw;transform:scale(.7);transform-origin:center;margin:-1rem auto -2.6rem;animation:none;opacity:1}
+    .sa,.sb{display:block}
+    .sa{top:6%;left:-2%}.sb{bottom:24%;left:-4%}
+    .sec-h{font-size:1.5rem}
+    .h2b{font-size:1.7rem}
+    .lead2{font-size:1rem}
+    .step,.pcard,.tcard{padding:1.3rem}
+    .pamt{font-size:2.4rem}
+    .cta-final{padding:2.4rem 1.2rem;border-radius:22px}
+    .cta-final h2{font-size:1.7rem}
+    .foot-in{grid-template-columns:repeat(3,1fr);gap:1.5rem 1rem}
+    .foot-in>div:first-child{grid-column:1/-1;margin-bottom:.2rem}
+    .floaty{right:12px;bottom:calc(14px + env(safe-area-inset-bottom));width:80px;height:80px}
+    .floaty .miniwrap{zoom:.26}
+  }
+  @media(max-width:380px){
+    h1{font-size:1.95rem}
+    .stage{transform:scale(.72)}
+    .btn{padding:.5rem .8rem;font-size:.84rem}
+    .foot-in{grid-template-columns:1fr}
+  }
+  /* trust section */
+  .trust{max-width:980px;margin:0 auto;padding:1rem 1.5rem 3rem;position:relative;z-index:2}
+  .trust-h{text-align:center;font-family:'Fredoka',sans-serif;font-weight:700;font-size:clamp(1.6rem,3.4vw,2.3rem);margin-bottom:2rem}
+  .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem}
+  .tc{background:#221145;border:3px solid #120724;border-radius:20px;box-shadow:5px 5px 0 #120724;padding:1.6rem 1.4rem}
+  .tc svg{margin-bottom:.9rem}
+  .tc h3{font-weight:700;font-size:1.15rem;margin-bottom:.4rem}
+  .tc p{color:var(--muted);font-size:.92rem;line-height:1.6}
+  .tc p b{color:#cbbdf0;font-weight:600}
+  @media(max-width:760px){.trust-grid{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+    .star,canvas#cf{display:none!important}
+  }
+</style>
 </head>
 <body>
+<div class="star" id="star">✦</div>
+<canvas id="cf"></canvas>
+<div class="floaty" id="floaty" aria-hidden="true"></div>
+<nav><div class="logo"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="navg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a87bff"/><stop offset="1" stop-color="#ff5db1"/></linearGradient></defs><rect x="5" y="5" width="54" height="54" rx="20" fill="url(#navg)" stroke="#160a2e" stroke-width="4"/><circle cx="16" cy="40" r="4" fill="#ff5db1" opacity=".75"/><circle cx="48" cy="40" r="4" fill="#ff5db1" opacity=".75"/><circle cx="23" cy="27" r="8.5" fill="#fff"/><circle cx="41" cy="27" r="8.5" fill="#fff"/><circle cx="24" cy="28" r="3.6" fill="#160a2e"/><circle cx="42" cy="28" r="3.6" fill="#160a2e"/><path d="M23 43 Q32 52 41 43" fill="none" stroke="#160a2e" stroke-width="4.5" stroke-linecap="round"/></svg>Get<span>Ur</span>Link</div><div class="nl"><a class="btn" href="https://geturlink-production-447c.up.railway.app">Log in</a><a class="btn btn-p" data-mag href="https://geturlink-production-447c.up.railway.app">Get started</a></div></nav>
 
-  <nav>
-    <div class="wrap nav-inner">
-      <div class="logo">Get<span class="grad-text">Ur</span>Link</div>
-      <div class="nav-links">
-        <a class="lnk" href="#how">How it works</a>
-        <a class="lnk" href="#pricing">Pricing</a>
-        <a class="lnk" href="#faq">FAQ</a>
-        <div class="nav-cta">
-          <a class="btn btn-ghost" href="https://geturlink-production-447c.up.railway.app">Log in</a>
-          <a class="btn btn-primary" href="https://geturlink-production-447c.up.railway.app">Get started</a>
-        </div>
-      </div>
+<header class="wrap hero">
+  <div>
+    <span class="badge pop d1">★ Free until your first sale</span>
+    <h1 class="pop d2">Your bio link just got a <span class="hl">glow-up<svg viewBox="0 0 200 16" preserveAspectRatio="none"><path d="M4 9 Q50 2 100 8 T196 7"/></svg></span> ✨</h1>
+    <p class="sub pop d3">Share your links, sell your digital products, and get paid in one click — on a page as fun as you are.</p>
+    <div class="acts pop d4"><a class="btn btn-p" id="cta" data-mag data-cta href="https://geturlink-production-447c.up.railway.app">Create your page — free</a><a class="btn" href="#how">See how it works</a></div>
+  </div>
+  <div class="stage pop d3">
+    <span class="stk sa">$0 to start ✨</span>
+    <span class="stk sb">AI sells 24/7 ✦</span>
+    <span class="stk sc">1-click checkout ✦</span>
+    <div class="blob" id="blob"><img class="blob-img" src="moscot-idle.png" alt="GetUrLink mascot"></div>
+  </div>
+</header>
+
+<section class="proof reveal"><div class="wrap proof-in">
+  <p style="font-weight:500"><span class="stars">✦</span> No monthly wall to start — just your link, your store, and your money.</p>
+</div></section>
+
+<section class="wrap center reveal" id="how">
+  <span class="eyebrow">Dead simple</span>
+  <h2 class="h2b">Live in three steps</h2>
+  <div class="steps">
+    <div class="step"><div class="snum">1</div><h3>Create your page</h3><p>Sign up free and pick a theme — it looks premium by default.</p></div>
+    <div class="step"><div class="snum">2</div><h3>Add links &amp; products</h3><p>Drop in your socials and list products with a price. Upload, set, done.</p></div>
+    <div class="step"><div class="snum">3</div><h3>Share &amp; get paid</h3><p>Put your link in bio. Buyers check out in one click and get their files instantly.</p></div>
+  </div>
+</section>
+
+<section class="wrap" id="features">
+  <div class="sec-h">Everything you need to sell ✦</div>
+  <div class="dash">
+    <div class="fc c-sell"><div class="w-preset"><span class="lbl">Neon Glow Pack</span><span class="tag">$9.99</span></div><h3>Sell your stuff</h3><p>Presets, templates, e-books — delivered the instant someone buys.</p></div>
+    <div class="fc c-ai"><div class="w-chat"><div class="bub bq">Which preset is best for night shots?</div><div class="bub ba">Try the Neon Pack ✨ <b>Buy →</b></div></div><h3>AI sells for you</h3><p>A friendly assistant answers buyers and sends them to checkout 24/7.</p></div>
+    <div class="fc c-fees"><div class="w-fees">0%<small>fees on Premium</small></div><h3>Keep more money</h3></div>
+    <div class="fc c-dom"><div class="w-dom"><div class="dots"><i></i><i></i><i></i></div><div class="url">🔒 vamshi.getur.link</div></div><h3>Your own domain</h3></div>
+    <div class="fc c-an"><div class="w-an"><span class="trend">↑ 38% this week</span><svg viewBox="0 0 120 52" preserveAspectRatio="none"><path class="area" d="M0 44 L24 34 L48 38 L72 22 L96 26 L120 8 V52 H0 Z"/><path class="line" d="M0 44 L24 34 L48 38 L72 22 L96 26 L120 8"/></svg></div><h3>Real analytics</h3></div>
+    <div class="fc c-th"><div class="fan"><div class="sheet sh1"></div><div class="sheet sh2"></div><div class="sheet sh3"></div></div><div><h3>Beautiful themes</h3><p>Modern, glowy themes that look great on every phone — switch the whole vibe in one tap. Your brand, ready instantly.</p></div></div>
+  </div>
+</section>
+
+<section class="wrap center reveal" id="pricing">
+  <span class="eyebrow">Honest pricing</span>
+  <h2 class="h2b">Start free. Upgrade when it pays.</h2>
+  <p class="lead2">No $29 wall before your first dollar — ever.</p>
+  <div class="prices">
+    <div class="pcard">
+      <div class="ptier">Free</div>
+      <div class="pamt">$0<small> /forever</small></div>
+      <ul><li>Unlimited links &amp; products</li><li>1-click checkout &amp; instant delivery</li><li>AI shop assistant</li><li>Just 5% per sale</li></ul>
+      <a class="btn" style="display:block;text-align:center" href="https://geturlink-production-447c.up.railway.app">Start free</a>
     </div>
-  </nav>
-
-  <header class="hero">
-    <div class="wrap">
-      <div class="bento">
-
-        <div class="card hero-main">
-          <span class="pill"><span class="dot"></span> Free until your first sale</span>
-          <h1>Your link in bio that <span class="grad-text">actually sells.</span></h1>
-          <p class="sub">A beautiful Bento storefront for creators — share your links and sell your digital products with fast, 1-click checkout. Set up in minutes.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="https://geturlink-production-447c.up.railway.app">Create your page — free</a>
-            <a class="btn btn-ghost" href="#how">See how it works</a>
-          </div>
-          <span class="micro">No credit card required · Keep 100% on Premium</span>
-        </div>
-
-        <div class="card phone-card lift">
-          <div class="phone">
-            <div class="screen">
-              <div class="pavatar"></div>
-              <div class="pname">Vamshi</div>
-              <div class="pbio">Designer & preset creator</div>
-              <div class="plink"><span>Follow on Instagram</span><span>↗</span></div>
-              <div class="plink"><span>My portfolio</span><span>↗</span></div>
-              <div class="pprod">
-                <span class="ptag">$9.99</span>
-                <div class="ptitle">Neon Glow Wallpaper Pack</div>
-              </div>
-              <div class="pchat">✦ Ask my assistant anything…</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card lift">
-          <div class="stat-label">Costs nothing to start</div>
-          <div class="vs-row">
-            <span class="vs-old">Stan $29/mo</span>
-            <span class="vs-new grad-text">$0</span>
-          </div>
-          <div class="stat-label" style="margin-top:.5rem">Pay only a small fee when you sell — or 0% on Premium.</div>
-        </div>
-
-        <div class="card lift">
-          <div class="stat-label">Earned this month</div>
-          <div class="stat-num grad-text">$2,847</div>
-          <div class="spark">
-            <span style="height:40%"></span><span style="height:55%"></span><span style="height:35%"></span>
-            <span style="height:70%"></span><span style="height:50%"></span><span style="height:85%"></span>
-            <span style="height:65%"></span><span style="height:100%"></span>
-          </div>
-        </div>
-
-      </div>
+    <div class="pcard pro">
+      <span class="ppop">Most popular</span>
+      <div class="ptier">Premium</div>
+      <div class="pamt">$15<small> /month</small></div>
+      <ul><li>Everything in Free</li><li>0% platform fees</li><li>Custom domain</li><li>Advanced themes &amp; custom CSS</li></ul>
+      <a class="btn btn-p" style="display:block;text-align:center" href="https://geturlink-production-447c.up.railway.app">Go Premium</a>
     </div>
-  </header>
+  </div>
+</section>
 
-  <section class="block" id="how">
-    <div class="wrap center">
-      <span class="eyebrow reveal">Dead simple</span>
-      <h2 class="h2 reveal">Live in three steps</h2>
-      <p class="lead reveal">No code, no design skills, no monthly fee to find out if it works.</p>
-      <div class="steps">
-        <div class="card step reveal lift"><div class="n">1</div><h3>Create your page</h3><p>Sign up free and pick a theme. Your page looks premium by default — every time.</p></div>
-        <div class="card step reveal lift"><div class="n">2</div><h3>Add links & products</h3><p>Drop in your socials and list digital products with a price. Upload the file, set it, done.</p></div>
-        <div class="card step reveal lift"><div class="n">3</div><h3>Share your link</h3><p>Put it in your bio. Buyers check out in one click and get their download instantly.</p></div>
-      </div>
+<section class="wrap center reveal">
+  <span class="eyebrow">Made for makers</span>
+  <h2 class="h2b">Perfect for selling…</h2>
+  <div class="tgrid">
+    <div class="tcard"><svg width="54" height="54" viewBox="0 0 56 56" fill="none" aria-hidden="true"><defs><linearGradient id="ucp1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff5db1"/><stop offset="1" stop-color="#a87bff"/></linearGradient><linearGradient id="ucp2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#41e0e8"/><stop offset="1" stop-color="#c2f04b"/></linearGradient></defs><rect x="5" y="9" width="33" height="33" rx="8" fill="url(#ucp1)" stroke="#120724" stroke-width="3"/><rect x="18" y="18" width="33" height="33" rx="8" fill="url(#ucp2)" stroke="#120724" stroke-width="3"/><circle cx="42" cy="28" r="4.5" fill="#fff"/></svg><div style="font-weight:700;font-size:1.1rem;margin:.5rem 0 .3rem">Presets &amp; filters</div><p style="margin-bottom:0">Lightroom packs, video LUTs, mobile filters — delivered the second someone buys.</p></div>
+    <div class="tcard"><svg width="54" height="54" viewBox="0 0 56 56" fill="none" aria-hidden="true"><rect x="7" y="8" width="42" height="40" rx="9" fill="#fff" stroke="#120724" stroke-width="3"/><rect x="14" y="15" width="28" height="8" rx="3" fill="#ff5db1"/><rect x="14" y="28" width="16" height="13" rx="3" fill="#41e0e8"/><rect x="34" y="28" width="8" height="13" rx="3" fill="#ffd23f"/></svg><div style="font-weight:700;font-size:1.1rem;margin:.5rem 0 .3rem">Templates &amp; design</div><p style="margin-bottom:0">Notion templates, fonts, UI kits, printables, digital art — any file you make.</p></div>
+    <div class="tcard"><svg width="54" height="54" viewBox="0 0 56 56" fill="none" aria-hidden="true"><rect x="9" y="11" width="38" height="34" rx="6" fill="#fff3da" stroke="#120724" stroke-width="3"/><path d="M28 11 V45" stroke="#120724" stroke-width="3"/><path d="M15 21 H24 M15 29 H24 M15 37 H22" stroke="#a87bff" stroke-width="3" stroke-linecap="round"/><path d="M32 21 H41 M32 29 H41 M32 37 H39" stroke="#c2f04b" stroke-width="3" stroke-linecap="round"/></svg><div style="font-weight:700;font-size:1.1rem;margin:.5rem 0 .3rem">Guides &amp; courses</div><p style="margin-bottom:0">E-books, recipes, workout plans, mini-courses — your knowledge, packaged up.</p></div>
+  </div>
+</section>
+
+<section class="wrap reveal" id="faq">
+  <div class="center"><span class="eyebrow">Questions</span><h2 class="h2b">Good to know</h2></div>
+  <div class="faqs">
+    <details><summary>Is it really free? <span class="q">+</span></summary><p>Yes — build your page, add links and products, and start selling without paying a cent. We take a small fee only when you make a sale, or nothing at all on Premium.</p></details>
+    <details><summary>How do buyers get their files? <span class="q">+</span></summary><p>The moment a payment goes through, the buyer gets a secure, single-use download link — no manual sending.</p></details>
+    <details><summary>What can I sell? <span class="q">+</span></summary><p>Any digital product — presets, templates, e-books, guides, wallpapers. If it's a file, you can sell it.</p></details>
+    <details><summary>What's the AI assistant? <span class="q">+</span></summary><p>A chat on your page that answers visitors' questions about your products and guides them to checkout, 24/7.</p></details>
+    <details><summary>Can I use my own domain? <span class="q">+</span></summary><p>On Premium, yes — point your custom domain at your store so it lives on your brand.</p></details>
+  </div>
+</section>
+
+<section class="wrap reveal"><div class="cta-final">
+  <h2>Start selling in minutes.</h2>
+  <p>Turn your bio link into a storefront that actually moves — without the monthly wall.</p>
+  <a class="btn" id="cta2" data-cta href="https://geturlink-production-447c.up.railway.app" style="background:#fff;color:#1a0b3d">Create your page — free</a>
+</div></section>
+
+<section class="trust reveal">
+  <h2 class="trust-h">Built to be trusted</h2>
+  <div class="trust-grid">
+    <div class="tc">
+      <svg width="46" height="46" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 5 L40 11 V24 C40 34 33 41 24 44 C15 41 8 34 8 24 V11 Z" fill="#41e0e8" stroke="#120724" stroke-width="3" stroke-linejoin="round"/><path d="M17 24 l5 5 9-11" stroke="#120724" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h3>Secure checkout</h3>
+      <p>Payments run on <b>Stripe</b> with bank-level encryption, so your buyers pay safely in one click — every time.</p>
     </div>
-  </section>
-
-  <section class="block" id="features">
-    <div class="wrap center">
-      <span class="eyebrow reveal">Built to convert</span>
-      <h2 class="h2 reveal">Everything you need to sell</h2>
-      <div class="feat-grid">
-        <div class="card feat reveal lift">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-          <h3>Sell digital products</h3><p>Presets, templates, e-books — paid, with secure instant delivery the moment someone buys.</p>
-        </div>
-        <div class="card feat reveal lift">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <h3>Keep more money</h3><p>No paywall before you earn. Start free with a low fee, then 0% fees on Premium.</p>
-        </div>
-        <div class="card feat reveal lift">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/></svg></div>
-          <h3>An AI that sells for you</h3><p>A built-in assistant answers buyer questions and points them to the right product — 24/7.</p>
-        </div>
-        <div class="card feat reveal lift">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/></svg></div>
-          <h3>Your own domain</h3><p>Connect a custom domain on Premium so your store lives on your brand, not ours.</p>
-        </div>
-        <div class="card feat reveal lift">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></div>
-          <h3>Real analytics</h3><p>See views, clicks, sales, and where your traffic comes from — not vanity numbers.</p>
-        </div>
-        <div class="card feat reveal lift">
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></div>
-          <h3>Beautiful themes</h3><p>Modern glassmorphism that looks great on every phone. Your brand, ready instantly.</p>
-        </div>
-      </div>
+    <div class="tc">
+      <svg width="46" height="46" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M26 5 L12 27 H22 L20 43 L36 19 H25 Z" fill="#ffd23f" stroke="#120724" stroke-width="3" stroke-linejoin="round"/></svg>
+      <h3>Instant delivery</h3>
+      <p>Every <b>digital product</b> is sent automatically the moment a payment clears. No manual sending, no waiting.</p>
     </div>
-  </section>
-
-  <section class="block" id="pricing">
-    <div class="wrap center">
-      <span class="eyebrow reveal">Honest pricing</span>
-      <h2 class="h2 reveal">Start free. Upgrade when it pays off.</h2>
-      <p class="lead reveal">No $29 wall before your first dollar. Ever.</p>
-      <div class="price-grid">
-        <div class="card price reveal">
-          <div class="tier">Free</div>
-          <div class="amt">$0<small> /forever</small></div>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Unlimited links & products</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> 1-click checkout & instant delivery</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> AI shop assistant</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Small fee per sale</li>
-          </ul>
-          <a class="btn btn-ghost" style="width:100%; justify-content:center" href="https://geturlink-production-447c.up.railway.app">Start free</a>
-        </div>
-        <div class="card price pro reveal">
-          <span class="badge-pop">Most popular</span>
-          <div class="tier">Premium</div>
-          <div class="amt grad-text">$9<small style="-webkit-text-fill-color:var(--muted)"> /month</small></div>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Everything in Free</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> <b style="font-weight:700">0% platform fees</b></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Custom domain</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg> Custom CSS & advanced themes</li>
-          </ul>
-          <a class="btn btn-primary" style="width:100%; justify-content:center" href="https://geturlink-production-447c.up.railway.app">Go Premium</a>
-        </div>
-      </div>
+    <div class="tc">
+      <svg width="46" height="46" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M6 22 L22 6 H40 V24 L24 40 Z" fill="#c2f04b" stroke="#120724" stroke-width="3" stroke-linejoin="round"/><circle cx="32" cy="16" r="3.4" fill="#120724"/></svg>
+      <h3>Honest pricing</h3>
+      <p>Free to start, keep 95% of every sale, 0% fees on Premium — a fairer, cheaper <b>Stan Store &amp; Linktree alternative</b>.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="block" id="faq">
-    <div class="wrap">
-      <div class="center"><span class="eyebrow reveal">Questions</span><h2 class="h2 reveal">Good to know</h2></div>
-      <div class="faq">
-        <details class="reveal"><summary>Is it really free? <span class="chev">⌄</span></summary><p>Yes. You can build your page, add links and products, and start selling without paying a cent. We take a small fee only when you make a sale — or nothing at all on Premium.</p></details>
-        <details class="reveal"><summary>How do buyers get their files? <span class="chev">⌄</span></summary><p>The moment a payment goes through, the buyer gets a secure, single-use download link. No manual sending, no waiting.</p></details>
-        <details class="reveal"><summary>What can I sell? <span class="chev">⌄</span></summary><p>Any digital product — presets, Lightroom filters, templates, e-books, guides, wallpapers. If it's a file, you can sell it.</p></details>
-        <details class="reveal"><summary>What's the AI assistant? <span class="chev">⌄</span></summary><p>A chat widget on your page that answers visitors' questions about your products and guides them to checkout — like having a salesperson on your bio link around the clock.</p></details>
-        <details class="reveal"><summary>Can I use my own domain? <span class="chev">⌄</span></summary><p>On Premium, yes — point your custom domain at your store so it lives on your brand.</p></details>
-      </div>
-    </div>
-  </section>
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div><div class="logo">Get<span>Ur</span>Link</div><p>Your link, your store.</p></div>
+    <div class="fcol"><h4>Product</h4><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#features">Themes</a></div>
+    <div class="fcol"><h4>Company</h4><a href="#how">How it works</a><a href="#faq">FAQ</a><a href="mailto:hello@getur.link">Contact</a></div>
+    <div class="fcol"><h4>Follow</h4><a href="https://instagram.com/geturlink" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://tiktok.com/@geturlink" target="_blank" rel="noopener noreferrer">TikTok</a><a href="https://x.com/geturlink" target="_blank" rel="noopener noreferrer">Twitter / X</a></div>
+  </div>
+  <div class="fbottom">made with 💛 for creators · © 2026 GetUrLink</div>
+</footer>
 
-  <section>
-    <div class="wrap">
-      <div class="cta-band reveal">
-        <h2>Start selling in minutes.</h2>
-        <p>Join the creators turning their bio link into a real storefront — without the monthly wall.</p>
-        <a class="btn btn-primary" href="https://geturlink-production-447c.up.railway.app">Create your page — free</a>
-      </div>
-    </div>
-  </section>
+<script>
+  const blob=document.getElementById('blob');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const star=document.getElementById('star');let mx=innerWidth/2,my=innerHeight/2,sx=mx,sy=my,t=0;
+  if(!reduce)addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;document.body.style.setProperty('--mx',mx+'px');document.body.style.setProperty('--my',my+'px');});
+  if(!reduce)(function l(){sx+=(mx-sx)*.16;sy+=(my-sy)*.16;t+=.05;star.style.transform=`translate(${sx}px,${sy}px) translate(-50%,-50%) rotate(${t}rad)`;requestAnimationFrame(l);})();
+  const blobImg=blob.querySelector('img');
+  const FR={idle:'moscot-idle.png',happy:'moscot-happy.png',sell:'moscot-sell.png',themes:'moscot-themes.png',analytics:'moscot-analytics.png',fees:'moscot-fees.png',domain:'moscot-domain.png',ai:'moscot-ai.png'};
+  Object.values(FR).forEach(s=>{const i=new Image();i.src=s;});
+  const floaty=document.getElementById('floaty');
+  let mini=null,miniImg=null,miniBase='',hovering=false;
+  if(floaty){
+    mini=blob.cloneNode(true);mini.removeAttribute('id');
+    const mw=document.createElement('div');mw.className='miniwrap';mw.appendChild(mini);floaty.appendChild(mw);
+    miniImg=mini.querySelector('img');
+  }
+  function pop(img){if(!img||reduce)return;img.style.animation='none';void img.offsetWidth;img.style.animation='mpop .42s ease';}
+  function setFrame(img,name){if(!img)return;const fr=FR[name]||FR.idle;if(img.getAttribute('src')!==fr){img.setAttribute('src',fr);pop(img);}}
+  function applyMini(name){setFrame(miniImg,name||'idle');}
+  function setEmo(name){hovering=true;setFrame(blobImg,name);setFrame(miniImg,name);}
+  function clearEmo(){hovering=false;setFrame(blobImg,'idle');setFrame(miniImg,miniBase||'idle');}
+  const emoMap={'c-sell':'sell','c-ai':'ai','c-fees':'fees','c-dom':'domain','c-an':'analytics','c-th':'themes'};
+  Object.keys(emoMap).forEach(k=>{const el=document.querySelector('.'+k);if(el){el.addEventListener('mouseenter',()=>setEmo(emoMap[k]));el.addEventListener('mouseleave',clearEmo);}});
+  document.querySelectorAll('[data-cta]').forEach(b=>{b.addEventListener('mouseenter',()=>setEmo('happy'));b.addEventListener('mouseleave',clearEmo);});
+  if(!reduce)document.querySelectorAll('[data-mag]').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.3}px,${(e.clientY-r.top-r.height/2)*.45}px)`;});b.addEventListener('mouseleave',()=>b.style.transform='');});
+  const cv=document.getElementById('cf'),cx=cv.getContext('2d');function sz(){cv.width=innerWidth;cv.height=innerHeight}sz();addEventListener('resize',sz);
+  let ps=[],rafId=null;const cols=['#ff5db1','#c2f04b','#41e0e8','#ffd23f','#a87bff'];
+  function burst(x,y){if(reduce)return;for(let i=0;i<100;i++)ps.push({x,y,vx:(Math.random()-.5)*10,vy:Math.random()*-11-2,g:.32,c:cols[i%5],s:Math.random()*8+3,a:Math.random()*6,va:(Math.random()-.5)*.4,life:100});if(rafId===null)rafId=requestAnimationFrame(tk);}
+  function tk(){cx.clearRect(0,0,cv.width,cv.height);ps.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;p.life--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s*.6);cx.restore();});ps=ps.filter(p=>p.life>0&&p.y<cv.height);rafId=ps.length?requestAnimationFrame(tk):null;}
+  document.getElementById('cta').addEventListener('click',e=>{e.preventDefault();const r=e.target.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2);});
+  const cta2=document.getElementById('cta2');
+  if(cta2)cta2.addEventListener('click',e=>{e.preventDefault();const r=cta2.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2);});
+  const rio=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');rio.unobserve(en.target);}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>rio.observe(el));
 
-  <footer>
-    <div class="wrap foot">
-      <div class="logo" style="font-size:1.1rem">Get<span class="grad-text">Ur</span>Link</div>
-      <div>© <span id="yr"></span> GetUrLink · Your link, your store.</div>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
-    const io = new IntersectionObserver((es) => {
-      es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(el); });
-  </script>
+  /* floating mascot — follow on scroll; base emotion from the section in view (hover overrides it) */
+  (function(){
+    if(!floaty)return;
+    const hero=document.querySelector('.hero');
+    const q=s=>document.querySelector(s),sec=s=>{const el=q(s);return el?el.closest('section'):null;};
+    // each feature banner fires its OWN reaction as it scrolls past, plus the other sections
+    const reactors=[[q('#how'),'happy'],[q('.c-sell'),'sell'],[q('.c-ai'),'ai'],[q('.c-fees'),'fees'],[q('.c-dom'),'domain'],[q('.c-an'),'analytics'],[q('.c-th'),'themes'],[q('#pricing'),'fees'],[sec('.tgrid'),'themes'],[q('#faq'),'analytics'],[sec('.cta-final'),'happy']].filter(r=>r[0]);
+    let raf=0;
+    function update(){
+      raf=0;
+      floaty.classList.toggle('show',scrollY>hero.offsetTop+hero.offsetHeight-150);
+      const vh=innerHeight||document.documentElement.clientHeight||640, mid=scrollY+vh/2;
+      for(const r of reactors){const rc=r[0].getBoundingClientRect(),top=rc.top+scrollY;if(mid>=top&&mid<top+rc.height){miniBase=r[1];break;}}
+      if(!hovering)applyMini(miniBase);
+    }
+    addEventListener('scroll',()=>{if(!raf)raf=requestAnimationFrame(update);},{passive:true});
+    addEventListener('resize',update);update();
+  })();
+</script>
 </body>
 </html>
