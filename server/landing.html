@@ -52,7 +52,9 @@
   @keyframes pop{to{opacity:1;transform:none}}
   /* mascot */
   .stage{position:relative;display:flex;align-items:center;justify-content:center;isolation:isolate}
-  .blob{width:300px;height:300px;border-radius:46% 54% 58% 42%/52% 44% 56% 48%;background:linear-gradient(150deg,var(--pur),var(--pink));position:relative;animation:morph 7s ease-in-out infinite,bob 4s ease-in-out infinite;box-shadow:0 30px 70px rgba(168,123,255,.4)}
+  .blob{width:300px;height:300px;position:relative;animation:bob 4s ease-in-out infinite}
+  .blob-img{width:100%;height:100%;display:block;object-fit:contain;filter:drop-shadow(0 24px 46px rgba(168,123,255,.45))}
+  @keyframes mpop{0%{transform:scale(1)}35%{transform:scale(1.1)}65%{transform:scale(.95)}100%{transform:scale(1)}}
   .blob.happy{animation-duration:7s,1.4s}
   @keyframes morph{0%,100%{border-radius:46% 54% 58% 42%/52% 44% 56% 48%}50%{border-radius:58% 42% 44% 56%/46% 58% 42% 54%}}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
@@ -282,17 +284,7 @@
     <span class="stk sa">$0 to start ✨</span>
     <span class="stk sb">AI sells 24/7 ✦</span>
     <span class="stk sc">1-click checkout ✦</span>
-    <div class="blob" id="blob">
-      <div class="cheek ch1"></div><div class="cheek ch2"></div>
-      <div class="face">
-        <div class="eye"><i data-eye></i><svg class="arch" viewBox="0 0 40 22"><path d="M4 18 Q20 2 36 18"/></svg><svg class="heart" viewBox="0 0 24 24"><path d="M12 21S2.6 14.7 2.6 8.6C2.6 5.6 5 4 7.3 4 9 4 10.6 5 12 6.8 13.4 5 15 4 16.7 4 19 4 21.4 5.6 21.4 8.6 21.4 14.7 12 21 12 21Z"/></svg><span class="star">✦</span></div>
-        <div class="eye"><i data-eye></i><svg class="arch" viewBox="0 0 40 22"><path d="M4 18 Q20 2 36 18"/></svg><svg class="heart" viewBox="0 0 24 24"><path d="M12 21S2.6 14.7 2.6 8.6C2.6 5.6 5 4 7.3 4 9 4 10.6 5 12 6.8 13.4 5 15 4 16.7 4 19 4 21.4 5.6 21.4 8.6 21.4 14.7 12 21 12 21Z"/></svg><span class="star">✦</span></div>
-      </div>
-      <div class="mouth"></div>
-      <svg class="soda" viewBox="0 0 64 112"><rect x="29" y="4" width="7" height="64" rx="3.5" fill="#ff5db1" transform="rotate(-9 32 36)"/><path d="M15 58 L49 58 L44 108 L20 108 Z" fill="#fffbe6" stroke="#1a0b3d" stroke-width="2.5"/><path d="M19 74 L45 74 L42 106 L22 106 Z" fill="#ffe14d"/><circle class="bub" cx="27" cy="99" r="2" fill="#fff" style="animation-delay:0s"/><circle class="bub" cx="35" cy="101" r="1.6" fill="#fff" style="animation-delay:.6s"/><circle class="bub" cx="31" cy="97" r="1.4" fill="#fff" style="animation-delay:1.1s"/><circle class="bub" cx="38" cy="100" r="1.3" fill="#fff" style="animation-delay:1.6s"/><circle cx="47" cy="58" r="8" fill="#fff200" stroke="#1a0b3d" stroke-width="2"/></svg>
-      <div class="shades"><svg viewBox="0 0 160 62"><rect x="3" y="3" width="68" height="56" rx="22" fill="#0c0717"/><rect x="89" y="3" width="68" height="56" rx="22" fill="#0c0717"/><rect x="65" y="22" width="30" height="8" rx="4" fill="#0c0717"/><rect x="12" y="12" width="22" height="9" rx="4" fill="rgba(255,255,255,.2)"/><rect x="98" y="12" width="22" height="9" rx="4" fill="rgba(255,255,255,.2)"/></svg></div>
-    </div>
-    <svg class="umbrella" viewBox="0 0 140 130"><rect x="67" y="52" width="6" height="76" rx="3" fill="#8a5a2b"/><polygon points="70,8 10,56 40,56" fill="#ffd23f"/><polygon points="70,8 40,56 70,56" fill="#fff"/><polygon points="70,8 70,56 100,56" fill="#ffd23f"/><polygon points="70,8 100,56 130,56" fill="#fff"/><circle cx="70" cy="7" r="5" fill="#ff5db1"/></svg>
+    <div class="blob" id="blob"><img class="blob-img" src="moscot-idle.png" alt="GetUrLink mascot"></div>
   </div>
 </header>
 
@@ -407,32 +399,22 @@
   const star=document.getElementById('star');let mx=innerWidth/2,my=innerHeight/2,sx=mx,sy=my,t=0;
   if(!reduce)addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;document.body.style.setProperty('--mx',mx+'px');document.body.style.setProperty('--my',my+'px');});
   if(!reduce)(function l(){sx+=(mx-sx)*.16;sy+=(my-sy)*.16;t+=.05;star.style.transform=`translate(${sx}px,${sy}px) translate(-50%,-50%) rotate(${t}rad)`;requestAnimationFrame(l);})();
-  const eyes=[...document.querySelectorAll('[data-eye]')];
-  const face=document.querySelector('.face');
-  // floating mini-mascot: a clone of the hero mascot, built now so the same reactions drive it
+  const blobImg=blob.querySelector('img');
+  const FR={idle:'moscot-idle.png',happy:'moscot-happy.png',sell:'moscot-sell.png',themes:'moscot-themes.png',analytics:'moscot-analytics.png',fees:'moscot-fees.png',domain:'moscot-domain.png',ai:'moscot-ai.png'};
+  Object.values(FR).forEach(s=>{const i=new Image();i.src=s;});
   const floaty=document.getElementById('floaty');
-  let mini=null,miniFace=null,miniEyes=[],miniBase='',hovering=false;
+  let mini=null,miniImg=null,miniBase='',hovering=false;
   if(floaty){
-    mini=blob.cloneNode(true);mini.removeAttribute('id');mini.className='blob';
-    const mw=document.createElement('div');mw.className='miniwrap';mw.appendChild(mini);
-    const umb=document.querySelector('.umbrella');if(umb)mw.appendChild(umb.cloneNode(true));
-    floaty.appendChild(mw);
-    miniFace=mini.querySelector('.face');miniEyes=[...mini.querySelectorAll('[data-eye]')];
+    mini=blob.cloneNode(true);mini.removeAttribute('id');
+    const mw=document.createElement('div');mw.className='miniwrap';mw.appendChild(mini);floaty.appendChild(mw);
+    miniImg=mini.querySelector('img');
   }
-  function track(p,e){const r=p.parentElement.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,a=Math.atan2(e.clientY-cy,e.clientX-cx),d=Math.min(13,Math.hypot(e.clientX-cx,e.clientY-cy)/12);p.style.transform=`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px)`;}
-  addEventListener('mousemove',e=>{
-    if(reduce)return;
-    if(!blob.classList.contains('emo'))eyes.forEach(p=>track(p,e));
-    if(mini&&!mini.classList.contains('emo'))miniEyes.forEach(p=>track(p,e));
-  });
-  function applyMini(cls){if(!mini)return;if(cls)miniEyes.forEach(p=>p.style.transform='');const c=cls?'blob emo '+cls:'blob';if(mini.className!==c){mini.className=c;if(cls&&miniFace){miniFace.style.animation='none';void miniFace.offsetWidth;miniFace.style.animation='react .42s ease';}}}
-  function setEmo(cls){
-    hovering=true;
-    if(!blob.classList.contains(cls)){blob.className='blob emo '+cls;eyes.forEach(p=>p.style.transform='');face.style.animation='none';void face.offsetWidth;face.style.animation='react .42s ease';}
-    applyMini(cls);
-  }
-  function clearEmo(){hovering=false;blob.className='blob';applyMini(miniBase);}
-  const emoMap={'c-sell':'e-sell','c-ai':'e-ai','c-fees':'e-fees','c-dom':'e-dom','c-an':'e-an','c-th':'e-th'};
+  function pop(img){if(!img||reduce)return;img.style.animation='none';void img.offsetWidth;img.style.animation='mpop .42s ease';}
+  function setFrame(img,name){if(!img)return;const fr=FR[name]||FR.idle;if(img.getAttribute('src')!==fr){img.setAttribute('src',fr);pop(img);}}
+  function applyMini(name){setFrame(miniImg,name||'idle');}
+  function setEmo(name){hovering=true;setFrame(blobImg,name);setFrame(miniImg,name);}
+  function clearEmo(){hovering=false;setFrame(blobImg,'idle');setFrame(miniImg,miniBase||'idle');}
+  const emoMap={'c-sell':'sell','c-ai':'ai','c-fees':'fees','c-dom':'domain','c-an':'analytics','c-th':'themes'};
   Object.keys(emoMap).forEach(k=>{const el=document.querySelector('.'+k);if(el){el.addEventListener('mouseenter',()=>setEmo(emoMap[k]));el.addEventListener('mouseleave',clearEmo);}});
   document.querySelectorAll('[data-cta]').forEach(b=>{b.addEventListener('mouseenter',()=>setEmo('happy'));b.addEventListener('mouseleave',clearEmo);});
   if(!reduce)document.querySelectorAll('[data-mag]').forEach(b=>{b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.3}px,${(e.clientY-r.top-r.height/2)*.45}px)`;});b.addEventListener('mouseleave',()=>b.style.transform='');});
@@ -452,7 +434,7 @@
     const hero=document.querySelector('.hero');
     const q=s=>document.querySelector(s),sec=s=>{const el=q(s);return el?el.closest('section'):null;};
     // each feature banner fires its OWN reaction as it scrolls past, plus the other sections
-    const reactors=[[q('#how'),'happy'],[q('.c-sell'),'e-sell'],[q('.c-ai'),'e-ai'],[q('.c-fees'),'e-fees'],[q('.c-dom'),'e-dom'],[q('.c-an'),'e-an'],[q('.c-th'),'e-th'],[q('#pricing'),'e-fees'],[sec('.tgrid'),'e-th'],[q('#faq'),'e-an'],[sec('.cta-final'),'happy']].filter(r=>r[0]);
+    const reactors=[[q('#how'),'happy'],[q('.c-sell'),'sell'],[q('.c-ai'),'ai'],[q('.c-fees'),'fees'],[q('.c-dom'),'domain'],[q('.c-an'),'analytics'],[q('.c-th'),'themes'],[q('#pricing'),'fees'],[sec('.tgrid'),'themes'],[q('#faq'),'analytics'],[sec('.cta-final'),'happy']].filter(r=>r[0]);
     let raf=0;
     function update(){
       raf=0;
