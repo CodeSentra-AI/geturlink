@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Paint With Cursor</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#070710;--muted:#2c2c40;--line:#1d1d2e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sora',system-ui,sans-serif;background:var(--bg);color:#eceaff;min-height:100vh;overflow-x:hidden}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:980px;margin:0 auto;padding:0 1.5rem}
+  nav{display:flex;align-items:center;justify-content:space-between;height:76px;max-width:980px;margin:0 auto;padding:0 1.5rem}
+  .logo{font-weight:800;font-size:1.3rem}.logo span{color:#8b5cff}
+  .nl{display:flex;gap:1.2rem;align-items:center}.nl a.l{color:#7a7a92;font-size:.92rem;font-weight:500}
+  .btn{font-weight:600;font-size:.95rem;border-radius:12px;padding:.7rem 1.35rem;border:1px solid var(--line);background:#101020;color:#eceaff}
+  .btn-p{background:linear-gradient(110deg,#8b5cff,#ff49c7);border:none;color:#fff}
+  .hero{text-align:center;padding:13vh 0 0}
+  .tag{display:inline-block;color:#ff49c7;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:2rem}
+  .paint{position:relative;display:inline-block;font-size:clamp(2.6rem,7vw,5.6rem);font-weight:800;letter-spacing:-.04em;line-height:1.04}
+  .base{color:transparent;-webkit-text-stroke:1.4px #34344e}
+  .top{position:absolute;inset:0;
+    background:linear-gradient(110deg,#a78bff,#ff49c7,#34e7e4,#ffb938,#a78bff);background-size:260% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:hue 8s linear infinite;
+    --mx:50%;--my:50%;
+    -webkit-mask-image:radial-gradient(circle 150px at var(--mx) var(--my),#000 0%,#000 30%,transparent 62%);
+    mask-image:radial-gradient(circle 150px at var(--mx) var(--my),#000 0%,#000 30%,transparent 62%);}
+  @keyframes hue{to{background-position:260% 0}}
+  .sub{color:#a6a4c2;font-size:1.15rem;max-width:32rem;margin:1.6rem auto 2rem}
+  .acts{display:flex;gap:1rem;justify-content:center}
+  .note{position:fixed;bottom:1.4rem;left:0;right:0;text-align:center;color:#62627a;font-size:.82rem}
+</style>
+</head>
+<body>
+<nav><div class="logo">Get<span>Ur</span>Link</div><div class="nl"><a class="l" href="#">Pricing</a><a class="btn" href="#">Log in</a><a class="btn btn-p" href="#">Get started</a></div></nav>
+<header class="wrap hero">
+  <span class="tag">Free until your first sale</span>
+  <div class="paint" id="paint">
+    <span class="base">Your link in bio<br>that actually sells.</span>
+    <span class="top" id="top" aria-hidden="true">Your link in bio<br>that actually sells.</span>
+  </div>
+  <p class="sub">Move your cursor across the words — paint them to life. A storefront for creators with 1-click checkout.</p>
+  <div class="acts"><a class="btn btn-p" href="#">Create your page — free</a><a class="btn" href="#">How it works</a></div>
+</header>
+<div class="note">✦ drag your cursor over the headline to paint it in light</div>
+<script>
+  const top=document.getElementById('top'),box=document.getElementById('paint');
+  addEventListener('mousemove',e=>{const r=box.getBoundingClientRect();
+    top.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    top.style.setProperty('--my',(e.clientY-r.top)+'px');});
+</script>
+</body>
+</html>

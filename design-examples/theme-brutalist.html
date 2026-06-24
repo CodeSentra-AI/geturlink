@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vamshi — Brutalist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#eae6dc;--ink:#0c0c0c;--paper:#fff;--accent:#ff4d1c;--lime:#d4ff4d;--blue:#3d5aff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5}
+  a{color:inherit;text-decoration:none}
+  .disp{font-family:'Archivo',sans-serif}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 1.4rem}
+  /* bar */
+  .bar{border-bottom:3px solid var(--ink);display:flex;align-items:stretch;justify-content:space-between}
+  .bar .id{font-family:'Archivo',sans-serif;font-weight:900;font-size:1.3rem;padding:1rem 0;letter-spacing:-.02em}
+  .bar .meta{display:flex}
+  .bar .meta span{border-left:3px solid var(--ink);padding:1rem 1.2rem;font-size:.74rem;text-transform:uppercase;font-weight:700;display:flex;align-items:center}
+  .bar .meta .av{background:var(--lime)}
+  /* hero */
+  .hero{border-bottom:3px solid var(--ink);padding:2.4rem 0}
+  .tagrow{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.4rem}
+  .tag{border:2px solid var(--ink);padding:.25rem .7rem;font-size:.72rem;text-transform:uppercase;font-weight:700;background:var(--paper)}
+  .tag.a{background:var(--accent);color:#fff;border-color:var(--ink)}
+  .tag.b{background:var(--blue);color:#fff}
+  h1{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(2.6rem,10vw,7rem);line-height:.9;letter-spacing:-.04em;text-transform:uppercase}
+  h1 .hl{background:var(--accent);color:#fff;padding:0 .12em;display:inline-block;transform:rotate(-1deg)}
+  .hero .sub{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between;align-items:flex-end;margin-top:1.8rem}
+  .hero .sub p{max-width:34rem;font-size:.95rem;font-weight:500}
+  .hero .socials{display:flex;gap:.5rem}
+  .hero .socials a{border:2px solid var(--ink);padding:.4rem .8rem;font-size:.74rem;font-weight:700;text-transform:uppercase;background:var(--paper);box-shadow:3px 3px 0 var(--ink);transition:.12s}
+  .hero .socials a:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);background:var(--lime)}
+  /* section label */
+  .sl{font-family:'Archivo',sans-serif;font-weight:900;font-size:1.1rem;text-transform:uppercase;background:var(--ink);color:var(--bg);display:inline-block;padding:.3rem .9rem;margin:2.6rem 0 1.3rem}
+  /* work */
+  .work{display:grid;grid-template-columns:1fr 1fr;gap:0;border:3px solid var(--ink)}
+  .w{border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);position:relative;cursor:pointer;background:var(--paper)}
+  .w:nth-child(2n){border-right:none}
+  .w .im{aspect-ratio:16/9;position:relative;overflow:hidden;border-bottom:3px solid var(--ink)}
+  .w .im .img{position:absolute;inset:0;transition:transform .4s}
+  .w:hover .im .img{transform:scale(1.06)}
+  .w .no{position:absolute;top:0;left:0;background:var(--ink);color:var(--bg);font-family:'Archivo',sans-serif;font-weight:900;font-size:.9rem;padding:.2rem .6rem;z-index:2}
+  .w .b{padding:1rem 1.1rem;display:flex;justify-content:space-between;align-items:center}
+  .w .t{font-family:'Archivo',sans-serif;font-weight:800;font-size:1.3rem;text-transform:uppercase}
+  .w .c{font-size:.74rem;text-transform:uppercase;font-weight:700;color:#555}
+  .w .ar{font-family:'Archivo',sans-serif;font-weight:900;font-size:1.3rem}
+  .w:hover{background:var(--lime)}
+  /* ai */
+  .ai{border:3px solid var(--ink);background:var(--blue);color:#fff;padding:1.8rem;box-shadow:6px 6px 0 var(--ink);margin-top:.4rem}
+  .ai .h{font-size:.74rem;text-transform:uppercase;font-weight:700;margin-bottom:.8rem;opacity:.85}
+  .ai .q{font-weight:500;font-size:.9rem;margin-bottom:.4rem}
+  .ai .a{font-family:'Archivo',sans-serif;font-weight:800;font-size:1.5rem;line-height:1.15;text-transform:uppercase}
+  .ai .a .hl{background:var(--lime);color:var(--ink);padding:0 .1em}
+  .ai .ask{display:inline-block;margin-top:1.2rem;background:var(--paper);color:var(--ink);border:2px solid var(--ink);font-family:'Archivo',sans-serif;font-weight:800;text-transform:uppercase;font-size:.82rem;padding:.55rem 1.2rem;box-shadow:3px 3px 0 var(--ink)}
+  /* shop */
+  .shop{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem}
+  .p{border:3px solid var(--ink);background:var(--paper);box-shadow:5px 5px 0 var(--ink);transition:.12s}
+  .p:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  .p .pi{aspect-ratio:1/1;border-bottom:3px solid var(--ink);position:relative}
+  .p .price{position:absolute;bottom:0;right:0;background:var(--accent);color:#fff;font-family:'Archivo',sans-serif;font-weight:900;font-size:1rem;padding:.2rem .7rem;border-left:3px solid var(--ink);border-top:3px solid var(--ink)}
+  .p .pb{padding:.9rem 1rem 1.1rem}
+  .p .pt{font-family:'Archivo',sans-serif;font-weight:800;font-size:1.05rem;text-transform:uppercase;line-height:1.05}
+  .p .pd{font-size:.74rem;font-weight:500;color:#555;margin:.3rem 0 .8rem}
+  .p .buy{display:block;text-align:center;background:var(--ink);color:var(--bg);font-family:'Archivo',sans-serif;font-weight:800;text-transform:uppercase;font-size:.8rem;padding:.5rem}
+  .p:hover .buy{background:var(--accent)}
+  footer{border-top:3px solid var(--ink);margin-top:3rem;padding:1.4rem 0 3rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.76rem;text-transform:uppercase;font-weight:700}
+  @media(max-width:760px){.work,.shop{grid-template-columns:1fr}.w{border-right:none}.bar .meta .vol{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar"><div class="id">VAMSHI.EXE</div><div class="meta"><span class="vol">EST/2016</span><span class="av">● AVAILABLE</span></div></div>
+
+  <section class="hero">
+    <div class="tagrow"><span class="tag a">Preset Artist</span><span class="tag">Wallpaper Sets</span><span class="tag b">Tokyo</span><span class="tag">Self-taught</span></div>
+    <h1>I judge a<br>book by<br>its <span class="hl">cover.</span></h1>
+    <div class="sub">
+      <p>Film-grade presets &amp; 8K wallpaper sets. Made loud, graded by hand. 240,000 downloads and counting.</p>
+      <div class="socials"><a href="#">IG ↗</a><a href="#">Dribbble ↗</a><a href="#">GitHub ↗</a></div>
+    </div>
+  </section>
+
+  <div class="sl">// Selected_Work</div>
+  <section class="work">
+    <a class="w"><div class="im"><span class="no">01</span><div class="img" style="background:linear-gradient(150deg,#2b3a67,#7c5cff)"></div></div><div class="b"><div><div class="t">Neon Tokyo</div><div class="c">8K Wallpaper</div></div><span class="ar">↗</span></div></a>
+    <a class="w"><div class="im"><span class="no">02</span><div class="img" style="background:linear-gradient(150deg,#e0794a,#7c3a2c)"></div></div><div class="b"><div><div class="t">Golden Street</div><div class="c">Lightroom</div></div><span class="ar">↗</span></div></a>
+    <a class="w"><div class="im"><span class="no">03</span><div class="img" style="background:linear-gradient(150deg,#3fae6a,#13503a)"></div></div><div class="b"><div><div class="t">Forest Film</div><div class="c">Preset Pack</div></div><span class="ar">↗</span></div></a>
+    <a class="w"><div class="im"><span class="no">04</span><div class="img" style="background:linear-gradient(150deg,#b06ab3,#4568dc)"></div></div><div class="b"><div><div class="t">Aurora UI</div><div class="c">Mobile Theme</div></div><span class="ar">↗</span></div></a>
+  </section>
+
+  <div class="sl">// Ask_The_Bot</div>
+  <div class="ai">
+    <div class="h">&gt;&gt; visitor_query</div>
+    <div class="q">"Which preset is best for night street photography?"</div>
+    <div class="a">Run the <span class="hl">Lightroom Classics</span> — 15 night looks.</div>
+    <a class="ask" href="#">▸ Ask anything</a>
+  </div>
+
+  <div class="sl">// Shop</div>
+  <section class="shop">
+    <div class="p"><div class="pi" style="background:linear-gradient(135deg,#7c3aed,#db2777,#06b6d4)"><span class="price">$9.99</span></div><div class="pb"><div class="pt">Neon Glow Pack</div><div class="pd">10 cyberpunk 8K wallpapers</div><a class="buy" href="#">Buy</a></div></div>
+    <div class="p"><div class="pi" style="background:linear-gradient(135deg,#f59e0b,#ef4444,#1f2937)"><span class="price">$24.99</span></div><div class="pb"><div class="pt">Lightroom Classics</div><div class="pd">15 night-street film presets</div><a class="buy" href="#">Buy</a></div></div>
+    <div class="p"><div class="pi" style="background:linear-gradient(135deg,#22d3ee,#3b82f6,#1e1b4b)"><span class="price">$14.99</span></div><div class="pb"><div class="pt">Aurora Theme</div><div class="pd">Icon pack + widgets</div><a class="buy" href="#">Buy</a></div></div>
+  </section>
+
+  <footer><div>© 2026 VAMSHI.EXE</div><div>POWERED_BY // GETURLINK</div></footer>
+</div>
+</body>
+</html>

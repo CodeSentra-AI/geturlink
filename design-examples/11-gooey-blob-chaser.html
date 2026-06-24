@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Gooey Blob Chaser</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0710;--ink:#f6f1ff;--muted:#948ca8;--line:#241d33}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow:hidden}
+  a{text-decoration:none;color:inherit}
+  .goo{position:fixed;inset:0;z-index:0;pointer-events:none;filter:url(#goo)}
+  .ball{position:absolute;border-radius:50%;top:0;left:0;will-change:transform}
+  .b0{width:130px;height:130px;background:#8b5cff}
+  .b1{width:90px;height:90px;background:#ff49c7}
+  .b2{width:64px;height:64px;background:#34e7e4}
+  .b3{width:46px;height:46px;background:#ffb938}
+  .wrap{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 1.5rem}
+  nav{display:flex;align-items:center;justify-content:space-between;height:74px;position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 1.5rem}
+  .logo{font-weight:800;font-size:1.3rem}.logo span{color:#b18bff}
+  .nl{display:flex;gap:1.2rem;align-items:center}.nl a.l{color:var(--muted);font-size:.92rem;font-weight:500}
+  .btn{font-weight:600;font-size:.95rem;border-radius:12px;padding:.7rem 1.35rem;border:1px solid var(--line);background:#150f20;color:var(--ink)}
+  .btn-p{background:#8b5cff;border:none;color:#fff}
+  .hero{text-align:center;padding:12vh 0 0}
+  h1{font-size:clamp(2.6rem,6vw,5rem);font-weight:800;letter-spacing:-.04em;line-height:1.02;mix-blend-mode:difference}
+  .sub{color:#c4bcdd;font-size:1.15rem;max-width:30rem;margin:1.4rem auto 2rem}
+  .acts{display:flex;gap:1rem;justify-content:center}
+  .note{position:fixed;bottom:1.4rem;left:0;right:0;text-align:center;color:var(--muted);font-size:.82rem;z-index:2}
+</style>
+</head>
+<body>
+<svg width="0" height="0"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="14" result="b"/><feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10"/></filter></defs></svg>
+<div class="goo"><div class="ball b0"></div><div class="ball b1"></div><div class="ball b2"></div><div class="ball b3"></div></div>
+<nav><div class="logo">Get<span>Ur</span>Link</div><div class="nl"><a class="l" href="#">Pricing</a><a class="btn" href="#">Log in</a><a class="btn btn-p" href="#">Get started</a></div></nav>
+<header class="wrap hero">
+  <h1>One link.<br>Endless flow.</h1>
+  <p class="sub">A storefront for creators that moves like you do. Share your links, sell your products, get paid in one click.</p>
+  <div class="acts"><a class="btn btn-p" href="#">Create your page — free</a><a class="btn" href="#">How it works</a></div>
+</header>
+<div class="note">✦ a gooey blob chases your cursor with a soft lag — move slowly, then fast</div>
+<script>
+  const balls=[...document.querySelectorAll('.ball')];
+  const radii=balls.map(b=>b.offsetWidth/2);
+  let mx=innerWidth/2,my=innerHeight/2;const pos=balls.map(()=>({x:mx,y:my}));
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  function loop(){let tx=mx,ty=my;
+    balls.forEach((b,i)=>{const sp=.28-i*.05;pos[i].x+=(tx-pos[i].x)*sp;pos[i].y+=(ty-pos[i].y)*sp;
+      const r=radii[i];b.style.transform=`translate(${pos[i].x-r}px,${pos[i].y-r}px)`;tx=pos[i].x;ty=pos[i].y;});
+    requestAnimationFrame(loop);}loop();
+</script>
+</body>
+</html>

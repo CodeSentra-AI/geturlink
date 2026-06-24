@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Spotlight Reveal</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#060608;--ink:#f5f5f7;--muted:#86868f;--line:#222227;--gold:#ffd166;--accent:#ffb938}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Sora',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden;--mx:50vw;--my:35vh}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 1.5rem}
+  .spot{position:fixed;inset:0;z-index:40;pointer-events:none;background:radial-gradient(260px circle at var(--mx) var(--my),transparent 0,rgba(6,6,8,.6) 60%,rgba(6,6,8,.82) 100%);transition:background .05s linear}
+  nav{position:relative;z-index:50}.nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .logo{font-weight:800;font-size:1.3rem}.logo span{color:var(--gold)}
+  .nlinks{display:flex;gap:1.6rem;align-items:center}.nlinks a.l{color:var(--muted);font-size:.92rem;font-weight:500}
+  .btn{display:inline-flex;gap:.5rem;align-items:center;font-weight:600;font-size:.95rem;border-radius:11px;padding:.72rem 1.35rem;border:1px solid var(--line)}
+  .btn-p{background:var(--gold);color:#1a1405;border-color:var(--gold)}
+  .hero{position:relative;z-index:45;text-align:center;padding:9rem 0 7rem}
+  .hint{display:inline-block;color:var(--muted);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:2rem;animation:blink 2.6s infinite}
+  @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+  h1{font-size:clamp(2.8rem,6vw,5rem);font-weight:800;letter-spacing:-.04em;line-height:1;margin-bottom:1.4rem}
+  .g{color:var(--gold)}
+  .sub{color:#c3c3cb;font-size:1.18rem;max-width:34rem;margin:0 auto 2.2rem}
+  .acts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .stat{position:relative;z-index:45;display:flex;gap:3.5rem;justify-content:center;padding:2rem 0 6rem;flex-wrap:wrap}
+  .stat .n{font-size:2.2rem;font-weight:800;color:var(--gold)}.stat .t{color:var(--muted);font-size:.9rem}
+  footer{position:relative;z-index:45;border-top:1px solid var(--line);padding:2rem 0;color:var(--muted);font-size:.88rem;text-align:center}
+</style>
+</head>
+<body>
+<div class="spot"></div>
+<nav><div class="wrap nav"><div class="logo">Get<span>Ur</span>Link</div>
+<div class="nlinks"><a class="l" href="#">Pricing</a><a class="btn" href="#">Log in</a><a class="btn btn-p" href="#">Get started</a></div></div></nav>
+<header class="wrap hero">
+  <span class="hint">◐ move your cursor</span>
+  <h1>Shine a light on<br>what you <span class="g">sell.</span></h1>
+  <p class="sub">A link-in-bio storefront that puts your digital products center stage — with 1-click checkout and zero monthly wall.</p>
+  <div class="acts"><a class="btn btn-p" href="#">Create your page — free</a><a class="btn" href="#">See how it works</a></div>
+</header>
+<section class="wrap stat">
+  <div><div class="n">$0</div><div class="t">to start</div></div>
+  <div><div class="n">1-click</div><div class="t">checkout</div></div>
+  <div><div class="n">0%</div><div class="t">fees on Premium</div></div>
+  <div><div class="n">24/7</div><div class="t">AI assistant</div></div>
+</section>
+<footer><div class="wrap">© 2026 GetUrLink · Spotlight on your store.</div></footer>
+<script>
+  addEventListener('mousemove',e=>{document.body.style.setProperty('--mx',e.clientX+'px');document.body.style.setProperty('--my',e.clientY+'px')});
+</script>
+</body>
+</html>

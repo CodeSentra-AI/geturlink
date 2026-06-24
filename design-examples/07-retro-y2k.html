@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Retro Y2K</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0d0221;--ink:#fdf0ff;--pink:#ff2e97;--cyan:#05d9e8;--purple:#a020f0;--yellow:#fff200}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Space Mono',monospace;background:linear-gradient(180deg,#1a0938 0%,#3d0b54 45%,#0d0221 75%);color:var(--ink);min-height:100vh;overflow-x:hidden;position:relative}
+  a{text-decoration:none;color:inherit}
+  .grid{position:fixed;left:0;right:0;bottom:0;height:48vh;z-index:0;perspective:280px;overflow:hidden}
+  .grid::before{content:"";position:absolute;inset:-50% -50% 0;background-image:linear-gradient(var(--cyan) 2px,transparent 2px),linear-gradient(90deg,var(--cyan) 2px,transparent 2px);background-size:46px 46px;transform:rotateX(72deg);transform-origin:bottom;opacity:.55;animation:road 1.4s linear infinite}
+  @keyframes road{to{background-position:0 46px}}
+  .sun{position:fixed;top:13%;left:50%;transform:translateX(-50%);width:230px;height:230px;border-radius:50%;background:linear-gradient(180deg,var(--yellow),var(--pink));z-index:0;box-shadow:0 0 90px rgba(255,46,151,.5)}
+  .sun::after{content:"";position:absolute;left:0;right:0;bottom:0;height:55%;background:repeating-linear-gradient(180deg,transparent 0 7px,#0d0221 7px 13px)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:3}
+  nav{display:flex;align-items:center;justify-content:space-between;height:74px;max-width:980px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:3}
+  .logo{font-family:'Orbitron';font-weight:900;font-size:1.25rem;color:var(--cyan);text-shadow:0 0 10px var(--cyan)}
+  .nl{display:flex;gap:1.2rem;align-items:center}.nl a{font-size:.85rem;color:#e6c9ff}
+  .btn{display:inline-block;font-family:'Orbitron';font-weight:700;font-size:.85rem;padding:.7rem 1.3rem;border:2px solid var(--cyan);border-radius:4px;color:var(--cyan);text-shadow:0 0 6px var(--cyan);box-shadow:0 0 14px rgba(5,217,232,.4) inset,0 0 14px rgba(5,217,232,.3)}
+  .btn-p{background:var(--pink);border-color:var(--pink);color:#fff;text-shadow:0 0 8px #fff;box-shadow:0 0 20px rgba(255,46,151,.6)}
+  .hero{text-align:center;padding:7rem 0 4rem}
+  h1{font-family:'Orbitron';font-weight:900;font-size:clamp(2.4rem,6vw,4.6rem);line-height:1;letter-spacing:.02em;margin-bottom:1.4rem;
+    background:linear-gradient(180deg,#fff,var(--cyan) 60%,var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 16px rgba(160,32,240,.6))}
+  .sub{font-size:1.05rem;max-width:32rem;margin:0 auto 2rem;color:#f0d6ff}
+  .acts{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .ticker{margin-top:5rem;border-top:2px solid var(--pink);border-bottom:2px solid var(--pink);padding:.7rem 0;overflow:hidden;white-space:nowrap;background:rgba(255,46,151,.08)}
+  .tk{display:inline-block;animation:sc 16s linear infinite;font-family:'Orbitron';font-weight:700;color:var(--yellow);letter-spacing:.1em}
+  .tk span{margin:0 1.4rem}
+  @keyframes sc{to{transform:translateX(-50%)}}
+  footer{position:relative;z-index:3;text-align:center;padding:2rem 0 2.5rem;color:#c79be0;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="sun"></div><div class="grid"></div>
+<nav><div class="logo">GETURLINK</div><div class="nl"><a href="#">PRICING</a><a class="btn" href="#">LOG IN</a><a class="btn btn-p" href="#">START</a></div></nav>
+<header class="wrap hero">
+  <h1>SELL YOUR<br>VIBE ONLINE</h1>
+  <p class="sub">Your link in bio, leveled up. Drop your products, share one link, get paid in a click. No monthly wall — start free.</p>
+  <div class="acts"><a class="btn btn-p" href="#">CREATE YOUR PAGE</a><a class="btn" href="#">HOW IT WORKS</a></div>
+</header>
+<div class="ticker"><div class="tk"><span>★ FREE TO START</span><span>★ 0% FEES ON PREMIUM</span><span>★ 1-CLICK CHECKOUT</span><span>★ AI ASSISTANT</span><span>★ FREE TO START</span><span>★ 0% FEES ON PREMIUM</span><span>★ 1-CLICK CHECKOUT</span><span>★ AI ASSISTANT</span></div></div>
+<footer class="wrap">© 2026 GETURLINK // INSERT COIN</footer>
+</body>
+</html>

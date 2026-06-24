@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Bold & Colorful</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#15120b; --paper:#fdf6e9; --pink:#ff5c8a; --lime:#c6f24e; --violet:#7c5cff; --yellow:#ffd23f; --line:#15120b; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+  .btn{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:1rem;border:2.5px solid var(--line);border-radius:13px;padding:.75rem 1.4rem;box-shadow:4px 4px 0 var(--line);transition:.12s}
+  .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--line)}
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+  .btn-p{background:var(--violet);color:#fff}
+  .btn-pink{background:var(--pink);color:#fff}
+  .btn-w{background:#fff}
+  nav{border-bottom:2.5px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{font-weight:700;font-size:1.45rem;letter-spacing:-.02em}
+  .logo span{background:var(--yellow);padding:0 .15em;border:2px solid var(--line);border-radius:6px}
+  .nlinks{display:flex;gap:1rem;align-items:center}
+  .nlinks a.l{font-weight:500}
+  .hero{padding:4.5rem 0 3.5rem;display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;align-items:center}
+  .sticker{display:inline-block;background:var(--lime);border:2.5px solid var(--line);border-radius:999px;padding:.4rem 1rem;font-weight:700;font-size:.85rem;box-shadow:3px 3px 0 var(--line);transform:rotate(-2deg);margin-bottom:1.3rem}
+  h1{font-size:clamp(2.6rem,5vw,4rem);font-weight:700;line-height:1;letter-spacing:-.03em;margin-bottom:1.1rem}
+  .hl{background:var(--pink);color:#fff;padding:0 .12em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .sub{font-size:1.18rem;max-width:30rem;margin-bottom:1.8rem;font-weight:500}
+  .acts{display:flex;gap:1rem;flex-wrap:wrap}
+  .card{border:2.5px solid var(--line);border-radius:20px;box-shadow:6px 6px 0 var(--line);background:#fff}
+  .mock{padding:1.4rem;background:var(--violet)}
+  .scr{background:#fff;border:2.5px solid var(--line);border-radius:14px;padding:1.1rem}
+  .av{width:52px;height:52px;border-radius:50%;background:var(--pink);border:2.5px solid var(--line);margin:0 auto .5rem}
+  .mn{text-align:center;font-weight:700}
+  .mb{text-align:center;font-size:.78rem;margin-bottom:.9rem;font-weight:500}
+  .lk{border:2px solid var(--line);border-radius:10px;padding:.55rem .8rem;font-size:.8rem;font-weight:600;margin-bottom:.55rem;display:flex;justify-content:space-between}
+  .lk:nth-child(odd){background:var(--yellow)}
+  .pr{background:var(--lime);border:2.5px solid var(--line);border-radius:12px;padding:.8rem;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:.82rem}
+  .ptag{background:var(--ink);color:#fff;font-size:.72rem;padding:.2rem .55rem;border-radius:999px}
+  section{padding:4rem 0}
+  .h2{font-size:clamp(2rem,3.6vw,2.8rem);font-weight:700;letter-spacing:-.02em;margin-bottom:.5rem}
+  .lead{font-size:1.1rem;font-weight:500;max-width:34rem}
+  .center{text-align:center}.center .lead{margin:0 auto}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:2.5rem}
+  .feat{padding:1.6rem}
+  .feat:nth-child(1){background:var(--yellow)}.feat:nth-child(2){background:var(--pink);color:#fff}.feat:nth-child(3){background:var(--lime)}
+  .feat h3{font-size:1.2rem;font-weight:700;margin:.6rem 0 .35rem}
+  .feat p{font-weight:500;font-size:.95rem}
+  .emoji{font-size:1.8rem}
+  .pricewrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:720px;margin:2.5rem auto 0}
+  .pc{padding:1.9rem;background:#fff}
+  .pc.pro{background:var(--violet);color:#fff}
+  .amt{font-size:2.7rem;font-weight:700;margin:.2rem 0}
+  .amt small{font-size:1rem;font-weight:500;opacity:.8}
+  .pc ul{list-style:none;margin:1.1rem 0 1.4rem;display:flex;flex-direction:column;gap:.55rem;font-weight:500}
+  .ctaband{margin:1rem 0 4.5rem;text-align:center;padding:3.4rem 2rem;background:var(--pink);color:#fff}
+  .ctaband h2{font-size:clamp(2rem,3.6vw,3rem);font-weight:700;letter-spacing:-.02em}
+  .ctaband p{font-weight:500;margin:.6rem auto 1.6rem;max-width:30rem}
+  footer{border-top:2.5px solid var(--line);padding:2rem 0;font-weight:500;display:flex;justify-content:space-between}
+  @media(max-width:820px){.hero{grid-template-columns:1fr}.grid3,.pricewrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav">
+  <div class="logo">Get<span>Ur</span>Link</div>
+  <div class="nlinks"><a class="l" href="#">Pricing</a><a class="btn btn-w" href="#">Log in</a><a class="btn btn-p" href="#">Get started</a></div>
+</div></nav>
+
+<header class="wrap hero">
+  <div>
+    <span class="sticker">★ Free until your first sale</span>
+    <h1>Your link in bio that <span class="hl">actually sells.</span></h1>
+    <p class="sub">Share your links. Sell your stuff. Get paid in one click. Your whole storefront, ready in minutes.</p>
+    <div class="acts"><a class="btn btn-pink" href="#">Create your page — free</a><a class="btn btn-w" href="#">See how →</a></div>
+  </div>
+  <div class="card mock">
+    <div class="scr">
+      <div class="av"></div><div class="mn">Vamshi</div><div class="mb">Designer & preset creator</div>
+      <div class="lk"><span>Instagram</span><span>↗</span></div>
+      <div class="lk"><span>Portfolio</span><span>↗</span></div>
+      <div class="pr"><span>Neon Glow Pack</span><span class="ptag">$9.99</span></div>
+    </div>
+  </div>
+</header>
+
+<section><div class="wrap center">
+  <h2 class="h2">Everything you need to sell</h2><p class="lead">No code. No design skills. No monthly wall.</p>
+  <div class="grid3">
+    <div class="card feat"><div class="emoji">🛍️</div><h3>Sell digital products</h3><p>Get paid instantly with secure delivery the second someone buys.</p></div>
+    <div class="card feat"><div class="emoji">💸</div><h3>Keep more money</h3><p>No paywall before you earn. 0% fees on Premium.</p></div>
+    <div class="card feat"><div class="emoji">🤖</div><h3>AI sells for you</h3><p>An assistant answers buyers and sends them to checkout 24/7.</p></div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap center">
+  <h2 class="h2">Start free. Upgrade when it pays.</h2><p class="lead">No $29 wall before your first dollar.</p>
+  <div class="pricewrap">
+    <div class="card pc"><div style="font-weight:700;font-size:1.15rem">Free</div><div class="amt">$0<small> /forever</small></div><ul><li>✓ Unlimited links & products</li><li>✓ 1-click checkout</li><li>✓ AI assistant</li><li>✓ Small fee per sale</li></ul><a class="btn btn-w" style="width:100%;justify-content:center" href="#">Start free</a></div>
+    <div class="card pc pro"><div style="font-weight:700;font-size:1.15rem">Premium</div><div class="amt">$9<small> /month</small></div><ul><li>✓ Everything in Free</li><li>✓ 0% platform fees</li><li>✓ Custom domain</li><li>✓ Advanced themes</li></ul><a class="btn btn-pink" style="width:100%;justify-content:center" href="#">Go Premium</a></div>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap"><div class="card ctaband">
+  <h2>Start selling in minutes.</h2><p>Turn your bio link into a real storefront — without the monthly wall.</p>
+  <a class="btn btn-w" href="#">Create your page — free</a>
+</div></div></section>
+
+<footer class="wrap"><div class="logo" style="font-size:1.2rem">Get<span>Ur</span>Link</div><div>© 2026 GetUrLink</div></footer>
+</body>
+</html>

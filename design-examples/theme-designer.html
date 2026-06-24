@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vamshi — Designer Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0c0d0f;--panel:#15171c;--panel2:#1b1e24;--line:#262a31;--ink:#f3f3ef;--mut:#9aa0ac;--lime:#cdf564;--limeink:#10130a}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 1.6rem}
+  .disp{font-family:'Space Grotesk',sans-serif}
+  /* nav */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0}
+  nav .id{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.15rem;display:flex;align-items:center;gap:.5rem}
+  nav .id .dot{width:10px;height:10px;border-radius:50%;background:var(--lime)}
+  nav .links{display:flex;gap:.4rem;background:var(--panel);border:1px solid var(--line);padding:.35rem;border-radius:99px;font-size:.86rem}
+  nav .links a{padding:.4rem 1rem;border-radius:99px;color:var(--mut);transition:.2s}
+  nav .links a.on,nav .links a:hover{background:var(--panel2);color:var(--ink)}
+  nav .cta{background:var(--lime);color:var(--limeink);font-weight:600;font-size:.86rem;padding:.55rem 1.1rem;border-radius:99px}
+  /* hero */
+  .hero{padding:3.5rem 0 2rem;position:relative}
+  .avwrap{position:relative;width:118px;height:118px;margin-bottom:2rem}
+  .av{width:118px;height:118px;border-radius:50%;background:linear-gradient(135deg,#cdf564,#7bd47a 40%,#3a8f6a);position:relative;box-shadow:0 0 60px rgba(205,245,100,.35)}
+  .av::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 68% 28%,rgba(255,255,255,.55),transparent 45%)}
+  .hi{position:absolute;top:-14px;right:-86px;color:var(--lime);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.9rem;transform:rotate(-6deg)}
+  .arrow{position:absolute;left:128px;top:30px;color:var(--lime);opacity:.85}
+  h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(2.4rem,6.2vw,4.4rem);line-height:1.05;letter-spacing:-.025em;max-width:18ch}
+  h1 .mark{color:var(--lime)}
+  h1 .out{-webkit-text-stroke:1.5px var(--mut);color:transparent}
+  .lead{display:flex;flex-wrap:wrap;gap:2rem;align-items:flex-end;justify-content:space-between;margin-top:2rem;border-top:1px solid var(--line);padding-top:1.5rem}
+  .lead p{max-width:32rem;color:var(--mut);font-size:1.05rem}
+  .lead .socials{display:flex;gap:1.3rem;font-size:.85rem}
+  .lead .socials a{color:var(--mut);transition:.2s}.lead .socials a:hover{color:var(--lime)}
+  /* section head */
+  .sh{display:flex;align-items:center;gap:.8rem;margin:4rem 0 1.4rem}
+  .sh .tag{font-family:'Space Grotesk',sans-serif;font-size:.74rem;text-transform:uppercase;letter-spacing:.14em;color:var(--limeink);background:var(--lime);padding:.25rem .7rem;border-radius:99px;font-weight:600}
+  .sh h2{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.5rem;letter-spacing:-.01em}
+  .sh .ln{flex:1;height:1px;background:var(--line)}
+  /* work cards */
+  .work{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:.3s;cursor:pointer}
+  .card:hover{transform:translateY(-4px);border-color:#3a4150}
+  .card .thumb{aspect-ratio:16/10;position:relative;overflow:hidden}
+  .card .thumb .img{position:absolute;inset:0;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+  .card:hover .thumb .img{transform:scale(1.05)}
+  .card .body{padding:1.2rem 1.3rem 1.4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+  .card .ct{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.15rem}
+  .card .cd{font-size:.85rem;color:var(--mut)}
+  .card .lm{flex-shrink:0;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--mut);transition:.25s}
+  .card:hover .lm{background:var(--lime);color:var(--limeink);border-color:var(--lime);transform:rotate(-45deg)}
+  /* featured big */
+  .feat{display:grid;grid-template-columns:1fr;gap:1.2rem}
+  .fbig{position:relative;border-radius:22px;overflow:hidden;aspect-ratio:21/9;cursor:pointer}
+  .fbig .img{position:absolute;inset:0;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+  .fbig:hover .img{transform:scale(1.04)}
+  .fbig .ov{position:absolute;inset:0;background:linear-gradient(to right,rgba(8,9,11,.82),transparent 70%)}
+  .fbig .m{position:absolute;left:2rem;top:50%;transform:translateY(-50%);z-index:2;max-width:24rem}
+  .fbig .cat{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--lime)}
+  .fbig .ti{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.9rem;letter-spacing:-.02em;margin:.3rem 0 .5rem}
+  .fbig .de{color:var(--mut);font-size:.95rem}
+  /* ai */
+  .ai{margin:1.2rem 0 0;background:linear-gradient(135deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:22px;padding:1.8rem;display:flex;gap:1.6rem;align-items:center;flex-wrap:wrap}
+  .ai .badge{flex-shrink:0;width:54px;height:54px;border-radius:16px;background:var(--lime);color:var(--limeink);display:grid;place-items:center;font-size:1.6rem}
+  .ai .txt{flex:1;min-width:200px}
+  .ai .q{color:var(--mut);font-size:.86rem}
+  .ai .a{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1.2rem;letter-spacing:-.01em;margin-top:.2rem}
+  .ai .a .mark{color:var(--lime)}
+  .ai .ask{flex-shrink:0;background:var(--lime);color:var(--limeink);font-weight:600;font-size:.86rem;padding:.6rem 1.2rem;border-radius:99px}
+  /* shop */
+  .shop{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem}
+  .prod{background:var(--panel);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:.3s}
+  .prod:hover{transform:translateY(-4px);border-color:#3a4150}
+  .prod .pi{aspect-ratio:1/1;position:relative}
+  .prod .pi .price{position:absolute;top:.7rem;right:.7rem;background:var(--lime);color:var(--limeink);font-weight:700;font-size:.82rem;padding:.2rem .65rem;border-radius:99px}
+  .prod .pb{padding:1rem 1.1rem 1.3rem}
+  .prod .pt{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem}
+  .prod .pd{font-size:.8rem;color:var(--mut);margin:.2rem 0 .9rem;min-height:2.2em}
+  .prod .buy{display:block;text-align:center;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:.5rem;font-weight:600;font-size:.84rem;transition:.2s}
+  .prod:hover .buy{background:var(--lime);color:var(--limeink);border-color:var(--lime)}
+  footer{margin-top:4rem;border-top:1px solid var(--line);padding:2.4rem 0 3rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;color:var(--mut);font-size:.85rem}
+  footer .big{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.6rem;color:var(--ink);letter-spacing:-.02em}
+  footer .big span{color:var(--lime)}
+  @media(max-width:720px){nav .links{display:none}.work,.shop{grid-template-columns:1fr}.hi,.arrow{display:none}.fbig{aspect-ratio:4/3}.fbig .m{left:1.3rem;max-width:80%}.ai{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <div class="id"><span class="dot"></span>Vamshi</div>
+    <div class="links"><a class="on" href="#">Home</a><a href="#">Work</a><a href="#">Shop</a></div>
+    <a class="cta" href="#">Let's talk ↗</a>
+  </nav>
+
+  <section class="hero">
+    <div class="avwrap">
+      <div class="av"></div>
+      <div class="hi">hey, I'm Vamshi 👋</div>
+      <svg class="arrow" width="64" height="40" viewBox="0 0 64 40" fill="none"><path d="M2 30 C 20 32, 40 22, 56 8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1 7"/><path d="M48 6 L58 6 L56 16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h1>A designer who <span class="mark">judges a book</span> by its <span class="out">cover.</span></h1>
+    <div class="lead">
+      <p>Self-taught preset &amp; wallpaper artist, 6+ years. I make film-grade looks and 8K sets for people who care how the small things feel.</p>
+      <div class="socials"><a href="#">Instagram ↗</a><a href="#">Dribbble ↗</a><a href="#">GitHub ↗</a></div>
+    </div>
+  </section>
+
+  <div class="sh"><span class="tag">Work</span><h2>Selected projects</h2><div class="ln"></div></div>
+  <section class="work">
+    <a class="card"><div class="thumb"><div class="img" style="background:linear-gradient(150deg,#2b3a67,#7c5cff 70%,#ff5db1)"></div></div><div class="body"><div><div class="ct">Neon Tokyo</div><div class="cd">8K wallpaper set · 240k downloads</div></div><span class="lm">↗</span></div></a>
+    <a class="card"><div class="thumb"><div class="img" style="background:linear-gradient(150deg,#e0794a,#7c3a2c)"></div></div><div class="body"><div><div class="ct">Golden Street</div><div class="cd">Lightroom preset pack</div></div><span class="lm">↗</span></div></a>
+    <a class="card"><div class="thumb"><div class="img" style="background:linear-gradient(150deg,#3fae6a,#13503a)"></div></div><div class="body"><div><div class="ct">Forest Film</div><div class="cd">Cinematic preset series</div></div><span class="lm">↗</span></div></a>
+    <a class="card"><div class="thumb"><div class="img" style="background:linear-gradient(150deg,#b06ab3,#4568dc)"></div></div><div class="body"><div><div class="ct">Aurora UI</div><div class="cd">Mobile theme + widgets</div></div><span class="lm">↗</span></div></a>
+  </section>
+
+  <div class="sh"><span class="tag">Featured</span><h2>The one I'm proud of</h2><div class="ln"></div></div>
+  <section class="feat">
+    <a class="fbig"><div class="img" style="background:linear-gradient(120deg,#10131b,#2b3a67 50%,#7c5cff)"></div><div class="ov"></div><div class="m"><div class="cat">Wallpaper system</div><div class="ti">Neon Tokyo, 8K</div><div class="de">A 10-piece cyberpunk set — every frame hand-graded for OLED black depth.</div></div></a>
+  </section>
+
+  <div class="ai">
+    <div class="badge">✦</div>
+    <div class="txt"><div class="q">Visitor asked: “Which preset is best for night shots?”</div><div class="a">Try the <span class="mark">Lightroom Classics</span> — built for night street.</div></div>
+    <a class="ask" href="#">Ask me anything →</a>
+  </div>
+
+  <div class="sh"><span class="tag">Shop</span><h2>Grab my work</h2><div class="ln"></div></div>
+  <section class="shop">
+    <div class="prod"><div class="pi" style="background:linear-gradient(135deg,#7c3aed,#db2777,#06b6d4)"><span class="price">$9.99</span></div><div class="pb"><div class="pt">Neon Glow Pack</div><div class="pd">10 cyberpunk 8K wallpapers</div><a class="buy" href="#">Buy now</a></div></div>
+    <div class="prod"><div class="pi" style="background:linear-gradient(135deg,#f59e0b,#ef4444,#1f2937)"><span class="price">$24.99</span></div><div class="pb"><div class="pt">Lightroom Classics</div><div class="pd">15 night-street film presets</div><a class="buy" href="#">Buy now</a></div></div>
+    <div class="prod"><div class="pi" style="background:linear-gradient(135deg,#22d3ee,#3b82f6,#1e1b4b)"><span class="price">$14.99</span></div><div class="pb"><div class="pt">Aurora Mobile Theme</div><div class="pd">Icon pack + home widgets</div><a class="buy" href="#">Buy now</a></div></div>
+  </section>
+
+  <footer>
+    <div class="big">Let's make<br>something <span>good.</span></div>
+    <div style="text-align:right">hi@vamshi.co<br>© 2026 · Powered by GetUrLink</div>
+  </footer>
+</div>
+</body>
+</html>

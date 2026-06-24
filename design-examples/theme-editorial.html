@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vamshi — Editorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f3efe7;--paper:#fbf9f4;--ink:#1a1612;--mut:#6b6157;--line:#ddd5c7;--accent:#b23a1e}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.65}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 2rem}
+  .serif{font-family:'Playfair Display',serif}
+  /* masthead */
+  .mast{border-bottom:2px solid var(--ink);padding:1.4rem 0 1rem;display:flex;align-items:center;justify-content:space-between}
+  .mast .vol{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--mut)}
+  .mast .ttl{font-family:'Playfair Display',serif;font-weight:900;font-size:1.6rem;letter-spacing:.02em}
+  .mast .date{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--mut)}
+  /* hero feature */
+  .lead{display:grid;grid-template-columns:1.5fr 1fr;gap:2.4rem;padding:3rem 0;border-bottom:1px solid var(--line)}
+  .lead .cat{color:var(--accent);text-transform:uppercase;letter-spacing:.18em;font-size:.76rem;font-weight:600;margin-bottom:1rem}
+  .lead h1{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(2.6rem,6vw,4.6rem);line-height:1.02;letter-spacing:-.01em}
+  .lead h1 em{font-style:italic;color:var(--accent)}
+  .lead .deck{font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;color:#3a342c;margin-top:1.2rem;max-width:34rem}
+  .lead .body{font-size:.98rem;column-count:1}
+  .lead .body::first-letter{font-family:'Playfair Display',serif;font-size:3.4rem;font-weight:700;float:left;line-height:.8;margin:.2rem .6rem 0 0;color:var(--accent)}
+  .lead .portrait{aspect-ratio:3/4;background:linear-gradient(150deg,#caa15e,#b23a1e 60%,#5c2414);border-radius:3px;position:relative;overflow:hidden;box-shadow:0 24px 50px rgba(120,50,20,.22)}
+  .lead .portrait::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 22%,rgba(255,255,255,.4),transparent 50%)}
+  .lead .credit{font-size:.72rem;color:var(--mut);margin-top:.6rem;text-transform:uppercase;letter-spacing:.1em}
+  /* section rule */
+  .srule{display:flex;align-items:center;gap:1rem;margin:3.4rem 0 1.6rem}
+  .srule h2{font-family:'Playfair Display',serif;font-weight:700;font-size:1.7rem;white-space:nowrap}
+  .srule .ln{flex:1;height:1px;background:var(--ink)}
+  .srule .n{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--mut)}
+  /* work as articles */
+  .arts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.6rem}
+  .art{cursor:pointer}
+  .art .im{aspect-ratio:4/3;border-radius:3px;overflow:hidden;position:relative;margin-bottom:.9rem}
+  .art .im .img{position:absolute;inset:0;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+  .art:hover .im .img{transform:scale(1.05)}
+  .art .k{font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);font-weight:600}
+  .art h3{font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;line-height:1.15;margin:.25rem 0}
+  .art p{font-size:.88rem;color:var(--mut)}
+  /* ai pull quote */
+  .ai{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:2.6rem 0;margin:3.4rem 0;text-align:center}
+  .ai .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);font-weight:600;margin-bottom:1rem}
+  .ai blockquote{font-family:'Playfair Display',serif;font-style:italic;font-size:1.9rem;line-height:1.3;max-width:40rem;margin:0 auto}
+  .ai blockquote b{font-style:normal;color:var(--accent)}
+  .ai .ask{display:inline-block;margin-top:1.4rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.12em;border:1px solid var(--ink);padding:.6rem 1.4rem;border-radius:2px;font-weight:600;transition:.2s}
+  .ai .ask:hover{background:var(--ink);color:var(--paper)}
+  /* shop classifieds */
+  .shop{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem;margin-bottom:1rem}
+  .p{display:flex;gap:1.2rem;background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:1rem;align-items:center;transition:.25s}
+  .p:hover{box-shadow:0 14px 34px rgba(60,40,20,.1);transform:translateY(-3px)}
+  .p .pi{width:96px;height:96px;border-radius:3px;flex-shrink:0}
+  .p .pt{font-family:'Playfair Display',serif;font-weight:700;font-size:1.25rem}
+  .p .pd{font-size:.84rem;color:var(--mut);margin:.2rem 0 .7rem}
+  .p .row{display:flex;align-items:center;gap:1rem}
+  .p .price{font-family:'Playfair Display',serif;font-weight:700;font-size:1.2rem}
+  .p .buy{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:600;border-bottom:1px solid var(--accent);padding-bottom:1px}
+  footer{border-top:2px solid var(--ink);margin-top:3rem;padding:1.6rem 0 3rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:var(--mut)}
+  @media(max-width:760px){.lead{grid-template-columns:1fr}.arts{grid-template-columns:1fr}.shop{grid-template-columns:1fr}.mast .vol{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="mast"><div class="vol">Vol. VI · No. 02</div><div class="ttl">THE VAMSHI EDIT</div><div class="date">Tokyo · 2026</div></div>
+
+  <section class="lead">
+    <div>
+      <div class="cat">Cover Feature · The Maker</div>
+      <h1>Crafting <em>light</em>, color &amp; quiet detail.</h1>
+      <p class="deck">Six years of film-grade presets and 8K wallpaper sets — and an eye that refuses to round corners.</p>
+      <p class="body">Vamshi makes the kind of work you feel before you can explain. Every preset begins with a single frame, graded by hand until the shadows sit exactly where they should. What started as a hobby is now a quiet studio with a few hundred thousand downloads — and a waiting list.</p>
+    </div>
+    <div><div class="portrait"></div><div class="credit">Portrait — Studio Vamshi</div></div>
+  </section>
+
+  <div class="srule"><h2>Selected Work</h2><div class="ln"></div><div class="n">Portfolio</div></div>
+  <section class="arts">
+    <a class="art"><div class="im"><div class="img" style="background:linear-gradient(150deg,#2b3a67,#1a1f3a)"></div></div><div class="k">8K Wallpaper</div><h3>Neon Tokyo</h3><p>A ten-piece set graded for OLED black.</p></a>
+    <a class="art"><div class="im"><div class="img" style="background:linear-gradient(150deg,#e0794a,#7c3a2c)"></div></div><div class="k">Lightroom</div><h3>Golden Street</h3><p>Warm film tones for golden hour.</p></a>
+    <a class="art"><div class="im"><div class="img" style="background:linear-gradient(150deg,#3fae6a,#13503a)"></div></div><div class="k">Preset Pack</div><h3>Forest Film</h3><p>Cinematic greens, soft contrast.</p></a>
+  </section>
+
+  <div class="ai">
+    <div class="lbl">✦ In conversation</div>
+    <blockquote>“Which preset is best for night street photography?” <br>— Try the <b>Lightroom Classics</b>, built for exactly that.</blockquote>
+    <a class="ask" href="#">Ask the assistant</a>
+  </div>
+
+  <div class="srule"><h2>The Shop</h2><div class="ln"></div><div class="n">Instant download</div></div>
+  <section class="shop">
+    <a class="p"><div class="pi" style="background:linear-gradient(135deg,#7c3aed,#db2777,#06b6d4)"></div><div><div class="pt">Neon Glow Pack</div><div class="pd">10 cyberpunk 8K wallpapers</div><div class="row"><span class="price">$9.99</span><span class="buy">Buy now →</span></div></div></a>
+    <a class="p"><div class="pi" style="background:linear-gradient(135deg,#f59e0b,#ef4444,#1f2937)"></div><div><div class="pt">Lightroom Classics</div><div class="pd">15 night-street film presets</div><div class="row"><span class="price">$24.99</span><span class="buy">Buy now →</span></div></div></a>
+  </section>
+
+  <footer><div>© 2026 The Vamshi Edit</div><div>Printed &amp; powered by GetUrLink</div></footer>
+</div>
+</body>
+</html>

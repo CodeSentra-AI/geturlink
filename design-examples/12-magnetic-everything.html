@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Magnetic Everything</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0c10;--ink:#f4f5f8;--muted:#8a8d99;--line:#23252e;--accent:#36e2a0;--accent2:#5b8cff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;cursor:none}
+  a{text-decoration:none;color:inherit}
+  .ring{position:fixed;top:0;left:0;width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;z-index:999;pointer-events:none;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s}
+  .ring.on{width:62px;height:62px;background:rgba(54,226,160,.12)}
+  .dot{position:fixed;top:0;left:0;width:6px;height:6px;border-radius:50%;background:var(--accent);z-index:999;pointer-events:none;transform:translate(-50%,-50%)}
+  .wrap{max-width:960px;margin:0 auto;padding:0 1.5rem}
+  nav{display:flex;align-items:center;justify-content:space-between;height:76px;max-width:960px;margin:0 auto;padding:0 1.5rem}
+  .logo{font-weight:800;font-size:1.3rem}.logo span{color:var(--accent)}
+  .nl{display:flex;gap:.4rem;align-items:center}
+  .mag{display:inline-block;will-change:transform}
+  .nl a.l{color:var(--muted);font-size:.92rem;font-weight:500;padding:.5rem .8rem;border-radius:10px}
+  .btn{font-weight:600;font-size:.95rem;border-radius:12px;padding:.72rem 1.35rem;border:1px solid var(--line);background:#15171d;display:inline-block}
+  .btn-p{background:var(--accent);border:none;color:#06140d}
+  .hero{text-align:center;padding:9vh 0 3rem}
+  .tag{display:inline-block;color:var(--accent2);font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1.4rem}
+  h1{font-size:clamp(2.6rem,5.4vw,4.4rem);font-weight:800;letter-spacing:-.035em;line-height:1.04}
+  .g{color:var(--accent)}
+  .sub{color:#b7bac6;font-size:1.12rem;max-width:31rem;margin:1.3rem auto 2rem}
+  .acts{display:flex;gap:1.2rem;justify-content:center}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3.5rem}
+  .card{background:#13151b;border:1px solid var(--line);border-radius:18px;padding:1.5rem;text-align:left;will-change:transform}
+  .card h3{font-size:1.05rem;font-weight:700;margin-bottom:.3rem}.card p{color:var(--muted);font-size:.9rem}
+  .note{position:fixed;bottom:1.3rem;left:0;right:0;text-align:center;color:var(--muted);font-size:.82rem}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="ring" id="ring"></div><div class="dot" id="dot"></div>
+<nav><div class="logo">Get<span>Ur</span>Link</div>
+<div class="nl"><a class="l mag" data-mag data-h href="#">Pricing</a><a class="btn mag" data-mag data-h href="#">Log in</a><a class="btn btn-p mag" data-mag data-h href="#">Get started</a></div></nav>
+<header class="wrap hero">
+  <span class="tag">Free until your first sale</span>
+  <h1>Everything here<br>leans <span class="g">your way.</span></h1>
+  <p class="sub">A storefront for creators with a UI that reacts to you. Sell digital products, get paid in one click.</p>
+  <div class="acts"><a class="btn btn-p mag" data-mag data-h href="#">Create your page — free</a><a class="btn mag" data-mag data-h href="#">How it works</a></div>
+  <div class="cards">
+    <div class="card mag" data-mag data-h><h3>Sell products</h3><p>Instant secure delivery on every sale.</p></div>
+    <div class="card mag" data-mag data-h><h3>Keep more</h3><p>0% platform fees on Premium.</p></div>
+    <div class="card mag" data-mag data-h><h3>AI assistant</h3><p>Answers buyers and closes sales 24/7.</p></div>
+  </div>
+</header>
+<div class="note">✦ buttons, links and cards are magnetic — glide near them</div>
+<script>
+  const ring=document.getElementById('ring'),dot=document.getElementById('dot');
+  let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
+  addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;});
+  (function l(){rx+=(mx-rx)*.2;ry+=(my-ry)*.2;ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;requestAnimationFrame(l);})();
+  document.querySelectorAll('[data-h]').forEach(el=>{el.addEventListener('mouseenter',()=>ring.classList.add('on'));el.addEventListener('mouseleave',()=>ring.classList.remove('on'));});
+  const mags=[...document.querySelectorAll('[data-mag]')];
+  addEventListener('mousemove',e=>{mags.forEach(el=>{const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=e.clientX-cx,dy=e.clientY-cy,d=Math.hypot(dx,dy),rad=Math.max(r.width,140);
+    if(d<rad){const f=(1-d/rad)*.45;el.style.transform=`translate(${dx*f}px,${dy*f}px)`;}else el.style.transform='';});});
+</script>
+</body>
+</html>

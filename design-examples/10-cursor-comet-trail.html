@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GetUrLink — Comet Cursor Trail</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#06060e;--ink:#f3f2ff;--muted:#8d8aa8;--line:#211f33;--v:#8b5cff;--pink:#ff49c7}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow:hidden;cursor:none}
+  @media (prefers-reduced-motion: reduce){body{cursor:auto}}
+  a{text-decoration:none;color:inherit}
+  canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+  .wrap{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 1.5rem}
+  nav{display:flex;align-items:center;justify-content:space-between;height:74px;position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 1.5rem}
+  .logo{font-weight:800;font-size:1.3rem}.logo span{color:var(--v)}
+  .nl{display:flex;gap:1.2rem;align-items:center}.nl a.l{color:var(--muted);font-size:.92rem;font-weight:500}
+  .btn{font-weight:600;font-size:.95rem;border-radius:12px;padding:.7rem 1.35rem;border:1px solid var(--line);background:#110f1c}
+  .btn-p{background:linear-gradient(110deg,var(--v),var(--pink));border:none;color:#fff}
+  .hero{text-align:center;padding:11vh 0 0}
+  .tag{display:inline-block;color:var(--pink);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.6rem}
+  h1{font-size:clamp(2.6rem,6vw,5rem);font-weight:800;letter-spacing:-.04em;line-height:1.02}
+  .g{background:linear-gradient(110deg,#a78bff,#ff49c7);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:#bdbad6;font-size:1.15rem;max-width:32rem;margin:1.3rem auto 2rem}
+  .acts{display:flex;gap:1rem;justify-content:center}
+  .note{position:fixed;bottom:1.4rem;left:0;right:0;text-align:center;color:var(--muted);font-size:.82rem;z-index:2}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<nav><div class="logo">Get<span>Ur</span>Link</div><div class="nl"><a class="l" href="#">Pricing</a><a class="btn" href="#">Log in</a><a class="btn btn-p" href="#">Get started</a></div></nav>
+<header class="wrap hero">
+  <span class="tag">Free until your first sale</span>
+  <h1>Your link in bio<br>that <span class="g">actually sells.</span></h1>
+  <p class="sub">Trail the cursor anywhere. A storefront for creators — links + digital products + 1-click checkout.</p>
+  <div class="acts"><a class="btn btn-p" href="#">Create your page — free</a><a class="btn" href="#">How it works</a></div>
+</header>
+<div class="note">✦ a comet of light follows your cursor — move it around</div>
+<script>
+  const cv=document.getElementById('c'),x=cv.getContext('2d');
+  const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function s(){cv.width=innerWidth;cv.height=innerHeight}s();addEventListener('resize',s);
+  let mx=innerWidth/2,my=innerHeight/2,parts=[];const cols=['#8b5cff','#ff49c7','#34e7e4','#a78bff'];
+  if(!reduceMotion)addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;for(let i=0;i<3;i++)parts.push({x:mx,y:my,vx:(Math.random()-.5)*1.4,vy:(Math.random()-.5)*1.4,r:Math.random()*5+2,life:1,c:cols[Math.floor(Math.random()*4)]});});
+  function loop(){x.clearRect(0,0,cv.width,cv.height);x.globalCompositeOperation='lighter';
+    parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life-=.022;x.globalAlpha=Math.max(p.life,0);x.fillStyle=p.c;x.beginPath();x.arc(p.x,p.y,p.r*p.life,0,7);x.fill();});
+    parts=parts.filter(p=>p.life>0);
+    x.globalAlpha=1;x.fillStyle='#fff';x.beginPath();x.arc(mx,my,3,0,7);x.fill();
+    requestAnimationFrame(loop);}if(!reduceMotion)loop();
+</script>
+</body>
+</html>
